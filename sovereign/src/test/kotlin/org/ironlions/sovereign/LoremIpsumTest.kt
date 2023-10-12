@@ -1,6 +1,5 @@
-package org.rowlandhall.ftc.sovereign
+package org.ironlions.sovereign
 
-import org.ironlions.sovereign.LoremIpsum
 import org.junit.Test
 import org.junit.Assert.*
 
