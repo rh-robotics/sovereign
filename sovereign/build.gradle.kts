@@ -1,20 +1,14 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
 }
 
 android {
-    namespace = "org.rowlandhall.ftc.sovereign"
-    compileSdk = 33
+    namespace = "org.ironlions.sovereign"
+    compileSdk = 34
 
     defaultConfig {
-        applicationId = "org.rowlandhall.ftc.sovereign"
         minSdk = 29
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -26,18 +20,34 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
 }
 
 dependencies {
+    /* FTC */
+    implementation("org.firstinspires.ftc:Inspection:9.0.0")
+    implementation("org.firstinspires.ftc:Blocks:9.0.0")
+    implementation("org.firstinspires.ftc:Tfod:9.0.0")
+    implementation("org.firstinspires.ftc:RobotCore:9.0.0")
+    implementation("org.firstinspires.ftc:RobotServer:9.0.0")
+    implementation("org.firstinspires.ftc:OnBotJava:9.0.0")
+    implementation("org.firstinspires.ftc:Hardware:9.0.0")
+    implementation("org.firstinspires.ftc:FtcCommon:9.0.0")
+    implementation("org.firstinspires.ftc:Vision:9.0.0")
+    implementation("org.firstinspires.ftc:gameAssets-CenterStage:1.0.0")
+    implementation("com.acmerobotics.roadrunner:core:1.0.0-beta3")
+    implementation("com.acmerobotics.roadrunner:actions:1.0.0-beta3")
 
-    implementation("androidx.core:core-ktx:1.9.0")
+    /* Android */
+    implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     testImplementation("junit:junit:4.13.2")

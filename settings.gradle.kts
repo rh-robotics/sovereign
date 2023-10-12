@@ -10,9 +10,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = java.net.URI("https://maven.brott.dev/") }
     }
 }
 
 rootProject.name = "sovereign"
 include(":sovereign")
- 
