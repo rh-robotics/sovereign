@@ -2,8 +2,10 @@ name: Check Dokka
 on:
   push:
     branches: [master]
+  workflow_dispatch:
+
 jobs:
-  publish:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
