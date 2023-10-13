@@ -32,6 +32,14 @@ android {
     }
 }
 
+tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
+    dokkaSourceSets {
+        configureEach {
+            includes.from(project.files(), "overview.md")
+        }
+    }
+}
+
 dependencies {
     /* FTC */
     implementation("org.firstinspires.ftc:Inspection:9.0.0")
