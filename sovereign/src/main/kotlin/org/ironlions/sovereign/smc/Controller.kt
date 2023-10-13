@@ -39,7 +39,9 @@ class Controller(states: Array<State>) {
                 )
 
             /* Ensure there's only one INITIAL and TERMINATING state. */
-            if (metadata.role != StateRole.TRANSITIONAL) {/* Is there's already a matching one in the registry, kill ourselves. */
+            if (metadata.role != StateRole.TRANSITIONAL) {
+                /* Is there's already a matching one in the registry,
+                 * kill ourselves. */
                 uniqueStateRegistry.getOrPut(metadata.role) { state }.takeIf { it != state }?.let {
                     throw ConstructionException(
                         state.javaClass,
@@ -109,18 +111,17 @@ class Controller(states: Array<State>) {
             append(graphvizDotPrelude)
 
             for (state in statesReached.keys) {
-                // Styling and whatnot of the vertices/nodes.
-                val metadata =
-                    state.javaClass.getAnnotation(StateMeta::class.java)!!
+                /* Styling and whatnot of the vertices/nodes. */
+                val metadata = state.javaClass.getAnnotation(StateMeta::class.java)!!
                 append("\t\"${state.javaClass.simpleName}\" [color = \"${metadata.color}\"]\n")
 
-                // Edges between vertices/nodes.
+                /* Edges between vertices/nodes. */
                 for (edge in state.edges) {
                     append("\t\"${state.javaClass.simpleName}\" -> \"${edge.to.simpleName}\"\n")
                 }
             }
 
-            // Cleanup.
+            /* Cleanup. */
             append("}")
         }
     }
