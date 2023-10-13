@@ -35,6 +35,9 @@ android {
 tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
     dokkaSourceSets {
         configureEach {
+            moduleName.set("Sovereign")
+            suppressObviousFunctions.set(false) // For the FTC rookies
+            suppressInheritedMembers.set(false) // For the FTC rookies
             includes.from(project.files(), "overview.md")
         }
     }
