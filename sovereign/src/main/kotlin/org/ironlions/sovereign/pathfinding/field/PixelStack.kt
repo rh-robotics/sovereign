@@ -10,7 +10,7 @@ import org.ironlions.sovereign.pathfinding.ObjectType
 /**
  * Subclass of FieldObject that represents the pixel stacks at the front of the field
  *
- * @param position
+ * @param position The coordinate pair position representing the center of the BoundingBox
  */
 
 class PixelStack(position: Pair<Double, Double>): FieldObject(ObjectType.STATIC, position, BoundingBox(3.0, 3.5))
