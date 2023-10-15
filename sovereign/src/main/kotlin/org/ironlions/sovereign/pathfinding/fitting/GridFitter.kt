@@ -6,11 +6,12 @@ import org.ironlions.sovereign.geometry.Region
 import org.ironlions.sovereign.pathfinding.environment.Environment
 
 /** A fitter that fits an environment onto a regular grid.
+ * @param environment The environment to initially fit from.
  * @param resolution The coarseness of the resulting grid.
  * @param brim The birth around each field element to give, on top of the per-object value.
  */
 class GridFitter(
-    environment: Environment,
+    environment: Environment?,
     private val resolution: Int = 32,
     private val brim: Int = 0,
 ) : DataFitter<GridFitting> {
@@ -18,7 +19,7 @@ class GridFitter(
 
     init {
         if (brim != 0) TODO("unimplemented")
-        else fit(environment)
+        else environment?.let { fit(environment) }
     }
 
     override fun fit(environment: Environment) {
