@@ -58,7 +58,7 @@ class GridFitter(
             // TODO: Separate out dimensional collapse once more?
 
             // Look through every object and see if it overlaps with the current cell.
-            for (thing in environment.entities) {
+            for (thing in environment.things) {
                 for (thingRegion in thing.regions) {
                     // If it overlaps, the cell is occupied and may not be pathfinded through.
                     if (cellRegion.overlaps(thingRegion)) {
