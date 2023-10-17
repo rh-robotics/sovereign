@@ -4,8 +4,8 @@ import org.ironlions.sovereign.geometry.Measurement
 import org.ironlions.sovereign.geometry.Point3D
 import org.ironlions.sovereign.geometry.Region3D
 import org.ironlions.sovereign.geometry.Volume3D
-import org.ironlions.sovereign.pathfinding.environment.FieldEntity
-import org.ironlions.sovereign.pathfinding.environment.EntityType
+import org.ironlions.sovereign.pathfinding.environment.FieldThing
+import org.ironlions.sovereign.pathfinding.environment.ThingType
 
 /**
  * Subclass of FieldObject that represents the trusses on the field
@@ -14,9 +14,9 @@ import org.ironlions.sovereign.pathfinding.environment.EntityType
  *
  * @param position The position of the truss.
  */
-class Truss(position: Point3D) : FieldEntity(
+class Truss(position: Point3D) : FieldThing(
     arrayOf(Region3D(
         position, Volume3D(Measurement.Feet(3.0), Measurement.Feet(3.0), Measurement.Feet(3.0))
     )),
-    EntityType.STATIC,
+    ThingType.STATIC,
 )

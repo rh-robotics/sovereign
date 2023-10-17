@@ -3,19 +3,19 @@ package org.ironlions.sovereign.pathfinding.environment
 import org.ironlions.sovereign.geometry.Region3D
 
 /**
- * Class that represents objects on the field
+ * Class that represents a thing on the field
  *
  * TODO: Probably a make a LocalSpaceGroup to make defining groups of bounding boxes easier.
  *
  * @param type Defines if the field object can be moved or not (by a significant amount)
  * @param regions Defines the size and position.
  */
-open class FieldEntity(
-    val regions: Array<Region3D>, val type: EntityType
+open class FieldThing(
+    val regions: Array<Region3D>, val type: ThingType
 )
 
 /** The type of entity on the field. */
-enum class EntityType {
+enum class ThingType {
     /** An immovable (in theory) entity. */
     STATIC,
     /** A dynamic (movable) entity. */

@@ -10,7 +10,7 @@ import org.ironlions.sovereign.pathfinding.environment.entities.Robot
  */
 class Environment(season: Season?, fieldSideLength: Double = 12.0) {
     val fieldSideLength = Measurement.Feet(fieldSideLength)
-    val entities: List<FieldEntity> = ArrayList()
+    val entities: List<FieldThing> = ArrayList()
     val us: Robot = TODO()
 
     init {
