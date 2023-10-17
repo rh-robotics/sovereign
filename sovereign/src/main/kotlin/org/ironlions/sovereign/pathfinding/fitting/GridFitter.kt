@@ -28,36 +28,45 @@ class GridFitter(
         ) as Measurement
 
         // Loop through every cell, and check every object.
-        for (x in 0 until resolution) {
-            cell@ for (y in 0 until resolution) {
-                for (robotRegion in environment.us.regions) {
-                    // Draw a bounding box from the ground to the top of the robot, for the cell.
-                    val cellRegion = Region3D(
-                        v1 = Point3D(
-                            x = resolutionMeasurement * x,
-                            y = resolutionMeasurement * y,
-                            z = robotRegion.height
-                        ), v2 = Point3D(
-                            x = (resolutionMeasurement * x) + resolutionMeasurement,
-                            y = (resolutionMeasurement * y) + resolutionMeasurement,
-                            z = Measurement.Millimeters(0.0)
-                        )
-                    )
+        (0 until resolution).forEach { x ->
+            (0 until resolution).forEach { y ->
+                fitCell(environment, resolutionMeasurement, x, y)
+            }
+        }
+    }
 
-                    // TODO: Separate out dimensional collapse once more?
+    private fun fitCell(
+        environment: Environment,
+        resolutionMeasurement: Measurement,
+        x: Int,
+        y: Int
+    ) {
+        for (robotRegion in environment.us.regions) {
+            // Draw a bounding box from the ground to the top of the robot, for the cell.
+            val cellRegion = Region3D(
+                v1 = Point3D(
+                    x = resolutionMeasurement * x,
+                    y = resolutionMeasurement * y,
+                    z = robotRegion.height
+                ), v2 = Point3D(
+                    x = (resolutionMeasurement * x) + resolutionMeasurement,
+                    y = (resolutionMeasurement * y) + resolutionMeasurement,
+                    z = Measurement.Millimeters(0.0)
+                )
+            )
 
-                    // Look through every object and see if it overlaps with the current cell.
-                    for (obj in environment.entities) {
-                        for (objRegion in obj.regions) {
-                            // If it overlaps, the cell is occupied and may not be pathfinded through.
-                            if (cellRegion.overlaps(objRegion)) {
-                                fitting.grid[x][y] = GridCell.OCCUPIED
-                                continue@cell
-                            } else {
-                                fitting.grid[x][y] = GridCell.FREE()
-                            }
-                        }
+            // TODO: Separate out dimensional collapse once more?
+
+            // Look through every object and see if it overlaps with the current cell.
+            for (obj in environment.entities) {
+                for (objRegion in obj.regions) {
+                    // If it overlaps, the cell is occupied and may not be pathfinded through.
+                    if (cellRegion.overlaps(objRegion)) {
+                        fitting.grid[x][y] = GridCell.OCCUPIED
+                        return
                     }
+
+                    fitting.grid[x][y] = GridCell.FREE()
                 }
             }
         }

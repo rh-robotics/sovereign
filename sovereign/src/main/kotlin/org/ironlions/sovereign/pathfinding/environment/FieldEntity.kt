@@ -5,6 +5,8 @@ import org.ironlions.sovereign.geometry.Region3D
 /**
  * Class that represents objects on the field
  *
+ * TODO: Probably a make a LocalSpaceGroup to make defining groups of bounding boxes easier.
+ *
  * @param type Defines if the field object can be moved or not (by a significant amount)
  * @param regions Defines the size and position.
  */
