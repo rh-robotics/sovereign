@@ -1,6 +1,7 @@
 package org.ironlions.sovereign.pathfinding.environment
 
 import org.ironlions.sovereign.geometry.Measurement
+import org.ironlions.sovereign.pathfinding.environment.entities.Robot
 
 /**
  * A map of the entire game field, including all field objects.
@@ -9,7 +10,8 @@ import org.ironlions.sovereign.geometry.Measurement
  */
 class Environment(season: Season?, fieldSideLength: Double = 12.0) {
     val fieldSideLength = Measurement.Feet(fieldSideLength)
-    val objects: List<FieldObject> = ArrayList()
+    val entities: List<FieldEntity> = ArrayList()
+    val us: Robot = TODO()
 
     init {
         season?.let {

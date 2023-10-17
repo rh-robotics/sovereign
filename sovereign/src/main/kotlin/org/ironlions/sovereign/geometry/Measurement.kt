@@ -138,4 +138,14 @@ sealed class Measurement {
     operator fun rem(d: Measurement): Measurement {
         return Millimeters(millimeters % d.millimeters)
     }
+
+    operator fun compareTo(z: Measurement): Int {
+        return if (this.millimeters < z.millimeters) {
+            -1
+        } else if (this.millimeters > z.millimeters) {
+            1
+        } else {
+            0
+        }
+    }
 }
