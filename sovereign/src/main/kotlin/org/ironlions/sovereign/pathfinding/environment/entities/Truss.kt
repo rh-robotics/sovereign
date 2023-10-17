@@ -15,8 +15,8 @@ import org.ironlions.sovereign.pathfinding.environment.EntityType
  * @param position The position of the truss.
  */
 class Truss(position: Point3D) : FieldEntity(
-    Region3D(
+    arrayOf(Region3D(
         position, Volume3D(Measurement.Feet(3.0), Measurement.Feet(3.0), Measurement.Feet(3.0))
-    ),
+    )),
     EntityType.STATIC,
 )
