@@ -1,9 +1,9 @@
 package org.ironlions.sovereign.pathfinding.environment.entities
 
 import org.ironlions.sovereign.geometry.Measurement
-import org.ironlions.sovereign.geometry.Point3D
-import org.ironlions.sovereign.geometry.Region3D
-import org.ironlions.sovereign.geometry.Volume3D
+import org.ironlions.sovereign.geometry.Point
+import org.ironlions.sovereign.geometry.Region
+import org.ironlions.sovereign.geometry.Volume
 import org.ironlions.sovereign.pathfinding.environment.FieldThing
 import org.ironlions.sovereign.pathfinding.environment.ThingType
 
@@ -14,9 +14,9 @@ import org.ironlions.sovereign.pathfinding.environment.ThingType
  *
  * @param position The position of the truss.
  */
-class Truss(position: Point3D) : FieldThing(
-    arrayOf(Region3D(
-        position, Volume3D(Measurement.Feet(3.0), Measurement.Feet(3.0), Measurement.Feet(3.0))
+class Truss(position: Point) : FieldThing(
+    arrayOf(Region(
+        position, Volume(Measurement.Feet(3.0), Measurement.Feet(3.0), Measurement.Feet(3.0))
     )),
     ThingType.STATIC,
 )
