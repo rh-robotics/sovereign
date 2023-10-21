@@ -1,8 +1,8 @@
 package org.ironlions.sovereign.pathfinding.fitting
 
 import org.ironlions.sovereign.geometry.Measurement
-import org.ironlions.sovereign.geometry.Point3D
-import org.ironlions.sovereign.geometry.Pin3D
+import org.ironlions.sovereign.geometry.Point
+import org.ironlions.sovereign.geometry.Pin
 import org.ironlions.sovereign.pathfinding.environment.Environment
 import org.ironlions.sovereign.pathfinding.environment.entities.Robot
 import org.junit.Test
@@ -18,7 +18,7 @@ class GridFitterTest {
         )
 
         val robot = Robot(
-            Point3D(
+            Point(
                 x = Measurement.Feet(3.0),
                 y = Measurement.Feet(2.0),
                 z = Measurement.Feet(0.0)
@@ -45,7 +45,7 @@ class GridFitterTest {
         )
 
         val robot = Robot(
-            Point3D(
+            Point(
                 x = Measurement.Feet(3.0),
                 y = Measurement.Feet(2.0),
                 z = Measurement.Feet(0.0)
@@ -54,8 +54,8 @@ class GridFitterTest {
         val environment = Environment(robot)
 
         environment.things.add(
-            Pin3D(
-                Point3D(
+            Pin(
+                Point(
                     x = Measurement.Fields(0.5, environment.fieldSideLength),
                     y = Measurement.Fields(0.5, environment.fieldSideLength),
                     z = Measurement.Fields(0.0, environment.fieldSideLength),
@@ -81,7 +81,7 @@ class GridFitterTest {
         )
 
         val robot = Robot(
-            Point3D(
+            Point(
                 x = Measurement.Feet(3.0),
                 y = Measurement.Feet(2.0),
                 z = Measurement.Feet(0.0)
@@ -90,8 +90,8 @@ class GridFitterTest {
         val environment = Environment(robot)
 
         environment.things.add(
-            Pin3D(
-                Point3D(
+            Pin(
+                Point(
                     x = Measurement.Millimeters(1.0),
                     y = Measurement.Millimeters(1.0),
                     z = Measurement.Millimeters(0.0),

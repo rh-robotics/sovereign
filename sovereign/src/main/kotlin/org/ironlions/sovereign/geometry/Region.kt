@@ -1,42 +1,60 @@
 package org.ironlions.sovereign.geometry
 
+import android.icu.util.Measure
 import org.ironlions.sovereign.math.rangesOverlap
 
 /**
  * A class to represent a rectangular area with a specific depth width, height, and position. In
- * contrast to [Volume3D], it has a position, and can thus be used for checking if a point is inside
+ * contrast to [Volume], it has a position, and can thus be used for checking if a point is inside
  * of it.
  *
  * @param v1 The upper left vertex of the region.
  * @param v2 The lower right vertex of the region.
  */
-class Region3D(
-    val v1: Point3D,
-    val v2: Point3D,
+class Region(
+    val v1: Point,
+    val v2: Point,
 ) {
     /** Constructs a new region from a center and a volume. */
-    constructor (center: Point3D, volume: Volume3D) : this(
+    constructor (center: Point, volume: Volume) : this(
         center = center,
         depthRadius = Measurement.Millimeters(volume.depth.millimeters / 2.0),
         widthRadius = Measurement.Millimeters(volume.width.millimeters / 2.0),
         heightRadius = Measurement.Millimeters(volume.height.millimeters / 2.0),
     )
 
-    /** Constructs a new region from a center and two radix. */
+    /** Constructs a new region from a center and three radix. */
     constructor (
-        center: Point3D,
+        center: Point,
         depthRadius: Measurement,
         widthRadius: Measurement,
         heightRadius: Measurement
     ) : this(
-        v1 = Point3D(
+        v1 = Point(
             x = center.x - (depthRadius / 2),
             y = center.y + (widthRadius / 2),
             z = center.z + (heightRadius / 2),
-        ), v2 = Point3D(
+        ), v2 = Point(
             x = center.x + (widthRadius / 2),
             y = center.y - (heightRadius / 2),
             z = center.z - (heightRadius / 2),
+        )
+    )
+
+    /** Constructs a new region from a center and two radix. */
+    constructor (
+        center: Point,
+        depthRadius: Measurement,
+        widthRadius: Measurement,
+    ) : this(
+        v1 = Point(
+            x = center.x - (depthRadius / 2),
+            y = center.y + (widthRadius / 2),
+            z = Measurement.Millimeters(0.0),
+        ), v2 = Point(
+            x = center.x + (depthRadius / 2),
+            y = center.y - (widthRadius / 2),
+            z = Measurement.Millimeters(0.0),
         )
     )
 
@@ -44,7 +62,7 @@ class Region3D(
      * @param point The point in question.
      * @return If it is contained.
      */
-    operator fun contains(point: Point3D): Boolean {
+    operator fun contains(point: Point): Boolean {
         val minX = v1.x.millimeters.coerceAtMost(v2.x.millimeters)
         val maxX = v1.x.millimeters.coerceAtLeast(v2.x.millimeters)
         val minY = v1.y.millimeters.coerceAtMost(v2.y.millimeters)
@@ -57,7 +75,7 @@ class Region3D(
      * @param region The region that might be overlapping this one.
      * @return If they overlap.
      */
-    fun overlaps(region: Region3D): Boolean {
+    fun overlaps(region: Region): Boolean {
         val xOverlap = rangesOverlap(
             range1 = region.v1.x.millimeters..region.v2.x.millimeters,
             range2 = this.v1.x.millimeters..this.v2.x.millimeters

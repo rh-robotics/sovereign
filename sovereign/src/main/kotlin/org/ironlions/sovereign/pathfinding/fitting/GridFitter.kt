@@ -1,8 +1,8 @@
 package org.ironlions.sovereign.pathfinding.fitting
 
 import org.ironlions.sovereign.geometry.Measurement
-import org.ironlions.sovereign.geometry.Point3D
-import org.ironlions.sovereign.geometry.Region3D
+import org.ironlions.sovereign.geometry.Point
+import org.ironlions.sovereign.geometry.Region
 import org.ironlions.sovereign.pathfinding.environment.Environment
 
 /** A fitter that fits an environment onto a regular grid.
@@ -26,7 +26,7 @@ class GridFitter(
 
         // Loop through every cell, and check every object.
         fitting.grid.forEachIndexed { xi, x ->
-            x.forEachIndexed { yi, y ->
+            x.forEachIndexed { yi, _ ->
                 fitCell(environment, resolutionMeasurement, xi, yi)
             }
         }
@@ -37,12 +37,12 @@ class GridFitter(
     ) {
         for (robotRegion in environment.robot.regions) {
             // Draw a bounding box from the ground to the top of the robot, for the cell.
-            val cellRegion = Region3D(
-                v1 = Point3D(
+            val cellRegion = Region(
+                v1 = Point(
                     x = resolutionMeasurement * x,
                     y = resolutionMeasurement * y,
                     z = Measurement.Millimeters(0.0)
-                ), v2 = Point3D(
+                ), v2 = Point(
                     x = (resolutionMeasurement * x) + resolutionMeasurement,
                     y = (resolutionMeasurement * y) + resolutionMeasurement,
                     z = robotRegion.height

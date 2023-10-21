@@ -1,6 +1,6 @@
 package org.ironlions.sovereign.pathfinding.environment
 
-import org.ironlions.sovereign.geometry.Region3D
+import org.ironlions.sovereign.geometry.Region
 
 /**
  * Class that represents a thing on the field
@@ -11,7 +11,7 @@ import org.ironlions.sovereign.geometry.Region3D
  * @param regions Defines the size and position.
  */
 open class FieldThing(
-    val regions: Array<Region3D>, val type: ThingType
+    val regions: Array<Region>, val type: ThingType
 )
 
 /** The type of entity on the field. */
