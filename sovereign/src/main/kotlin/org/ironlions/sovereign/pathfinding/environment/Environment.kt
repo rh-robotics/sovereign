@@ -8,10 +8,9 @@ import org.ironlions.sovereign.pathfinding.environment.entities.Robot
  *
  * @param season The season to determine which default values to insert. Leave `null` for no default.
  */
-class Environment(season: Season?, fieldSideLength: Double = 12.0) {
+class Environment(val robot: Robot, season: Season? = null, fieldSideLength: Double = 12.0) {
     val fieldSideLength = Measurement.Feet(fieldSideLength)
-    val things: List<FieldThing> = ArrayList()
-    val us: Robot = TODO()
+    val things: MutableList<FieldThing> = ArrayList()
 
     init {
         season?.let {

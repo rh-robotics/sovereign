@@ -4,9 +4,26 @@ package org.ironlions.sovereign.pathfinding.fitting
  * @param resolution The coarseness of the grid.
  */
 class GridFitting(
-        private val resolution: Int,
+    private val resolution: Int,
 ) : FittingResult {
     val grid: Array<Array<GridCell?>> = Array(resolution) { Array(resolution) { null } }
+
+    init {
+        (0 until resolution).forEach { x ->
+            (0 until resolution).forEach { y ->
+                grid[x][y] = GridCell.FREE()
+            }
+        }
+    }
+
+    /** Loop over every cell in the [grid]. */
+    fun every(fn: (cell: GridCell?, x: Int, y: Int) -> Unit) {
+        grid.forEachIndexed { xi, x ->
+            x.forEachIndexed { yi, y ->
+                fn(y, xi, yi)
+            }
+        }
+    }
 }
 
 /** A cell in a [GridFitting]. */

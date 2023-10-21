@@ -60,6 +60,10 @@ class Region2D(
                 v2.y.millimeters < region.v1.y.millimeters)
     }
 
+    override fun toString(): String {
+        return "Region3D(v1=$v1, v2=$v2)"
+    }
+
     /** Gets the depth of the region.
      * @return The region height
      */
