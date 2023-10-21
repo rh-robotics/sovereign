@@ -1,5 +1,7 @@
 package org.ironlions.sovereign.geometry
 
+import org.ironlions.sovereign.math.rangesOverlap
+
 /**
  * A class to represent a rectangular area with a specific depth width, height, and position. In
  * contrast to [Volume3D], it has a position, and can thus be used for checking if a point is inside
@@ -51,20 +53,31 @@ class Region3D(
         return point.x.millimeters in minX..maxX && point.y.millimeters in minY..maxY
     }
 
-    /** Does this region fully contain another?
-     * @param region The region that might be fully contained.
-     * @return If it is fully contained.
-     */
-    operator fun contains(region: Region3D): Boolean {
-        return (v1.x.millimeters <= region.v1.x.millimeters && v1.y.millimeters <= region.v1.y.millimeters && v1.z.millimeters <= region.v1.z.millimeters && v2.x.millimeters >= region.v2.x.millimeters && v2.y.millimeters >= region.v2.y.millimeters && v2.z.millimeters >= region.v2.z.millimeters)
-    }
-
     /** Does this region overlap another?
      * @param region The region that might be overlapping this one.
      * @return If they overlap.
      */
     fun overlaps(region: Region3D): Boolean {
-        return !(v1.x.millimeters > region.v2.x.millimeters || v2.x.millimeters < region.v1.x.millimeters || v1.y.millimeters > region.v2.y.millimeters || v2.y.millimeters < region.v1.y.millimeters || v1.z.millimeters > region.v2.z.millimeters || v2.z.millimeters < region.v1.z.millimeters)
+        val xOverlap = rangesOverlap(
+            range1 = region.v1.x.millimeters..region.v2.x.millimeters,
+            range2 = this.v1.x.millimeters..this.v2.x.millimeters
+        )
+
+        val yOverlap = rangesOverlap(
+            range1 = region.v1.y.millimeters..region.v2.y.millimeters,
+            range2 = this.v1.y.millimeters..this.v2.y.millimeters
+        )
+
+        val zOverlap = rangesOverlap(
+            range1 = region.v1.z.millimeters..region.v2.z.millimeters,
+            range2 = this.v1.z.millimeters..this.v2.z.millimeters
+        )
+
+        return zOverlap && yOverlap && xOverlap
+    }
+
+    override fun toString(): String {
+        return "Region3D(v1=$v1, v2=$v2)"
     }
 
     /** Gets the depth of the region.

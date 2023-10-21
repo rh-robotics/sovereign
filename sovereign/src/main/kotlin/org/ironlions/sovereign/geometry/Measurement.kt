@@ -148,4 +148,6 @@ sealed class Measurement {
             0
         }
     }
+
+    override fun toString(): String = "$millimeters mm"
 }

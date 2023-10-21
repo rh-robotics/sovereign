@@ -8,50 +8,44 @@ import org.ironlions.sovereign.pathfinding.environment.Environment
 /** A fitter that fits an environment onto a regular grid.
  * @param environment The environment to initially fit from.
  * @param resolution The coarseness of the resulting grid.
- * @param brim The birth around each field element to give, on top of the per-object value.
  */
 class GridFitter(
-    environment: Environment?,
+    private val environment: Environment,
     private val resolution: Int = 32,
-    private val brim: Int = 0,
 ) : DataFitter<GridFitting> {
     val fitting = GridFitting(resolution)
 
     init {
-        if (brim != 0) TODO("unimplemented")
-        else environment?.let { fit(environment) }
+        fit()
     }
 
-    override fun fit(environment: Environment) {
+    override fun fit() {
         val resolutionMeasurement = Measurement.Fields(
             1.toDouble() / resolution, environment.fieldSideLength
         ) as Measurement
 
         // Loop through every cell, and check every object.
-        (0 until resolution).forEach { x ->
-            (0 until resolution).forEach { y ->
-                fitCell(environment, resolutionMeasurement, x, y)
+        fitting.grid.forEachIndexed { xi, x ->
+            x.forEachIndexed { yi, y ->
+                fitCell(environment, resolutionMeasurement, xi, yi)
             }
         }
     }
 
     private fun fitCell(
-        environment: Environment,
-        resolutionMeasurement: Measurement,
-        x: Int,
-        y: Int
+        environment: Environment, resolutionMeasurement: Measurement, x: Int, y: Int
     ) {
-        for (robotRegion in environment.us.regions) {
+        for (robotRegion in environment.robot.regions) {
             // Draw a bounding box from the ground to the top of the robot, for the cell.
             val cellRegion = Region3D(
                 v1 = Point3D(
                     x = resolutionMeasurement * x,
                     y = resolutionMeasurement * y,
-                    z = robotRegion.height
+                    z = Measurement.Millimeters(0.0)
                 ), v2 = Point3D(
                     x = (resolutionMeasurement * x) + resolutionMeasurement,
                     y = (resolutionMeasurement * y) + resolutionMeasurement,
-                    z = Measurement.Millimeters(0.0)
+                    z = robotRegion.height
                 )
             )
 
