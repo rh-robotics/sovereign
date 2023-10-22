@@ -1,8 +1,17 @@
-package org.ironlions.sovereign.geometry
+package org.ironlions.sovereign.pathfinding.environment.entities
 
+import org.ironlions.sovereign.geometry.Measurement
+import org.ironlions.sovereign.geometry.Point
+import org.ironlions.sovereign.geometry.Region
+import org.ironlions.sovereign.geometry.Volume
 import org.ironlions.sovereign.pathfinding.environment.FieldThing
 import org.ironlions.sovereign.pathfinding.environment.ThingType
 
+/**
+ * An infinitely small point in space.
+ *
+ * @param position The position of the pin.
+ */
 data class Pin(val position: Point) : FieldThing(
     arrayOf(
         Region(

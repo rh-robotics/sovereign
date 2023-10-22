@@ -36,6 +36,7 @@ interface State {
 
 /**
  * Describes some metadata about a state.
+ *
  * @param color The color to use when graphing with GraphViz DOT.
  * @param role How to use the state.
  */

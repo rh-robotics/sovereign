@@ -10,7 +10,9 @@ package org.ironlions.sovereign.geometry
  * @param height The height of the bounding box.
  */
 class Volume(val depth: Measurement, val width: Measurement, val height: Measurement) {
-    /** Convert to a [Region]. */
+    /** Convert to a [Region].
+     *
+     * @return The new [Region]. */
     fun region(center: Point): Region {
         return Region(center, this)
     }

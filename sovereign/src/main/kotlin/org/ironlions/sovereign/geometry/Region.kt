@@ -23,7 +23,13 @@ class Region(
         heightRadius = Measurement.Millimeters(volume.height.millimeters / 2.0),
     )
 
-    /** Constructs a new region from a center and three radix. */
+    /** Constructs a new region from a center and three radix.
+     *
+     * @param center The center of the region.
+     * @param depthRadius Half of the depth.
+     * @param widthRadius Half of the width.
+     * @param heightRadius Half of the height.
+     */
     constructor (
         center: Point,
         depthRadius: Measurement,
@@ -41,7 +47,12 @@ class Region(
         )
     )
 
-    /** Constructs a new region from a center and two radix. */
+    /** Constructs a new region from a center and two radix.
+     *
+     * @center The center of the region.
+     * @param depthRadius Half of the depth.
+     * @param widthRadius Half of the width.
+     */
     constructor (
         center: Point,
         depthRadius: Measurement,
@@ -59,6 +70,7 @@ class Region(
     )
 
     /** Does this region contain a point?
+     *
      * @param point The point in question.
      * @return If it is contained.
      */
@@ -72,6 +84,7 @@ class Region(
     }
 
     /** Does this region overlap another?
+     *
      * @param region The region that might be overlapping this one.
      * @return If they overlap.
      */
@@ -94,24 +107,30 @@ class Region(
         return zOverlap && yOverlap && xOverlap
     }
 
+    /** Returns the string representation of this region.
+     *
+     * @return The string representation. */
     override fun toString(): String {
         return "Region3D(v1=$v1, v2=$v2)"
     }
 
     /** Gets the depth of the region.
-     * @return The region height
+     *
+     * @return The region height.
      */
     val depth: Measurement
         get() = if (v1.x > v2.x) v1.x else v2.x
 
     /** Gets the width of the region.
-     * @return The region height
+     *
+     * @return The region height.
      */
     val width: Measurement
         get() = if (v1.y > v2.y) v1.y else v2.y
 
     /** Gets the height of the region.
-     * @return The region height
+     *
+     * @return The region height.
      */
     val height: Measurement
         get() = if (v1.z > v2.z) v1.z else v2.z

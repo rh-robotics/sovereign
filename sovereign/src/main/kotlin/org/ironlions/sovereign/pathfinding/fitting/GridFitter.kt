@@ -13,12 +13,14 @@ class GridFitter(
     private val environment: Environment,
     private val resolution: Int = 32,
 ) : DataFitter<GridFitting> {
+    /** The associated [GridFitting]. */
     val fitting = GridFitting(resolution)
 
     init {
         fit()
     }
 
+    /** Fit the environment into the associated [GridFitting]. */
     override fun fit() {
         val resolutionMeasurement = Measurement.Fields(
             1.toDouble() / resolution, environment.fieldSideLength
@@ -27,13 +29,20 @@ class GridFitter(
         // Loop through every cell, and check every object.
         fitting.grid.forEachIndexed { xi, x ->
             x.forEachIndexed { yi, _ ->
-                fitCell(environment, resolutionMeasurement, xi, yi)
+                fitCell(resolutionMeasurement, xi, yi)
             }
         }
     }
 
+    /**
+     * Fit a cell into the associated [GridFitting].
+     *
+     * @param resolutionMeasurement The side length of the cell.
+     * @param x The x coordinate of the cell.
+     * @param y The y coordinate of the cell.
+     */
     private fun fitCell(
-        environment: Environment, resolutionMeasurement: Measurement, x: Int, y: Int
+        resolutionMeasurement: Measurement, x: Int, y: Int
     ) {
         for (robotRegion in environment.robot.regions) {
             // Draw a bounding box from the ground to the top of the robot, for the cell.

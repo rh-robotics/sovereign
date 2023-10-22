@@ -77,68 +77,61 @@ sealed class Measurement {
     val meters: Double
         get() = millimeters / 1000
 
-    /* TODO: There has to be a better way to do the below */
-
-    operator fun plus(d: Double): Measurement {
-        return Millimeters(millimeters + d)
+    /** `+` for measurements. */
+    operator fun <T : Number> plus(d: T): Measurement {
+        return Millimeters(millimeters + d.toDouble())
     }
 
-    operator fun minus(d: Double): Measurement {
-        return Millimeters(millimeters - d)
+    /** `-` for measurements. */
+    operator fun <T : Number> minus(d: T): Measurement {
+        return Millimeters(millimeters - d.toDouble())
     }
 
-    operator fun times(d: Double): Measurement {
-        return Millimeters(millimeters * d)
+    /** `*` for measurements. */
+    operator fun <T : Number> times(d: T): Measurement {
+        return Millimeters(millimeters * d.toDouble())
     }
 
-    operator fun div(d: Double): Measurement {
-        return Millimeters(millimeters / d)
+    /** `/` for measurements. */
+    operator fun <T : Number> div(d: T): Measurement {
+        return Millimeters(millimeters / d.toDouble())
     }
 
-    operator fun rem(d: Double): Measurement {
-        return Millimeters(millimeters % d)
+    /** `%` for measurements. */
+    operator fun <T : Number> rem(d: T): Measurement {
+        return Millimeters(millimeters % d.toDouble())
     }
 
-    operator fun plus(d: Int): Measurement {
-        return Millimeters(millimeters + d)
-    }
-
-    operator fun minus(d: Int): Measurement {
-        return Millimeters(millimeters - d)
-    }
-
-    operator fun times(d: Int): Measurement {
-        return Millimeters(millimeters * d)
-    }
-
-    operator fun div(d: Int): Measurement {
-        return Millimeters(millimeters / d)
-    }
-
-    operator fun rem(d: Int): Measurement {
-        return Millimeters(millimeters % d)
-    }
-
+    /** `+` for measurements. */
     operator fun plus(d: Measurement): Measurement {
         return Millimeters(millimeters + d.millimeters)
     }
 
+    /** `-` for measurements. */
     operator fun minus(d: Measurement): Measurement {
         return Millimeters(millimeters - d.millimeters)
     }
 
+    /** `*` for measurements. */
     operator fun times(d: Measurement): Measurement {
         return Millimeters(millimeters * d.millimeters)
     }
 
+    /** `/` for measurements. */
     operator fun div(d: Measurement): Measurement {
         return Millimeters(millimeters / d.millimeters)
     }
 
+    /** `%` for measurements. */
     operator fun rem(d: Measurement): Measurement {
         return Millimeters(millimeters % d.millimeters)
     }
 
+    /** Compares two Measurements.
+     *
+     * @return The result of the comparison; -1 is `this` is lesser, 1 if greater, and 0 if the
+     * same.
+     */
     operator fun compareTo(z: Measurement): Int {
         return if (this.millimeters < z.millimeters) {
             -1
@@ -149,5 +142,9 @@ sealed class Measurement {
         }
     }
 
+    /** Converts the Measurement into a String.
+     *
+     * @return The string representation.
+     */
     override fun toString(): String = "$millimeters mm"
 }
