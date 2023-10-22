@@ -13,6 +13,26 @@ class GridFitter(
     private val environment: Environment,
     private val resolution: Int = 32,
 ) : DataFitter<GridFitting> {
+    /** Builds a new [GridFitter]. */
+    class Builder() : DataFitterBuilder<GridFitting> {
+        /** The coarseness of the resulting grid. */
+        private var resolution: Int = 32
+
+        /**
+         * The coarseness of the resulting grid.
+         *
+         * @param resolution The coarseness of the resulting grid.
+         */
+        fun resolution(resolution: Int) = apply { this.resolution = resolution }
+
+        /**
+         * Builds a new [GridFitter].
+         *
+         * @param environment The environment to initially fit from.
+         */
+        override fun build(environment: Environment) = GridFitter(environment, resolution)
+    }
+
     /** The associated [GridFitting]. */
     val fitting = GridFitting(resolution)
 
@@ -23,7 +43,7 @@ class GridFitter(
     /** Fit the environment into the associated [GridFitting]. */
     override fun fit() {
         val resolutionMeasurement = Measurement.Fields(
-            1.toDouble() / resolution, environment.fieldSideLength
+            1.toDouble() / resolution, environment.geometry.fieldSideLength
         ) as Measurement
 
         // Loop through every cell, and check every object.
@@ -74,4 +94,6 @@ class GridFitter(
             }
         }
     }
+
+    override fun get(): GridFitting = fitting
 }
