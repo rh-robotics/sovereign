@@ -1,22 +1,53 @@
 package org.ironlions.sovereign.pathfinding.environment
 
-import org.ironlions.sovereign.geometry.Measurement
 import org.ironlions.sovereign.pathfinding.environment.entities.Robot
 
 /**
  * A map of the entire game field, including all field objects.
  *
  * @param robot The robot we are controlling inside the environment.
+ * @param geometry The geometry of the environment.
+ * @param things All the [FieldThing]s on the field.
  * @param season The season to determine which default values to insert. Leave `null` for no default.
- * @param fieldSideLength The side length of the field.
  */
 class Environment(
     val robot: Robot,
-    val fieldSideLength: Measurement = Measurement.Feet(12.0),
+    val geometry: EnvironmentGeometry = EnvironmentGeometry(),
+    val things: MutableList<FieldThing> = ArrayList(),
     season: Season? = null,
 ) {
-    /** All the [FieldThing]s on the field. */
-    val things: MutableList<FieldThing> = ArrayList()
+    /**
+     * Builds a new [Environment].
+     *
+     * @param geometry The geometry of the environment.
+     */
+    class Builder(val geometry: EnvironmentGeometry) {
+        /** The season to determine which default values to insert. */
+        private var season: Season? = null
+
+        /** The things ([FieldThing]) on the field. */
+        private var things: MutableList<FieldThing> = ArrayList()
+
+        /** The season to build from.
+         *
+         * @param season The season.
+         */
+        fun season(season: Season) = apply { this.season = season }
+
+        /**
+         * Add a [FieldThing] to the environment.
+         *
+         * @param thing The thing.
+         */
+        fun thing(thing: FieldThing) = apply { this.things.add(thing) }
+
+        /**
+         * Builds a new [Environment].
+         *
+         * @param robot The thing we control.
+         */
+        fun build(robot: Robot) = Environment(robot, geometry, things, season)
+    }
 
     init {
         season?.let {
