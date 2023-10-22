@@ -10,6 +10,8 @@ Sovereign is lead by
 [Teo Welton](https://github.com/DragonDev07).
 
 ## Documentation
+[![Documentation](https://github.com/rh-robotics/sovereign/actions/workflows/deploy_doc.yml/badge.svg)](https://github.com/rh-robotics/sovereign/actions/workflows/deploy_doc.yml)
+
 You can see our API documentation [here](https://rh-robotics.github.io/sovereign/).
 
 ## Usage
