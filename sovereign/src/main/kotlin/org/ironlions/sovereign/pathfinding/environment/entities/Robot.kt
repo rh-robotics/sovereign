@@ -11,7 +11,8 @@ import org.ironlions.sovereign.pathfinding.environment.FieldThing
  * A robot on the field.
  * TODO: Change volume and position to be accurate.
  *
- * @param position The position of the robot. */
+ * @param position The position of the robot.
+ */
 class Robot(position: Point) :
     FieldThing(
         arrayOf(Region(

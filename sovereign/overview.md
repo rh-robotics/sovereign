@@ -9,14 +9,16 @@ Sovereign is lead by
 [Jack Revoy](https://github.com/blazeboy75).
 
 # Package org.ironlions.sovereign
-Sovereign is an autonomous-centric FTC utility library created by FIRST FTC team 19922. It's goal is
-to make the prototyping and development of autonomous (and teleop!) modes easier and faster for
-advanced and rookie teams alike.
+Latin words!
 
-Sovereign is lead by
-[Teo Welton](https://github.com/DragonDev07),
-[Milo Banks](https://github.com/IsaccBarker), and
-[Jack Revoy](https://github.com/blazeboy75).
+# Package org.ironlions.sovereign.geometry
+Basic geometry functionality.
+
+These are not typically used by themselves, and are instead  meant as a delivery system for things
+like [pathfinding](org.ironlions.sovereign.pathfinding).
+
+# Package org.ironlions.sovereign.math
+Basic math related utilities.
 
 # Package org.ironlions.sovereign.pathfinding
 Computes a path from point A to point B, considering obstacles and the future.
@@ -27,25 +29,19 @@ works on a pipelined architecture; the pathfinding pipeline plays out as follows
 already have a populated [Environment](org.ironlions.sovereign.pathfinding.field.Environment).
 
 1. Spacial Data Fitting
-2. Dimensional Collapse
-3. Cell Weighting
-4. Pathfinding
-5. Curve Interpolation
-6. Execution
+2. Cell Weighting
+3. Pathfinding
+4. Curve Interpolation
+5. Execution
 
-# Package org.ironlions.sovereign.pathfinding.environment.objects
-A collection of stock field objects for use in [pathfinding](org.ironlions.sovereign.pathfinding).
+# Package org.ironlions.sovereign.pathfinding.environment.entities
+A collection of stock field entities for use in [pathfinding](org.ironlions.sovereign.pathfinding).
+
+#  Package org.ironlions.sovereign.pathfinding.environment
+Classes and utilities to describe an environment/field.
 
 # Package org.ironlions.sovereign.pathfinding.fitting
 Fits the ontological environment description into a form ready for pathfinding.
 
-# Package org.ironlions.sovereign.geometry
-Basic geometry functionality.
-
-These are not typically used by themselves, and are instead  meant as a delivery system for things
-like [pathfinding](org.ironlions.sovereign.pathfinding).
-
 # Package org.ironlions.sovereign.smc
-State machine controller.
-
-**TODO**: Add a better description
+A generic, abstracted state machine controller.

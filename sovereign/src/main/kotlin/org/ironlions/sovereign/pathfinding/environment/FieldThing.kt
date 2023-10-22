@@ -7,8 +7,8 @@ import org.ironlions.sovereign.geometry.Region
  *
  * TODO: Probably a make a LocalSpaceGroup to make defining groups of bounding boxes easier.
  *
- * @param type Defines if the field object can be moved or not (by a significant amount)
  * @param regions Defines the size and position.
+ * @param type Defines if the field object can be moved or not (by a significant amount)
  */
 open class FieldThing(
     val regions: Array<Region>, val type: ThingType

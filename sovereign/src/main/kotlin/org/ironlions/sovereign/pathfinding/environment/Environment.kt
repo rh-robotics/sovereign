@@ -6,10 +6,16 @@ import org.ironlions.sovereign.pathfinding.environment.entities.Robot
 /**
  * A map of the entire game field, including all field objects.
  *
+ * @param robot The robot we are controlling inside the environment.
  * @param season The season to determine which default values to insert. Leave `null` for no default.
+ * @param fieldSideLength The side length of the field.
  */
-class Environment(val robot: Robot, season: Season? = null, fieldSideLength: Double = 12.0) {
-    val fieldSideLength = Measurement.Feet(fieldSideLength)
+class Environment(
+    val robot: Robot,
+    val fieldSideLength: Measurement = Measurement.Feet(12.0),
+    season: Season? = null,
+) {
+    /** All the [FieldThing]s on the field. */
     val things: MutableList<FieldThing> = ArrayList()
 
     init {

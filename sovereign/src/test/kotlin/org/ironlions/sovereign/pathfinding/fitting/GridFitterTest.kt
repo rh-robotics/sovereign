@@ -2,7 +2,7 @@ package org.ironlions.sovereign.pathfinding.fitting
 
 import org.ironlions.sovereign.geometry.Measurement
 import org.ironlions.sovereign.geometry.Point
-import org.ironlions.sovereign.geometry.Pin
+import org.ironlions.sovereign.pathfinding.environment.entities.Pin
 import org.ironlions.sovereign.pathfinding.environment.Environment
 import org.ironlions.sovereign.pathfinding.environment.entities.Robot
 import org.junit.Test
