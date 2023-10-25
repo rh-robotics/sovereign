@@ -1,4 +1,4 @@
-package org.ironlions.sovereign.pathfinding.environment.entities
+package org.ironlions.sovereign.pathfinding.environment.things
 
 import org.ironlions.sovereign.geometry.Measurement
 import org.ironlions.sovereign.geometry.Point
@@ -13,11 +13,9 @@ import org.ironlions.sovereign.pathfinding.environment.FieldThing
  *
  * @param position The position of the robot.
  */
-class Robot(position: Point) :
-    FieldThing(
-        arrayOf(Region(
-            position,
-            Volume(Measurement.Feet(3.0), Measurement.Feet(3.0), Measurement.Feet(3.0))
-        )),
-        ThingType.DYNAMIC,
-    )
+class Robot(position: Point) : FieldThing(
+    Region(
+        position, Volume(Measurement.Feet(3.0), Measurement.Feet(3.0), Measurement.Feet(3.0))
+    ),
+    ThingType.DYNAMIC,
+)

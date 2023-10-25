@@ -111,7 +111,7 @@ class Region(
      *
      * @return The string representation. */
     override fun toString(): String {
-        return "Region3D(v1=$v1, v2=$v2)"
+        return "Region(v1=$v1, v2=$v2)"
     }
 
     /** Gets the depth of the region.

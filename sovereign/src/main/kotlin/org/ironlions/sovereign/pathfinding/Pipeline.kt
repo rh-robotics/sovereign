@@ -1,9 +1,12 @@
 package org.ironlions.sovereign.pathfinding
 
+import org.ironlions.sovereign.pathfinding.algorithms.Pathfinder
+import org.ironlions.sovereign.pathfinding.algorithms.PathfinderBuilder
 import org.ironlions.sovereign.pathfinding.environment.Environment
-import org.ironlions.sovereign.pathfinding.environment.entities.Robot
+import org.ironlions.sovereign.pathfinding.environment.things.Robot
 import org.ironlions.sovereign.pathfinding.fitting.DataFitterBuilder
 import org.ironlions.sovereign.pathfinding.fitting.DataFitter
+import org.ironlions.sovereign.pathfinding.fitting.FittingResult
 
 /**
  * A pipeline for pathfinding.
@@ -11,17 +14,22 @@ import org.ironlions.sovereign.pathfinding.fitting.DataFitter
  * @param robot What we control.
  * @param environment Specifies how to build the [Environment].
  * @param dataFitter Specifies how to build the [DataFitter].
+ * @param pathfinder Specifies how to build the [Pathfinder].
  */
-class Pipeline(
+class Pipeline<R : FittingResult>(
     val robot: Robot,
     environment: Environment.Builder,
-    dataFitter: DataFitterBuilder<*>
+    dataFitter: DataFitterBuilder<R>,
+    pathfinder: PathfinderBuilder<R>
 ) {
     /** The representation of the physical world. */
     val environment = environment.build(robot)
 
     /** How we fit the environment into a form a pathfinder can use. */
     val dataFitter = dataFitter.build(this.environment)
+
+    /** The actual pathfinder. */
+    val pathfinder = pathfinder.build()
 
     /**
      * Push one frame/tick through the pipeline.
@@ -32,5 +40,7 @@ class Pipeline(
      */
     fun loop() {
         dataFitter.fit()
+        pathfinder.pathfind(dataFitter.get())
+        // TODO: Road Runner from pathfinding.
     }
 }

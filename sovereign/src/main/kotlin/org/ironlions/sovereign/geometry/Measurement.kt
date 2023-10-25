@@ -1,6 +1,12 @@
 package org.ironlions.sovereign.geometry
 
-/** A measurement of some scalar value. */
+import org.ironlions.sovereign.pathfinding.environment.Environment
+
+/**
+ * A measurement of some scalar value.
+ *
+ * TODO: Convert to use field tiles internally.
+ */
 sealed class Measurement {
     /** The number of millimeters in the measurement. */
     abstract val millimeters: Double
@@ -47,10 +53,22 @@ sealed class Measurement {
             get() = measure * 1000
     }
 
-    /** A relative field unit. */
-    data class Fields(val measure: Double, val sideLength: Measurement) : Measurement() {
+    /** A relative field unit. 1 field is an entire field length. */
+    data class Fields(
+        val measure: Double,
+        val fieldSideLength: Measurement = Environment.Constants.fieldSideLength
+    ) : Measurement() {
         override val millimeters: Double
-            get() = sideLength.millimeters * measure
+            get() = fieldSideLength.millimeters * measure
+    }
+
+    /** A relative tile unit. 1 tile is an entire tile length. */
+    data class Tiles(
+        val measure: Double,
+        val fieldTileLength: Measurement = Environment.Constants.fieldTileLength
+    ) : Measurement() {
+        override val millimeters: Double
+            get() = fieldTileLength.millimeters * measure
     }
 
     /** The number of inches in the measurement. */
@@ -146,5 +164,5 @@ sealed class Measurement {
      *
      * @return The string representation.
      */
-    override fun toString(): String = "$millimeters mm"
+    override fun toString(): String = "$feet ft"
 }

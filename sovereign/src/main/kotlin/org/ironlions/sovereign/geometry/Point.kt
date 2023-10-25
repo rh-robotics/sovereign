@@ -18,7 +18,5 @@ data class Point(val x: Measurement, val y: Measurement, val z: Measurement) {
     /** Gets the string representation of this point.
      *
      * @return The string representation. */
-    override fun toString(): String {
-        return "($x, $y, $z)"
-    }
+    override fun toString(): String = "(${x.feet}, ${y.feet}, ${z.feet})"
 }

@@ -3,10 +3,10 @@ package org.ironlions.sovereign.pathfinding.fitting
 import org.ironlions.sovereign.geometry.Measurement
 import org.ironlions.sovereign.geometry.Point
 import org.ironlions.sovereign.pathfinding.Pipeline
-import org.ironlions.sovereign.pathfinding.environment.entities.Pin
+import org.ironlions.sovereign.pathfinding.algorithms.Dijkstra
+import org.ironlions.sovereign.pathfinding.environment.things.Pin
 import org.ironlions.sovereign.pathfinding.environment.Environment
-import org.ironlions.sovereign.pathfinding.environment.EnvironmentGeometry
-import org.ironlions.sovereign.pathfinding.environment.entities.Robot
+import org.ironlions.sovereign.pathfinding.environment.things.Robot
 import org.junit.Test
 import org.junit.Assert
 
@@ -26,10 +26,11 @@ class GridFitterTest {
                 )
             ),
             dataFitter = GridFitter.Builder().resolution(3),
-            environment = Environment.Builder(EnvironmentGeometry())
+            pathfinder = Dijkstra.Builder(),
+            environment = Environment.Builder()
         )
 
-        (pipeline.dataFitter.get() as GridFitting).every { cell, x, y ->
+        pipeline.dataFitter.get().grid.every { cell, x, y ->
             val got = expected[x][y]
             Assert.assertNotNull(cell)
             Assert.assertEquals(got, cell)
@@ -44,7 +45,6 @@ class GridFitterTest {
             arrayOf(GridCell.FREE(), GridCell.FREE(), GridCell.FREE()),
         )
 
-        val geometry = EnvironmentGeometry()
         val pipeline = Pipeline(
             robot = Robot(
                 Point(
@@ -52,19 +52,22 @@ class GridFitterTest {
                 )
             ),
             dataFitter = GridFitter.Builder().resolution(3),
-            environment = Environment.Builder(geometry).thing(
+            pathfinder = Dijkstra.Builder(),
+            environment = Environment.Builder().thing(
                 Pin(
                     Point(
-                        x = Measurement.Fields(0.5, geometry.fieldSideLength),
-                        y = Measurement.Fields(0.5, geometry.fieldSideLength),
-                        z = Measurement.Fields(0.0, geometry.fieldSideLength),
+                        x = Measurement.Feet(6.0),
+                        y = Measurement.Feet(6.0),
+                        z = Measurement.Feet(0.0),
                     )
                 )
             )
         )
 
-        (pipeline.dataFitter.get() as GridFitting).every { cell, x, y ->
+        pipeline.dataFitter.get().grid.every { cell, x, y ->
             val got = expected[x][y]
+
+            println("\t($x, $y): Checking $got against $cell.")
             Assert.assertNotNull(cell)
             Assert.assertEquals(got, cell)
         }
@@ -78,7 +81,6 @@ class GridFitterTest {
             arrayOf(GridCell.FREE(), GridCell.FREE(), GridCell.FREE()),
         )
 
-        val geometry = EnvironmentGeometry()
         val pipeline = Pipeline(
             robot = Robot(
                 Point(
@@ -86,7 +88,8 @@ class GridFitterTest {
                 )
             ),
             dataFitter = GridFitter.Builder().resolution(3),
-            environment = Environment.Builder(geometry).thing(
+            pathfinder = Dijkstra.Builder(),
+            environment = Environment.Builder().thing(
                 Pin(
                     Point(
                         x = Measurement.Millimeters(1.0),
@@ -97,7 +100,7 @@ class GridFitterTest {
             )
         )
 
-        (pipeline.dataFitter.get() as GridFitting).every { cell, x, y ->
+        pipeline.dataFitter.get().grid.every { cell, x, y ->
             val got = expected[x][y]
             Assert.assertNotNull(cell)
             Assert.assertEquals(got, cell)
