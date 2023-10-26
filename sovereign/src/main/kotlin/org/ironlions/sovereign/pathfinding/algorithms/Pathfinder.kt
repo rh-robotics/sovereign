@@ -1,11 +1,12 @@
 package org.ironlions.sovereign.pathfinding.algorithms
 
-import org.ironlions.sovereign.pathfinding.environment.Environment
 import org.ironlions.sovereign.pathfinding.fitting.DataFitter
 import org.ironlions.sovereign.pathfinding.fitting.FittingResult
 
 /**
  * Abstracts a path finding algorithm.
+ *
+ * @param R The type of data fitting required.
  */
 interface Pathfinder<R : FittingResult, P> {
     /** Calculate the trajectory. */
