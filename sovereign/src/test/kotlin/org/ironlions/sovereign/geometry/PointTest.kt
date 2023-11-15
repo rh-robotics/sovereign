@@ -14,7 +14,7 @@ class PointTest {
 
     @Test
     fun testGetPoint() {
-        val point = grid.toFake(2, 3, Measurement.Millimeters(5.0))
+        val point = grid.toReal(2, 3, Measurement.Millimeters(5.0))
         Assert.assertEquals(
             Point(
                 Measurement.Millimeters(40.0),

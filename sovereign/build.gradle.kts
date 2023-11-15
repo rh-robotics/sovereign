@@ -55,14 +55,15 @@ dependencies {
     implementation("org.firstinspires.ftc:FtcCommon:9.0.0")
     implementation("org.firstinspires.ftc:Vision:9.0.0")
     implementation("org.firstinspires.ftc:gameAssets-CenterStage:1.0.0")
-    implementation("com.acmerobotics.roadrunner:core:1.0.0-beta3")
-    implementation("com.acmerobotics.roadrunner:actions:1.0.0-beta3")
+    implementation("com.acmerobotics.roadrunner:core:1.0.0-beta1")
+    implementation("com.acmerobotics.roadrunner:actions:1.0.0-beta1")
 
     /* Android */
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.mockito:mockito-core:5.6.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }

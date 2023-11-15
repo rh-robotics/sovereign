@@ -1,25 +1,19 @@
 package org.ironlions.sovereign.pathfinding.algorithms
 
-import org.ironlions.sovereign.pathfinding.fitting.DataFitter
-import org.ironlions.sovereign.pathfinding.fitting.FittingResult
+import org.ironlions.sovereign.pathfinding.fitting.tree.TreeFitting
 
 /**
  * Abstracts a path finding algorithm.
- *
- * @param R The type of data fitting required.
  */
-interface Pathfinder<R : FittingResult, P> {
+interface Pathfinder {
     /** Calculate the trajectory. */
-    fun pathfind(fitting: R): P
-
-    /** Get the calculated trajectory. */
-    fun trajectory()
+    fun pathfind(fitting: TreeFitting): List<TreeFitting.Node>?
 }
 
 /**
- * Builds a new [DataFitter].
+ * Builds a new [Pathfinder].
  */
-interface PathfinderBuilder<R : FittingResult> {
+interface PathfinderBuilder {
     /** Build the [Pathfinder]. */
-    fun build(): Pathfinder<R, *>
+    fun build(): Pathfinder
 }

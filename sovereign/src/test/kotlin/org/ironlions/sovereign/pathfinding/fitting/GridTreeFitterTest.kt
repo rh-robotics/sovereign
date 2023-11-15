@@ -2,15 +2,18 @@ package org.ironlions.sovereign.pathfinding.fitting
 
 import org.ironlions.sovereign.geometry.Measurement
 import org.ironlions.sovereign.geometry.Point
-import org.ironlions.sovereign.pathfinding.Pipeline
+import org.ironlions.sovereign.pathfinding.pipeline.Pipeline
 import org.ironlions.sovereign.pathfinding.algorithms.AStar
 import org.ironlions.sovereign.pathfinding.environment.things.Pin
 import org.ironlions.sovereign.pathfinding.environment.things.Robot
 import org.ironlions.sovereign.pathfinding.environment.Environment
+import org.ironlions.sovereign.pathfinding.fitting.tree.grid.GridTreeFitter
+import org.ironlions.sovereign.pathfinding.fitting.tree.grid.GridTreeFitting
 import org.junit.Test
 import org.junit.Assert
 
-class TreeFitterTest {
+@Suppress("DEPRECATION")
+class GridTreeFitterTest {
     @Test
     fun emptyEnvironmentTest() {
         val expected = arrayOf(
@@ -20,17 +23,21 @@ class TreeFitterTest {
         )
 
         val pipeline = Pipeline(
-            robot = Robot(
-                Point(
-                    x = Measurement.Feet(3.0), y = Measurement.Feet(2.0), z = Measurement.Feet(0.0)
-                )
-            ),
-            dataFitter = TreeFitter.Builder().resolution(3),
+            fitter = GridTreeFitter.Builder().resolution(3),
             pathfinder = AStar.Builder(),
-            environment = Environment.Builder()
+            environment = Environment.Builder(
+                Robot(
+                    actualizationContext = null,
+                    Point(
+                        x = Measurement.Feet(3.0),
+                        y = Measurement.Feet(2.0),
+                        z = Measurement.Feet(0.0)
+                    )
+                )
+            )
         )
 
-        (pipeline.dataFitter.get() as GridTreeFitting).every { node, x, y ->
+        (pipeline.fitter.fitter.fit(null) as GridTreeFitting).every { node, x, y ->
             val got = expected[x][y]
             Assert.assertNotNull(node)
             Assert.assertEquals(got, node!!.occupied)
@@ -46,14 +53,18 @@ class TreeFitterTest {
         )
 
         val pipeline = Pipeline(
-            robot = Robot(
-                Point(
-                    x = Measurement.Feet(3.0), y = Measurement.Feet(2.0), z = Measurement.Feet(0.0)
-                )
-            ),
-            dataFitter = TreeFitter.Builder().resolution(3),
+            fitter = GridTreeFitter.Builder().resolution(3),
             pathfinder = AStar.Builder(),
-            environment = Environment.Builder().thing(
+            environment = Environment.Builder(
+                Robot(
+                    actualizationContext = null,
+                    Point(
+                        x = Measurement.Feet(3.0),
+                        y = Measurement.Feet(2.0),
+                        z = Measurement.Feet(0.0)
+                    )
+                )
+            ).thing(
                 Pin(
                     Point(
                         x = Measurement.Feet(6.0),
@@ -64,7 +75,7 @@ class TreeFitterTest {
             )
         )
 
-        (pipeline.dataFitter.get() as GridTreeFitting).every {  node, x, y ->
+        (pipeline.fitter.fitter.fit(null) as GridTreeFitting).every { node, x, y ->
             val got = expected[x][y]
             Assert.assertNotNull(node)
             Assert.assertEquals(got, node!!.occupied)
@@ -80,14 +91,18 @@ class TreeFitterTest {
         )
 
         val pipeline = Pipeline(
-            robot = Robot(
-                Point(
-                    x = Measurement.Feet(3.0), y = Measurement.Feet(2.0), z = Measurement.Feet(0.0)
-                )
-            ),
-            dataFitter = TreeFitter.Builder().resolution(3),
+            fitter = GridTreeFitter.Builder().resolution(3),
             pathfinder = AStar.Builder(),
-            environment = Environment.Builder().thing(
+            environment = Environment.Builder(
+                Robot(
+                    actualizationContext = null,
+                    Point(
+                        x = Measurement.Feet(3.0),
+                        y = Measurement.Feet(2.0),
+                        z = Measurement.Feet(0.0)
+                    )
+                )
+            ).thing(
                 Pin(
                     Point(
                         x = Measurement.Millimeters(1.0),
@@ -98,7 +113,7 @@ class TreeFitterTest {
             )
         )
 
-        (pipeline.dataFitter.get() as GridTreeFitting).every { node, x, y ->
+        (pipeline.fitter.fitter.fit(null) as GridTreeFitting).every { node, x, y ->
             val got = expected[x][y]
             Assert.assertNotNull(node)
             Assert.assertEquals(got, node!!.occupied)

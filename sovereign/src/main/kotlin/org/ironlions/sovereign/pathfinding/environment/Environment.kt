@@ -38,8 +38,10 @@ class Environment(
 
     /**
      * Builds a new [Environment].
+     *
+     * @param robot The thing we control.
      */
-    class Builder {
+    class Builder(val robot: Robot) {
         /** The season to determine which default values to insert. */
         private var season: Season? = null
 
@@ -61,10 +63,8 @@ class Environment(
 
         /**
          * Builds a new [Environment].
-         *
-         * @param robot The thing we control.
          */
-        fun build(robot: Robot) = Environment(robot, things, season)
+        fun build() = Environment(robot, things, season)
     }
 
     init {

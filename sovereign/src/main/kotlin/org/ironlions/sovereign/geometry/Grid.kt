@@ -1,5 +1,7 @@
 package org.ironlions.sovereign.geometry
 
+import kotlin.math.roundToInt
+
 /**
  * A regular grid we can overlay on top of the FTC grid.
  *
@@ -19,13 +21,30 @@ class Grid(val tilesPerSide: Int, val tileSideLength: Measurement) {
     fun realA(a: Int): Measurement = tileSideLength * a * 2
 
     /**
+     * Converts a measurement into a coordinate.
+     *
+     * @param a The measurement to convert.
+     */
+    fun fakeA(a: Measurement): Int =
+        ((a.feet / tileSideLength.feet) + (tilesPerSide / 2)).roundToInt()
+
+    /**
      * Converts a coordinate pair into a point.
      *
      * @param x The x coordinate to convert.
      * @param y The y coordinate to convert.
      * */
-    fun toFake(x: Int, y: Int, z: Measurement = Measurement.Millimeters(0.0)): Point =
+    fun toReal(x: Int, y: Int, z: Measurement = Measurement.Millimeters(0.0)): Point =
         Point(realA(x), realA(y), z)
+
+    /**
+     * Converts a point into a coordinate pair.
+     *
+     * @param x The x measurement to convert.
+     * @param y The y measurement to convert.
+     * */
+    fun toFake(x: Measurement, y: Measurement): Pair<Int, Int> =
+        Pair(fakeA(x), fakeA(y))
 
     /** Re-express the space that the grid represents in a new object. Clones, without copying
      * the underlying grid data. */

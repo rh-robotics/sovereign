@@ -1,8 +1,12 @@
-package org.ironlions.sovereign.pathfinding.fitting
+package org.ironlions.sovereign.pathfinding.fitting.tree.grid
 
 import org.ironlions.sovereign.geometry.Grid
+import org.ironlions.sovereign.geometry.Point
 import org.ironlions.sovereign.geometry.Region
 import org.ironlions.sovereign.pathfinding.environment.Environment
+import org.ironlions.sovereign.pathfinding.fitting.DataFitter
+import org.ironlions.sovereign.pathfinding.fitting.DataFitterBuilder
+import org.ironlions.sovereign.pathfinding.fitting.tree.TreeFitting
 
 /**
  * A fitter that fits an environment onto a regular grid.
@@ -11,13 +15,15 @@ import org.ironlions.sovereign.pathfinding.environment.Environment
  * @param resolution The coarseness of the resulting grid.
  * @param grid The grid to use.
  */
-class TreeFitter(
+@Deprecated("Use of this fitter will result in inaccurate destinations. " +
+        "It should be used for testing only.")
+class GridTreeFitter(
     private val environment: Environment,
     private val resolution: Int = 32,
     private val grid: Grid = Environment.Constants.grid.reExpress(resolution)
-) : DataFitter<TreeFitting> {
-    /** Builds a new [TreeFitter]. */
-    class Builder : DataFitterBuilder<TreeFitting> {
+) : DataFitter {
+    /** Builds a new [GridTreeFitter]. */
+    class Builder : DataFitterBuilder {
         /** The coarseness of the resulting grid. */
         private var resolution: Int = 32
 
@@ -29,11 +35,11 @@ class TreeFitter(
         fun resolution(resolution: Int) = apply { this.resolution = resolution }
 
         /**
-         * Builds a new [TreeFitter].
+         * Builds a new [GridTreeFitter].
          *
          * @param environment The environment to initially fit from.
          */
-        override fun build(environment: Environment) = TreeFitter(environment, resolution)
+        override fun build(environment: Environment) = GridTreeFitter(environment, resolution)
     }
 
     /** The associated [TreeFitting]. */
@@ -46,11 +52,16 @@ class TreeFitter(
             }
         }
 
-        fit()
+        fit(null)
     }
 
     /** Fit the environment into the associated [TreeFitting]. */
-    override fun fit() {
+    override fun fit(goal: Point?): TreeFitting {
+        goal?.let {
+            val gridPosition = grid.toFake(it.x, it.y)
+            fitting.goal = fitting[gridPosition.first][gridPosition.second]
+        }
+
         // Loop through every cell, and check every object.
         // TODO: Leave out the last row and column, too lazy to do this now.
         fitting.gridNodeRegistry.forEachIndexed { xi, x ->
@@ -58,6 +69,8 @@ class TreeFitter(
                 fitCell(xi, yi)
             }
         }
+
+        return fitting
     }
 
     /**
@@ -71,8 +84,8 @@ class TreeFitter(
     ) {
         // Draw a bounding box from the ground to the top of the robot, for the cell.
         val cellRegion = Region(
-            v1 = Environment.Constants.grid.toFake(x, y),
-            v2 = Environment.Constants.grid.toFake(x + 1, y + 1, environment.robot.geometry.height)
+            v1 = Environment.Constants.grid.toReal(x, y),
+            v2 = Environment.Constants.grid.toReal(x + 1, y + 1, environment.robot.geometry.height)
         )
 
         // TODO: Separate out dimensional collapse once more?
@@ -80,6 +93,4 @@ class TreeFitter(
         // Look through every object and see if it overlaps with the current cell.
         environment.things.forEach { fitting[x][y].occupied = cellRegion.overlaps(it.geometry) }
     }
-
-    override fun get(): TreeFitting = fitting
 }

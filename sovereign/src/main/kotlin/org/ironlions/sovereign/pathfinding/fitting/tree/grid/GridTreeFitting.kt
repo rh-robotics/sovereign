@@ -1,45 +1,11 @@
-package org.ironlions.sovereign.pathfinding.fitting
+package org.ironlions.sovereign.pathfinding.fitting.tree.grid
 
 import org.ironlions.sovereign.geometry.Grid
 import org.ironlions.sovereign.geometry.Measurement
 import org.ironlions.sovereign.geometry.Point
 import org.ironlions.sovereign.pathfinding.environment.Environment
-
-/** Different modes or conditions for the TreeFitting class. */
-sealed class TreeFittingMode {
-    /** Grid specifics for a [TreeFitting]. */
-    data object GridMode : TreeFittingMode()
-}
-
-/**
- * A representation of an environment that certain pathfinding algorithms can use, in tree form. The
- * mode doesn't matter here.
- *
- * @param environment The environment to initially fit from.
- * @param base The root of the tree. This is the node that will be path-found from.
- */
-open class TreeFitting(
-    private val mode: TreeFittingMode,
-    private val environment: Environment,
-    var base: Node?
-) : FittingResult {
-    /**
-     * A node inside the [TreeFitting].
-     *
-     * @param position the position of this node in space.
-     * @param occupied Is the node occluded?
-     * @param neighbors Neighbors and their associated costs.
-     * @param gScore Cost from start along best known path.
-     * @param fScore Estimated total cost from start to goal through this node.
-     */
-    data class Node(
-        var position: Point,
-        var occupied: Boolean = false,
-        var neighbors: MutableMap<Node, Double> = mutableMapOf(),
-        var gScore: Double = Double.MAX_VALUE,
-        var fScore: Double = Double.MAX_VALUE,
-    )
-}
+import org.ironlions.sovereign.pathfinding.fitting.tree.TreeFitting
+import org.ironlions.sovereign.pathfinding.fitting.tree.TreeFittingMode
 
 /**
  * A specialized version of the [TreeFitting] class for grid-based pathfinding.
@@ -53,7 +19,7 @@ open class TreeFitting(
 class GridTreeFitting(
     environment: Environment,
     val grid: Grid,
-) : TreeFitting(TreeFittingMode.GridMode, environment, null) {
+) : TreeFitting(TreeFittingMode.GridMode, environment, null, null) {
     /** More efficient way to keep track of which node is at which coordinate pair. */
     val gridNodeRegistry = Array(grid.tilesPerSide) { row ->
         Array(grid.tilesPerSide) { col ->
@@ -102,9 +68,7 @@ class GridTreeFitting(
         }
     }
 
-    operator fun get(row: Int): Array<Node> {
-        return gridNodeRegistry[row]
-    }
+    operator fun get(row: Int): Array<Node> = gridNodeRegistry[row]
 
     val size: Int
         get() = gridNodeRegistry.size

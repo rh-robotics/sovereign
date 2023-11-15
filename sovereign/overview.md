@@ -34,10 +34,13 @@ already have a populated [Environment](org.ironlions.sovereign.pathfinding.field
 4. Curve Interpolation
 5. Execution
 
-# Package org.ironlions.sovereign.pathfinding.environment.entities
+# Package org.ironlions.sovereign.pathfinding.algorithms
+A collection of pathfinding algorithms that consume data fitting results.
+
+# Package org.ironlions.sovereign.pathfinding.environment.things
 A collection of stock field entities for use in [pathfinding](org.ironlions.sovereign.pathfinding).
 
-#  Package org.ironlions.sovereign.pathfinding.environment
+# Package org.ironlions.sovereign.pathfinding.environment
 Classes and utilities to describe an environment/field.
 
 # Package org.ironlions.sovereign.pathfinding.fitting
