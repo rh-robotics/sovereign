@@ -1,4 +1,4 @@
-package org.ironlions.sovereign.pathfinding.environment.entities
+package org.ironlions.sovereign.pathfinding.environment.things
 
 import org.ironlions.sovereign.geometry.Measurement
 import org.ironlions.sovereign.geometry.Point
@@ -13,14 +13,12 @@ import org.ironlions.sovereign.pathfinding.environment.ThingType
  * @param position The position of the pin.
  */
 data class Pin(val position: Point) : FieldThing(
-    arrayOf(
-        Region(
-            position,
-            Volume(
-                Measurement.Millimeters(1.0),
-                Measurement.Millimeters(1.0),
-                Measurement.Millimeters(1.0)
-            )
+    Region(
+        position,
+        Volume(
+            Measurement.Millimeters(1.0),
+            Measurement.Millimeters(1.0),
+            Measurement.Millimeters(1.0)
         )
     ),
     ThingType.STATIC,

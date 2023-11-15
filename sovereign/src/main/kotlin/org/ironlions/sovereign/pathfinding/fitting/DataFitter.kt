@@ -1,34 +1,29 @@
 package org.ironlions.sovereign.pathfinding.fitting
 
+import org.ironlions.sovereign.geometry.Point
 import org.ironlions.sovereign.pathfinding.environment.Environment
+import org.ironlions.sovereign.pathfinding.fitting.tree.TreeFitting
 
 /**
  * Abstracts a class that fits data to something a pathfinding algorithm can handle.
- *
- * @param R The type of [FittingResult].
  */
-interface DataFitter<R : FittingResult> {
-    /** Get the underlying [FittingResult]. */
-    fun get(): R
-
+interface DataFitter {
     /**
      * Do spacial analysis and fit the data.
      *
-     * @return The resulting [FittingResult].
+     * @return The resulting [DataFitting].
      */
-    fun fit()
+    fun fit(goal: Point?): TreeFitting
 }
 
 /**
  * Builds a new [DataFitter].
- *
- * @param R The type of [FittingResult].
  */
-interface DataFitterBuilder<R : FittingResult> {
+interface DataFitterBuilder {
     /**
      * Build the [DataFitter].
      *
      * @param environment The environment to use.
      */
-    fun build(environment: Environment): DataFitter<R>
+    fun build(environment: Environment): DataFitter
 }
