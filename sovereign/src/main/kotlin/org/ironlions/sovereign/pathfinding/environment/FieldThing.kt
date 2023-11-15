@@ -11,7 +11,7 @@ import org.ironlions.sovereign.geometry.Region
  * @param type Defines if the field object can be moved or not (by a significant amount)
  */
 open class FieldThing(
-    val regions: Array<Region>, val type: ThingType
+    val geometry: Region, val type: ThingType
 )
 
 /** The type of entity on the field. */
