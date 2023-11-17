@@ -1,6 +1,9 @@
 package org.ironlions.sovereign.panopticon.client
 
 import org.apache.log4j.BasicConfigurator
+import org.ironlions.sovereign.panopticon.client.ecs.Entity
+import org.ironlions.sovereign.panopticon.client.ecs.Scene
+import org.ironlions.sovereign.panopticon.client.ecs.components.Mesh
 import org.ironlions.sovereign.panopticon.client.shader.Program
 import org.ironlions.sovereign.panopticon.client.util.IOUtil.ioResourceToByteBuffer
 import org.lwjgl.glfw.Callbacks
@@ -23,6 +26,13 @@ class Client {
     private val vertices: FloatArray = floatArrayOf(
         -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f
     )
+    private val scene: Scene = Scene("main")
+
+    init {
+        val entity = Entity(scene)
+
+        entity.addComponent(Mesh::class) {}
+    }
 
     /** Application entrypoint. */
     fun run() {
