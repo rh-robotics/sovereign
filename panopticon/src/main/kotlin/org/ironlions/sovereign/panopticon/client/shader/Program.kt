@@ -14,6 +14,13 @@ import org.lwjgl.opengl.GL20.glLinkProgram
 import org.lwjgl.opengl.GL20.glUseProgram
 import java.nio.ByteBuffer
 
+/**
+ * An OpenGL shader program.
+ *
+ * @param name The name of the program.
+ * @param vertexSource The source code of the vertex shader.
+ * @param fragmentSource The source code of the fragment shader.
+ */
 class Program(private val name: String, vertexSource: ByteBuffer, fragmentSource: ByteBuffer) {
     private val program = glCreateProgram()
 
@@ -23,8 +30,10 @@ class Program(private val name: String, vertexSource: ByteBuffer, fragmentSource
         link()
     }
 
+    /** Attach a shader to a program. */
     fun attach(shader: Shader) = glAttachShader(program, shader.shader)
 
+    /** Link the attached shaders together into a program. */
     fun link() {
         glLinkProgram(program)
         printProgramInfoLog()
@@ -36,8 +45,10 @@ class Program(private val name: String, vertexSource: ByteBuffer, fragmentSource
         }
     }
 
+    /** Bind the program. */
     fun use() = glUseProgram(program)
 
+    /** Print what's gone wrong! */
     private fun printProgramInfoLog() {
         val infoLogLength = glGetProgrami(program, GL_INFO_LOG_LENGTH)
 

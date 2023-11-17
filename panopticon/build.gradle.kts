@@ -73,17 +73,16 @@ dependencies {
     implementation("io.github.oshai", "kotlin-logging-jvm", "5.1.0")
     implementation("org.slf4j", "slf4j-reload4j", "2.0.9")
 
-    /* GUI 2D */
+    /* Graphics */
     //noinspection GradleDynamicVersion
     implementation("kotlin.graphics", "imgui-core", "1.79+05")
     //noinspection GradleDynamicVersion
     implementation("kotlin.graphics", "imgui-gl", "1.79+05")
     //noinspection GradleDynamicVersion
     implementation("kotlin.graphics", "imgui-glfw", "1.79+05")
-    implementation("kotlin.graphics", "uno", "0.7.21")
-    implementation("kotlin.graphics", "kool", "0.9.79")
+    implementation("kotlin.graphics", "glm", "0.9.9.1-11")
 
-    /* GUI 3D */
+    /* Graphics (LWJGL) */
     implementation(platform("org.lwjgl:lwjgl-bom:$lwjglVersion"))
     implementation("org.lwjgl", "lwjgl")
     implementation("org.lwjgl", "lwjgl-remotery")

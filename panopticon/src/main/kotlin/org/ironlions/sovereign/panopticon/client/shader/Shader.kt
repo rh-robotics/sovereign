@@ -12,8 +12,16 @@ import org.lwjgl.opengl.GL20.glShaderSource
 import org.lwjgl.system.MemoryStack
 import java.nio.ByteBuffer
 
+/**
+ * An OpenGL shader.
+ *
+ * @param type The type of shader.
+ * @param name The name of the shader.
+ * @param source The shader source code.
+ */
 class Shader(type: Int, name: String, source: ByteBuffer) {
     var shader: Int
+        private set
 
     init {
         MemoryStack.stackPush().use { stack ->
@@ -36,6 +44,7 @@ class Shader(type: Int, name: String, source: ByteBuffer) {
         }
     }
 
+    /** Print what's gone wrong! */
     private fun printShaderInfoLog() {
         val infologLength = glGetShaderi(shader, GL_INFO_LOG_LENGTH)
 

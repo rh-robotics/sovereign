@@ -1,9 +1,12 @@
 package org.ironlions.sovereign.panopticon.client
 
+import glm_.vec3.Vec3
+import glm_.vec4.Vec4
 import org.apache.log4j.BasicConfigurator
 import org.ironlions.sovereign.panopticon.client.ecs.Entity
 import org.ironlions.sovereign.panopticon.client.ecs.Scene
 import org.ironlions.sovereign.panopticon.client.ecs.components.Mesh
+import org.ironlions.sovereign.panopticon.client.render.geometry.Vertex
 import org.ironlions.sovereign.panopticon.client.shader.Program
 import org.ironlions.sovereign.panopticon.client.util.IOUtil.ioResourceToByteBuffer
 import org.lwjgl.glfw.Callbacks
@@ -16,6 +19,7 @@ import org.lwjgl.opengl.GLCapabilities
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil
 
+/** The panopticon client graphical user interface. */
 class Client {
     private var window: Long = 0
     private val windowWidth = 1200
@@ -31,7 +35,16 @@ class Client {
     init {
         val entity = Entity(scene)
 
-        entity.addComponent(Mesh::class) {}
+        entity.addComponent(
+            Mesh::class,
+            listOf(
+                Vertex(Vec3(0.0f, 0.0f, 0.0f), Vec4(1.0f, 0.0f, 0.0f, 1.0f)),
+                Vertex(Vec3(1.0f, 0.0f, 0.0f), Vec4(0.0f, 1.0f, 0.0f, 1.0f)),
+                Vertex(Vec3(0.0f, 1.0f, 0.0f), Vec4(0.0f, 0.0f, 1.0f, 1.0f))
+            )
+        )
+
+        scene.add(entity)
     }
 
     /** Application entrypoint. */
@@ -94,6 +107,9 @@ class Client {
 
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
+
+            scene.draw()
+
             glfwSwapBuffers(window)
             glfwPollEvents()
         }

@@ -14,6 +14,7 @@ import java.nio.file.Paths
  * License terms: https://www.lwjgl.org/license
  */
 
+/** Input and output utilities. */
 object IOUtil {
     private fun resizeBuffer(buffer: ByteBuffer, newCapacity: Int): ByteBuffer {
         val newBuffer = BufferUtils.createByteBuffer(newCapacity)

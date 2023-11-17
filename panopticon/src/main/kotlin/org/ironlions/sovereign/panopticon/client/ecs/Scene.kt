@@ -2,6 +2,7 @@ package org.ironlions.sovereign.panopticon.client.ecs
 
 import org.ironlions.sovereign.panopticon.client.ecs.components.Mesh
 
+/** A container for entities. A scene is bound and then drawn by the psuedoengine. */
 class Scene(val name: String) {
     private val entities: MutableList<Entity> = ArrayList()
 
