@@ -10,9 +10,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url = java.net.URI("https://maven.brott.dev/") }
+        maven("https://maven.brott.dev")
+        maven("https://raw.githubusercontent.com/kotlin-graphics/mary/master")
     }
 }
 
 rootProject.name = "sovereign"
 include(":sovereign")
+include(":panopticon")

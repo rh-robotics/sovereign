@@ -5,8 +5,7 @@ advanced and rookie teams alike.
 
 Sovereign is lead by
 [Teo Welton](https://github.com/DragonDev07),
-[Milo Banks](https://github.com/IsaccBarker), and
-[Jack Revoy](https://github.com/blazeboy75).
+[Milo Banks](https://github.com/IsaccBarker).
 
 # Package org.ironlions.sovereign
 Latin words!
