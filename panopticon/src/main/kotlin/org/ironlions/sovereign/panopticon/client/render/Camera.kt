@@ -11,7 +11,7 @@ import org.lwjgl.glfw.GLFW.GLFW_PRESS
 import org.lwjgl.glfw.GLFW.glfwGetKey
 
 class Camera(
-    private val position: Vec3 = Vec3(0, 0, 1),
+    private val position: Vec3 = Vec3(0, 0, 2),
     private val cameraSpeed: Float = 0.05f,
 ) {
     var projectionMatrix: Mat4 = glm.perspective(glm.radians(45.0f), 1.7142857f, 0.1f, 100.0f)
@@ -20,7 +20,17 @@ class Camera(
     private val right = vertical.cross(direction).normalize()
     private val up = direction.cross(right)
 
-    fun getViewMatrix(): Mat4 = glm.lookAt(position, position + front, up)
+    fun getViewMatrix(renderer: Renderer): Mat4 {
+        projectionMatrix =
+            glm.perspective(
+                glm.radians(45.0f),
+                renderer.windowWidth.toFloat() / renderer.windowHeight.toFloat(),
+                0.1f,
+                100.0f
+            )
+
+        return glm.lookAt(position, position + front, up)
+    }
 
     fun processInput(window: Long, deltaTime: Float) {
         if (GLFW_PRESS == glfwGetKey(
@@ -39,11 +49,6 @@ class Camera(
 
         if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_A)) position -= front.cross(up)
             .normalize() * cameraSpeed * deltaTime
-    }
-
-    fun updateProjectionMatrix(width: Int, height: Int) {
-        projectionMatrix =
-            glm.perspective(glm.radians(45.0f), width.toFloat() / height, 0.1f, 100.0f)
     }
 
     companion object {

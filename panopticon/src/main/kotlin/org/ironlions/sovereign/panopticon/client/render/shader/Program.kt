@@ -1,4 +1,4 @@
-package org.ironlions.sovereign.panopticon.client.shader
+package org.ironlions.sovereign.panopticon.client.render.shader
 
 import org.ironlions.sovereign.panopticon.client.Logging
 import org.lwjgl.opengl.GL20
