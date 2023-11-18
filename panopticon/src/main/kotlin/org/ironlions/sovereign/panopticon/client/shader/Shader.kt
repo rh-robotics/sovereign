@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL20.GL_INFO_LOG_LENGTH
 import org.lwjgl.opengl.GL20.GL_TRUE
 import org.lwjgl.opengl.GL20.glCompileShader
 import org.lwjgl.opengl.GL20.glCreateShader
+import org.lwjgl.opengl.GL20.glDeleteShader
 import org.lwjgl.opengl.GL20.glGetShaderInfoLog
 import org.lwjgl.opengl.GL20.glGetShaderi
 import org.lwjgl.opengl.GL20.glShaderSource
@@ -43,6 +44,8 @@ class Shader(type: Int, name: String, source: ByteBuffer) {
             }
         }
     }
+
+    fun delete() = glDeleteShader(shader)
 
     /** Print what's gone wrong! */
     private fun printShaderInfoLog() {

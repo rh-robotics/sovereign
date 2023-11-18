@@ -1,7 +1,6 @@
 package org.ironlions.sovereign.panopticon.client
 
 import glm_.vec3.Vec3
-import glm_.vec4.Vec4
 import org.apache.log4j.BasicConfigurator
 import org.ironlions.sovereign.panopticon.client.ecs.Entity
 import org.ironlions.sovereign.panopticon.client.ecs.Scene
@@ -22,26 +21,30 @@ import org.lwjgl.system.MemoryUtil
 /** The panopticon client graphical user interface. */
 class Client {
     private var window: Long = 0
-    private val windowWidth = 1200
-    private val windowHeight = 700
+    private var windowWidth = 1200
+    private var windowHeight = 700
     private val openGLMajor = 4
     private val openGLMinor = 1
     private val requiredCapabilities = arrayOf("OpenGL41")
     private val vertices = listOf(
-        Vertex(Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 1.0f)),
-        Vertex(Vec3(1.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 0.0f, 1.0f)),
-        Vertex(Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f))
+        Vertex(
+            Vec3(0.5, 0.5, 0.0), Vec3(0.0, 1.0, 1.0), Vec3(0.0, 0.0, 1.0)
+        ), Vertex(
+            Vec3(0.5, -0.5, 0.0), Vec3(1.0, 0.0, 1.0), Vec3(0.0, 0.0, 1.0)
+        ), Vertex(
+            Vec3(-0.5, -0.5, 0.0), Vec3(1.0, 1.0, 0.0), Vec3(0.0, 0.0, 1.0)
+        ), Vertex(
+            Vec3(-0.5, 0.5, 0.0), Vec3(0.0, 0.0, 0.0), Vec3(0.0, 0.0, 1.0)
+        )
     )
+    private val indices = listOf(3, 1, 0, 3, 2, 1)
 
     private val scene: Scene = Scene("main")
 
-    init {
-        val entity = Entity(scene)
-
-        entity.addComponent(Mesh::class, vertices)
-
-        scene.add(entity)
-    }
+    private var physicalWidth: Int? = null
+    private var physicalHeight: Int? = null
+    private var framebufferWidth: Int? = null
+    private var framebufferHeight: Int? = null
 
     /** Application entrypoint. */
     fun run() {
@@ -67,34 +70,36 @@ class Client {
 
         glfwSetKeyCallback(window, ::onKeyPress)
         glfwSetFramebufferSizeCallback(window, ::onFramebufferResize)
+        glfwSetWindowSizeCallback(window, ::onWindowResize)
+        getSizing()
 
-        MemoryStack.stackPush().use { stack ->
-            val pWidth = stack.mallocInt(1)
-            val pHeight = stack.mallocInt(1)
-
-            glfwGetWindowSize(window, pWidth, pHeight)
-
-            val vidmode: GLFWVidMode? = glfwGetVideoMode(glfwGetPrimaryMonitor())
-            glfwSetWindowPos(
-                window, (vidmode!!.width() - pWidth[0]) / 2, (vidmode.height() - pHeight[0]) / 2
-            )
-        }
+        val vidmode: GLFWVidMode = glfwGetVideoMode(glfwGetPrimaryMonitor())!!
+        glfwSetWindowPos(
+            window,
+            (vidmode.width() - physicalWidth!!) / 2,
+            (vidmode.height() - physicalHeight!!) / 2
+        )
 
         glfwMakeContextCurrent(window)
         glfwSwapInterval(1)
         glfwShowWindow(window)
         GL.createCapabilities()
-        glViewport(0, 0, windowWidth, windowHeight);
+        Logging.logger.debug { "$framebufferWidth, $framebufferHeight" }
+        glViewport(0, 0, framebufferWidth!!, framebufferHeight!!)
 
         describeOpenGL()
         checkCapabilities()
         enableFeatures()
 
-        Program(
-            name = "main",
-            vertexSource = ioResourceToByteBuffer("shader.vert", 4096),
-            fragmentSource = ioResourceToByteBuffer("shader.frag", 4096)
-        ).use()
+        val entity = Entity(scene)
+        entity.addComponent(
+            Mesh::class, Program(
+                name = "main",
+                vertexSource = ioResourceToByteBuffer("shader.vert", 4096),
+                fragmentSource = ioResourceToByteBuffer("shader.frag", 4096)
+            ), vertices, indices
+        )
+        scene.add(entity)
     }
 
     /** Run per frame. */
@@ -120,6 +125,25 @@ class Client {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, openGLMinor)
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE)
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE)
+        glfwWindowHint(GLFW_SAMPLES, 4)
+    }
+
+    /** Get window size and framebuffer size from GLFW> */
+    private fun getSizing() {
+        MemoryStack.stackPush().use { stack ->
+            val sPhysicalWidth = stack.mallocInt(1)
+            val sPhysicalHeight = stack.mallocInt(1)
+            val sFramebufferWidth = stack.mallocInt(1)
+            val sFramebufferHeight = stack.mallocInt(1)
+
+            glfwGetWindowSize(window, sPhysicalWidth, sPhysicalHeight)
+            glfwGetFramebufferSize(window, sFramebufferWidth, sFramebufferHeight)
+
+            physicalWidth = sPhysicalWidth.get()
+            physicalHeight = sPhysicalHeight.get()
+            framebufferWidth = sFramebufferWidth.get()
+            framebufferHeight = sFramebufferHeight.get()
+        }
     }
 
     /** Describe the OpenGL context to the user. */
@@ -143,6 +167,7 @@ class Client {
     private fun enableFeatures() {
         glEnable(GL_CULL_FACE)
         glEnable(GL_DEPTH_TEST)
+        glEnable(GL_MULTISAMPLE)
     }
 
     /**
@@ -170,7 +195,21 @@ class Client {
      */
     @Suppress("UNUSED_PARAMETER")
     private fun onFramebufferResize(window: Long, width: Int, height: Int) {
+        getSizing()
         glViewport(0, 0, width, height);
+    }
+
+    /**
+     * Handle a window resize event.
+     *
+     * @param window The window that experienced the resizal.
+     * @param width The new width.
+     * @param height The new height.
+     */
+    @Suppress("UNUSED_PARAMETER")
+    private fun onWindowResize(window: Long, width: Int, height: Int) {
+        windowHeight = height
+        windowWidth = width
     }
 
     /** Clean up the application, including GLFW and OpenGL stuff. */

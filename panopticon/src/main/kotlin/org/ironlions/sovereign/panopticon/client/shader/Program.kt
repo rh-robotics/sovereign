@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL20.GL_TRUE
 import org.lwjgl.opengl.GL20.GL_VERTEX_SHADER
 import org.lwjgl.opengl.GL20.glAttachShader
 import org.lwjgl.opengl.GL20.glCreateProgram
+import org.lwjgl.opengl.GL20.glDeleteShader
 import org.lwjgl.opengl.GL20.glGetProgrami
 import org.lwjgl.opengl.GL20.glLinkProgram
 import org.lwjgl.opengl.GL20.glUseProgram
@@ -25,9 +26,15 @@ class Program(private val name: String, vertexSource: ByteBuffer, fragmentSource
     private val program = glCreateProgram()
 
     init {
-        attach(Shader(GL_VERTEX_SHADER, "vertex", vertexSource))
-        attach(Shader(GL_FRAGMENT_SHADER, "fragment", fragmentSource))
+        val vertex = Shader(GL_VERTEX_SHADER, "vertex", vertexSource)
+        val fragment = Shader(GL_FRAGMENT_SHADER, "fragment", fragmentSource)
+
+        attach(vertex)
+        attach(fragment)
         link()
+
+        vertex.delete()
+        fragment.delete()
     }
 
     /** Attach a shader to a program. */
