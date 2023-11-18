@@ -28,10 +28,11 @@ class Client {
     private val openGLMinor = 1
     private val requiredCapabilities = arrayOf("OpenGL41")
     private val vertices = listOf(
-        Vertex(Vec3(0.0f, 0.0f, 0.0f), Vec4(1.0f, 0.0f, 0.0f, 1.0f)),
-        Vertex(Vec3(1.0f, 0.0f, 0.0f), Vec4(0.0f, 1.0f, 0.0f, 1.0f)),
-        Vertex(Vec3(0.0f, 1.0f, 0.0f), Vec4(0.0f, 0.0f, 1.0f, 1.0f))
+        Vertex(Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 1.0f)),
+        Vertex(Vec3(1.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 0.0f, 1.0f)),
+        Vertex(Vec3(0.0f, 1.0f, 0.0f), Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 0.0f, 1.0f))
     )
+
     private val scene: Scene = Scene("main")
 
     init {
@@ -98,7 +99,7 @@ class Client {
 
     /** Run per frame. */
     private fun loop() {
-        glClearColor(0.95686275f, 0.59607846f, 0.6117647f, 0.0f)
+        glClearColor(0.93359375f, 0.1875f, 0.328125f, 0.0f)
 
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
@@ -147,7 +148,7 @@ class Client {
     /**
      * Handle a key press event.
      *
-     * @param window The window that experiecned the event.
+     * @param window The window that experienced the event.
      * @param key The key that was pressed.
      * @param scancode The scancode of the key that was pressed.
      * @param action Who knows what this is?

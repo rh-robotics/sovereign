@@ -7,25 +7,14 @@ import java.nio.ByteBuffer
 
 /** Wraps an OpenGL Vertex Buffer. */
 class VertexBuffer(vertices: List<Vertex>) {
-    private val byteBuffer: ByteBuffer
+    private val buffer: ByteBuffer
 
     init {
         val bufferSize = vertices.size * VertexData.stride
-        byteBuffer = BufferUtils.createByteBuffer(bufferSize)
+        buffer = BufferUtils.createByteBuffer(bufferSize)
 
-        vertices.forEach { vertex ->
-            // Position.
-            byteBuffer.putFloat(vertex.position.x)
-            byteBuffer.putFloat(vertex.position.y)
-            byteBuffer.putFloat(vertex.position.z)
+        vertices.forEach { it.pack(buffer) }
 
-            // Color.
-            byteBuffer.putFloat(vertex.color.r)
-            byteBuffer.putFloat(vertex.color.g)
-            byteBuffer.putFloat(vertex.color.b)
-            byteBuffer.putFloat(vertex.color.a)
-        }
-
-        byteBuffer.flip()
+        buffer.flip()
     }
 }
