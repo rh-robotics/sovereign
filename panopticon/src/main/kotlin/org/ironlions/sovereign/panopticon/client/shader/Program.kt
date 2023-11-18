@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL20.GL_TRUE
 import org.lwjgl.opengl.GL20.GL_VERTEX_SHADER
 import org.lwjgl.opengl.GL20.glAttachShader
 import org.lwjgl.opengl.GL20.glCreateProgram
-import org.lwjgl.opengl.GL20.glDeleteShader
+import org.lwjgl.opengl.GL20.glGetUniformLocation
 import org.lwjgl.opengl.GL20.glGetProgrami
 import org.lwjgl.opengl.GL20.glLinkProgram
 import org.lwjgl.opengl.GL20.glUseProgram
@@ -54,6 +54,9 @@ class Program(private val name: String, vertexSource: ByteBuffer, fragmentSource
 
     /** Bind the program. */
     fun use() = glUseProgram(program)
+
+    /** Get the location of a uniform in the program. */
+    fun loc(name: String) = glGetUniformLocation(program, name)
 
     /** Print what's gone wrong! */
     private fun printProgramInfoLog() {

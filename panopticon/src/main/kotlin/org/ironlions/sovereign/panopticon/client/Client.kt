@@ -1,5 +1,7 @@
 package org.ironlions.sovereign.panopticon.client
 
+import glm_.glm
+import glm_.mat4x4.Mat4
 import glm_.vec3.Vec3
 import org.apache.log4j.BasicConfigurator
 import org.ironlions.sovereign.panopticon.client.ecs.Entity
@@ -28,23 +30,27 @@ class Client {
     private val requiredCapabilities = arrayOf("OpenGL41")
     private val vertices = listOf(
         Vertex(
-            Vec3(0.5, 0.5, 0.0), Vec3(0.0, 1.0, 1.0), Vec3(0.0, 0.0, 1.0)
+            Vec3(0.5, 0.5, 0.5), Vec3(0.0, 1.0, 1.0), Vec3(0.0, 0.0, 1.0)
         ), Vertex(
-            Vec3(0.5, -0.5, 0.0), Vec3(1.0, 0.0, 1.0), Vec3(0.0, 0.0, 1.0)
+            Vec3(0.5, -0.5, 0.5), Vec3(1.0, 0.0, 1.0), Vec3(0.0, 0.0, 1.0)
         ), Vertex(
-            Vec3(-0.5, -0.5, 0.0), Vec3(1.0, 1.0, 0.0), Vec3(0.0, 0.0, 1.0)
+            Vec3(-0.5, -0.5, 0.5), Vec3(1.0, 1.0, 0.0), Vec3(0.0, 0.0, 1.0)
         ), Vertex(
-            Vec3(-0.5, 0.5, 0.0), Vec3(0.0, 0.0, 0.0), Vec3(0.0, 0.0, 1.0)
+            Vec3(-0.5, 0.5, 0.5), Vec3(0.0, 0.0, 0.0), Vec3(0.0, 0.0, 1.0)
         )
     )
     private val indices = listOf(3, 1, 0, 3, 2, 1)
 
-    private val scene: Scene = Scene("main")
+    private val scene: Scene = Scene(
+        name = "main",
+    )
 
     private var physicalWidth: Int? = null
     private var physicalHeight: Int? = null
     private var framebufferWidth: Int? = null
     private var framebufferHeight: Int? = null
+    private var lastFrame: Float = 0f
+    private var deltaTime: Float = 0f
 
     /** Application entrypoint. */
     fun run() {
@@ -86,6 +92,8 @@ class Client {
         GL.createCapabilities()
         Logging.logger.debug { "$framebufferWidth, $framebufferHeight" }
         glViewport(0, 0, framebufferWidth!!, framebufferHeight!!)
+        glClearColor(0.93359375f, 0.1875f, 0.328125f, 0.0f)
+        scene.camera.updateProjectionMatrix(framebufferWidth!!, framebufferHeight!!)
 
         describeOpenGL()
         checkCapabilities()
@@ -93,7 +101,7 @@ class Client {
 
         val entity = Entity(scene)
         entity.addComponent(
-            Mesh::class, Program(
+            Mesh::class, Mat4(1), Program(
                 name = "main",
                 vertexSource = ioResourceToByteBuffer("shader.vert", 4096),
                 fragmentSource = ioResourceToByteBuffer("shader.frag", 4096)
@@ -104,11 +112,14 @@ class Client {
 
     /** Run per frame. */
     private fun loop() {
-        glClearColor(0.93359375f, 0.1875f, 0.328125f, 0.0f)
+        val currentFrame = glfwGetTime().toFloat()
+        deltaTime = currentFrame - lastFrame
+        lastFrame = currentFrame
 
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
+            scene.camera.processInput(window, deltaTime)
             scene.draw()
 
             glfwSwapBuffers(window)
@@ -196,7 +207,8 @@ class Client {
     @Suppress("UNUSED_PARAMETER")
     private fun onFramebufferResize(window: Long, width: Int, height: Int) {
         getSizing()
-        glViewport(0, 0, width, height);
+        glViewport(0, 0, width, height)
+        scene.camera.updateProjectionMatrix(width, height)
     }
 
     /**
