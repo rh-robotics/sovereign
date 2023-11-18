@@ -24,25 +24,20 @@ class Client {
     private var window: Long = 0
     private val windowWidth = 1200
     private val windowHeight = 700
-    private val openGLMajor = 3
-    private val openGLMinor = 2
-    private val requiredCapabilities = arrayOf("OpenGL32")
-    private val vertices: FloatArray = floatArrayOf(
-        -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f
+    private val openGLMajor = 4
+    private val openGLMinor = 1
+    private val requiredCapabilities = arrayOf("OpenGL41")
+    private val vertices = listOf(
+        Vertex(Vec3(0.0f, 0.0f, 0.0f), Vec4(1.0f, 0.0f, 0.0f, 1.0f)),
+        Vertex(Vec3(1.0f, 0.0f, 0.0f), Vec4(0.0f, 1.0f, 0.0f, 1.0f)),
+        Vertex(Vec3(0.0f, 1.0f, 0.0f), Vec4(0.0f, 0.0f, 1.0f, 1.0f))
     )
     private val scene: Scene = Scene("main")
 
     init {
         val entity = Entity(scene)
 
-        entity.addComponent(
-            Mesh::class,
-            listOf(
-                Vertex(Vec3(0.0f, 0.0f, 0.0f), Vec4(1.0f, 0.0f, 0.0f, 1.0f)),
-                Vertex(Vec3(1.0f, 0.0f, 0.0f), Vec4(0.0f, 1.0f, 0.0f, 1.0f)),
-                Vertex(Vec3(0.0f, 1.0f, 0.0f), Vec4(0.0f, 0.0f, 1.0f, 1.0f))
-            )
-        )
+        entity.addComponent(Mesh::class, vertices)
 
         scene.add(entity)
     }
@@ -139,7 +134,7 @@ class Client {
 
         for (capability in requiredCapabilities) {
             val field = GLCapabilities::class.java.getDeclaredField(capability)
-            check(field.get(caps) as Boolean) { "This application requires OpenGL 3.2 or higher." }
+            check(field.get(caps) as Boolean) { "This application requires OpenGL $openGLMajor.$openGLMinor or higher." }
         }
     }
 
