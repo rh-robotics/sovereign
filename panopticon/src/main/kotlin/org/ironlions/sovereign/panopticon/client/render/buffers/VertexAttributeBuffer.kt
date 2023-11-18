@@ -1,4 +1,4 @@
-package org.ironlions.sovereign.panopticon.client.render
+package org.ironlions.sovereign.panopticon.client.render.buffers
 
 import glm_.asUnsignedLong
 import org.ironlions.sovereign.panopticon.client.render.geometry.Vertex
@@ -6,8 +6,9 @@ import org.lwjgl.opengl.GL41.glBindVertexArray
 import org.lwjgl.opengl.GL41.glEnableVertexAttribArray
 import org.lwjgl.opengl.GL41.glVertexAttribPointer
 import org.lwjgl.opengl.GL41.glGenVertexArrays
+import org.lwjgl.opengl.GL41.glDeleteVertexArrays
 
-class VertexAttributeBuffer {
+class VertexAttributeBuffer : BufferObject {
     private val vao = glGenVertexArrays()
 
     fun installPointers() {
@@ -31,7 +32,9 @@ class VertexAttributeBuffer {
         unbind()
     }
 
-    fun bind() = glBindVertexArray(vao)
+    override fun bind() = glBindVertexArray(vao)
 
-    fun unbind() = glBindVertexArray(0)
+    override fun unbind() = glBindVertexArray(0)
+
+    override fun destroy() = glDeleteVertexArrays(vao)
 }

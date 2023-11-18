@@ -1,4 +1,4 @@
-package org.ironlions.sovereign.panopticon.client.render
+package org.ironlions.sovereign.panopticon.client.render.buffers
 
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL41.GL_STATIC_DRAW
@@ -6,8 +6,9 @@ import org.lwjgl.opengl.GL41.GL_ELEMENT_ARRAY_BUFFER
 import org.lwjgl.opengl.GL41.glBindBuffer
 import org.lwjgl.opengl.GL41.glGenBuffers
 import org.lwjgl.opengl.GL41.glBufferData
+import org.lwjgl.opengl.GL41.glDeleteBuffers
 
-class ElementBuffer(indices: List<Int>) {
+class ElementBuffer(indices: List<Int>) : BufferObject {
     private val buffer = BufferUtils.createIntBuffer(indices.size)
     private val ebo: Int = glGenBuffers()
 
@@ -21,7 +22,9 @@ class ElementBuffer(indices: List<Int>) {
         unbind()
     }
 
-    fun bind() = glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo)
+    override fun bind() = glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo)
 
-    fun unbind() = glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
+    override fun unbind() = glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
+
+    override fun destroy() = glDeleteBuffers(ebo)
 }

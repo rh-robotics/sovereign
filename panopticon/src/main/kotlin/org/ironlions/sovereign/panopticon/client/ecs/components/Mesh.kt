@@ -1,10 +1,9 @@
 package org.ironlions.sovereign.panopticon.client.ecs.components
 
-import org.ironlions.sovereign.panopticon.client.Logging
 import org.ironlions.sovereign.panopticon.client.ecs.Entity
-import org.ironlions.sovereign.panopticon.client.render.ElementBuffer
-import org.ironlions.sovereign.panopticon.client.render.VertexAttributeBuffer
-import org.ironlions.sovereign.panopticon.client.render.VertexBuffer
+import org.ironlions.sovereign.panopticon.client.render.buffers.ElementBuffer
+import org.ironlions.sovereign.panopticon.client.render.buffers.VertexAttributeBuffer
+import org.ironlions.sovereign.panopticon.client.render.buffers.VertexBuffer
 import org.ironlions.sovereign.panopticon.client.render.geometry.Vertex
 import org.ironlions.sovereign.panopticon.client.shader.Program
 import org.lwjgl.opengl.GL41.GL_TRIANGLES
