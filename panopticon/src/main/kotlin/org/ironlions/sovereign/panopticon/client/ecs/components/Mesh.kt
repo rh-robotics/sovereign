@@ -54,4 +54,10 @@ class Mesh(
         )
         glDrawElements(GL_TRIANGLES, indices.size, GL_UNSIGNED_INT, 0)
     }
+
+    override fun destroy() {
+        attributes.close()
+        buffer.close()
+        elements.close()
+    }
 }

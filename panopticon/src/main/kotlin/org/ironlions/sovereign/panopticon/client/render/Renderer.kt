@@ -261,8 +261,9 @@ class Renderer {
 
     /** Clean up the application, including GLFW and OpenGL stuff. */
     fun destroy() {
-        Callbacks.glfwFreeCallbacks(window)
+        scene.destroy()
 
+        Callbacks.glfwFreeCallbacks(window)
         glfwDestroyWindow(window)
         glfwTerminate()
         glfwSetErrorCallback(null)!!.free()

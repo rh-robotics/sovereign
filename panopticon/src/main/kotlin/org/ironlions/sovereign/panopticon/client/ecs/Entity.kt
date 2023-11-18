@@ -25,4 +25,8 @@ class Entity(val parent: Scene) {
      */
     fun <T : Component> removeComponent(component: KClass<T>) =
         apply { components.remove(component::class) }
+
+    fun destroy() = components.forEach {
+        it.value.destroy()
+    }
 }

@@ -18,11 +18,11 @@ class Scene(
     fun remove(entity: Entity) = apply { entities.remove(entity) }
 
     /** Draw all the entities with a mesh in the scene. */
-    fun draw(renderer: Renderer) {
-        entities.forEach { entity ->
-            entity.components[Mesh::class]?.let { component ->
-                (component as Mesh).draw(renderer)
-            }
+    fun draw(renderer: Renderer) = entities.forEach { entity ->
+        entity.components[Mesh::class]?.let { component ->
+            (component as Mesh).draw(renderer)
         }
     }
+
+    fun destroy() = entities.forEach { it.destroy() }
 }
