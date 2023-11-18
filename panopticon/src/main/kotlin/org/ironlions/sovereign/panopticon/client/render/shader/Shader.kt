@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL20.glGetShaderInfoLog
 import org.lwjgl.opengl.GL20.glGetShaderi
 import org.lwjgl.opengl.GL20.glShaderSource
 import org.lwjgl.system.MemoryStack
+import java.io.Closeable
 import java.nio.ByteBuffer
 
 /**
@@ -20,7 +21,7 @@ import java.nio.ByteBuffer
  * @param name The name of the shader.
  * @param source The shader source code.
  */
-class Shader(type: Int, name: String, source: ByteBuffer) {
+class Shader(type: Int, name: String, source: ByteBuffer) : Closeable {
     var shader: Int
         private set
 
@@ -45,8 +46,6 @@ class Shader(type: Int, name: String, source: ByteBuffer) {
         }
     }
 
-    fun delete() = glDeleteShader(shader)
-
     /** Print what's gone wrong! */
     private fun printShaderInfoLog() {
         val infologLength = glGetShaderi(shader, GL_INFO_LOG_LENGTH)
@@ -58,4 +57,6 @@ class Shader(type: Int, name: String, source: ByteBuffer) {
             }
         }
     }
+
+    override fun close() = glDeleteShader(shader)
 }

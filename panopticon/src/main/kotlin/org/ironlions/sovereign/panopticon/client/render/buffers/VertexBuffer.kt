@@ -30,5 +30,5 @@ class VertexBuffer(vertices: List<Vertex>) : BufferObject {
 
     override fun unbind() = glBindBuffer(GL_ARRAY_BUFFER, 0)
 
-    override fun destroy() = glDeleteBuffers(vbo)
+    override fun close() = glDeleteBuffers(vbo)
 }

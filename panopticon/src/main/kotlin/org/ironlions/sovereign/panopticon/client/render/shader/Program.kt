@@ -1,18 +1,20 @@
 package org.ironlions.sovereign.panopticon.client.render.shader
 
 import org.ironlions.sovereign.panopticon.client.Logging
-import org.lwjgl.opengl.GL20
-import org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER
-import org.lwjgl.opengl.GL20.GL_INFO_LOG_LENGTH
-import org.lwjgl.opengl.GL20.GL_LINK_STATUS
-import org.lwjgl.opengl.GL20.GL_TRUE
-import org.lwjgl.opengl.GL20.GL_VERTEX_SHADER
-import org.lwjgl.opengl.GL20.glAttachShader
-import org.lwjgl.opengl.GL20.glCreateProgram
-import org.lwjgl.opengl.GL20.glGetUniformLocation
-import org.lwjgl.opengl.GL20.glGetProgrami
-import org.lwjgl.opengl.GL20.glLinkProgram
-import org.lwjgl.opengl.GL20.glUseProgram
+import org.lwjgl.opengl.GL41.GL_FRAGMENT_SHADER
+import org.lwjgl.opengl.GL41.GL_INFO_LOG_LENGTH
+import org.lwjgl.opengl.GL41.GL_LINK_STATUS
+import org.lwjgl.opengl.GL41.GL_TRUE
+import org.lwjgl.opengl.GL41.GL_VERTEX_SHADER
+import org.lwjgl.opengl.GL41.glAttachShader
+import org.lwjgl.opengl.GL41.glCreateProgram
+import org.lwjgl.opengl.GL41.glGetUniformLocation
+import org.lwjgl.opengl.GL41.glGetProgrami
+import org.lwjgl.opengl.GL41.glLinkProgram
+import org.lwjgl.opengl.GL41.glUseProgram
+import org.lwjgl.opengl.GL41.glDeleteProgram
+import org.lwjgl.opengl.GL41.glGetShaderInfoLog
+import java.io.Closeable
 import java.nio.ByteBuffer
 
 /**
@@ -22,19 +24,18 @@ import java.nio.ByteBuffer
  * @param vertexSource The source code of the vertex shader.
  * @param fragmentSource The source code of the fragment shader.
  */
-class Program(private val name: String, vertexSource: ByteBuffer, fragmentSource: ByteBuffer) {
+class Program(private val name: String, vertexSource: ByteBuffer, fragmentSource: ByteBuffer) :
+    Closeable {
     private val program = glCreateProgram()
 
     init {
-        val vertex = Shader(GL_VERTEX_SHADER, "vertex", vertexSource)
-        val fragment = Shader(GL_FRAGMENT_SHADER, "fragment", fragmentSource)
-
-        attach(vertex)
-        attach(fragment)
-        link()
-
-        vertex.delete()
-        fragment.delete()
+        Shader(GL_VERTEX_SHADER, "vertex", vertexSource).use { vertex ->
+            Shader(GL_FRAGMENT_SHADER, "fragment", fragmentSource).use { fragment ->
+                attach(vertex)
+                attach(fragment)
+                link()
+            }
+        }
     }
 
     /** Attach a shader to a program. */
@@ -64,9 +65,11 @@ class Program(private val name: String, vertexSource: ByteBuffer, fragmentSource
 
         if (infoLogLength > 0) {
             Logging.logger.error { "Program compilation failed!" }
-            GL20.glGetShaderInfoLog(program).lines().forEach {
+            glGetShaderInfoLog(program).lines().forEach {
                 Logging.logger.error { it }
             }
         }
     }
+
+    override fun close() = glDeleteProgram(program)
 }

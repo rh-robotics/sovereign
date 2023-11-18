@@ -36,5 +36,5 @@ class VertexAttributeBuffer : BufferObject {
 
     override fun unbind() = glBindVertexArray(0)
 
-    override fun destroy() = glDeleteVertexArrays(vao)
+    override fun close() = glDeleteVertexArrays(vao)
 }

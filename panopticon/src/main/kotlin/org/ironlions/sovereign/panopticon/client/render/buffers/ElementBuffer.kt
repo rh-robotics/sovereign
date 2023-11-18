@@ -25,6 +25,5 @@ class ElementBuffer(indices: List<Int>) : BufferObject {
     override fun bind() = glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo)
 
     override fun unbind() = glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
-
-    override fun destroy() = glDeleteBuffers(ebo)
+    override fun close() = glDeleteBuffers(ebo)
 }
