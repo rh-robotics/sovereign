@@ -1,13 +1,11 @@
 package org.ironlions.sovereign.panopticon.client.ecs
 
 import org.ironlions.sovereign.panopticon.client.ecs.components.Mesh
-import org.ironlions.sovereign.panopticon.client.render.Camera
 import org.ironlions.sovereign.panopticon.client.render.Renderer
 
 /** A container for entities. A scene is bound and then drawn by the psuedoengine. */
 class Scene(
-    val name: String,
-    val camera: Camera = Camera(),
+    val name: String
 ) {
     private val entities: MutableList<Entity> = ArrayList()
 

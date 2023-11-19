@@ -6,6 +6,8 @@ import org.ironlions.sovereign.panopticon.client.Logging
 import org.ironlions.sovereign.panopticon.client.ecs.Entity
 import org.ironlions.sovereign.panopticon.client.ecs.Scene
 import org.ironlions.sovereign.panopticon.client.ecs.components.Mesh
+import org.ironlions.sovereign.panopticon.client.render.event.Event
+import org.ironlions.sovereign.panopticon.client.render.event.EventDispatcher
 import org.ironlions.sovereign.panopticon.client.render.geometry.Vertex
 import org.ironlions.sovereign.panopticon.client.render.shader.Program
 import org.ironlions.sovereign.panopticon.client.util.IOUtil
@@ -75,6 +77,7 @@ class Renderer {
     private val openGLMajor = 4
     private val openGLMinor = 1
     private val requiredCapabilities = arrayOf("OpenGL41")
+    private val eventDispatcher = EventDispatcher()
     private val vertices = listOf(
         Vertex(
             Vec3(0.5, 0.5, 0.5), Vec3(0.0, 1.0, 1.0), Vec3(0.0, 0.0, 1.0)
@@ -100,6 +103,8 @@ class Renderer {
     private var lastMouseX: Float = 0f
     private var lastMouseY: Float = 0f
     private var firstMouse: Boolean = true
+    var activeCamera: Camera = Camera()
+        private set
 
     var windowWidth = 1200
         private set
@@ -145,6 +150,8 @@ class Renderer {
         checkCapabilities()
         enableFeatures()
 
+        eventDispatcher.subscribe(activeCamera)
+
         val entity = Entity(scene)
         entity.addComponent(
             Mesh::class, Mat4(1), Program(
@@ -165,7 +172,7 @@ class Renderer {
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
-            scene.camera.processKeyboardInput(window, deltaTime)
+            eventDispatcher.broadcastToSubscribers(Event.Frame(window, deltaTime))
             scene.draw(this)
 
             glfwSwapBuffers(window)
@@ -250,6 +257,7 @@ class Renderer {
      * @param xIn The new x-value.
      * @param yIn The new y-value.
      */
+    @Suppress("UNUSED_PARAMETER")
     private fun onMouseMove(window: Long, xIn: Double, yIn: Double) {
         val x = xIn.toFloat()
         val y = yIn.toFloat()
@@ -266,7 +274,7 @@ class Renderer {
         lastMouseX = x
         lastMouseY = y
 
-        scene.camera.processMouseInput(xOffset, yOffset)
+        eventDispatcher.broadcastToSubscribers(Event.Mouse(xOffset, yOffset))
     }
 
     /**
@@ -280,6 +288,7 @@ class Renderer {
     private fun onFramebufferResize(window: Long, width: Int, height: Int) {
         getSizing()
         glViewport(0, 0, width, height)
+        eventDispatcher.broadcastToSubscribers(Event.FramebufferResize(width, height))
     }
 
     /**

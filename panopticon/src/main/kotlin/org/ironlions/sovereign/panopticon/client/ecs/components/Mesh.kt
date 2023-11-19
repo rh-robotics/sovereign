@@ -47,10 +47,10 @@ class Mesh(
         glUniformMatrix4fv(
             program.loc("view"),
             false,
-            parent.parent.camera.getViewMatrix(renderer).array
+            renderer.activeCamera.getViewMatrix(renderer).array
         )
         glUniformMatrix4fv(
-            program.loc("projection"), false, parent.parent.camera.projectionMatrix.array
+            program.loc("projection"), false, renderer.activeCamera.projectionMatrix.array
         )
         glDrawElements(GL_TRIANGLES, indices.size, GL_UNSIGNED_INT, 0)
     }

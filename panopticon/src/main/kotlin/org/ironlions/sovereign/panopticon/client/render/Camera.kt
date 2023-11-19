@@ -3,10 +3,14 @@ package org.ironlions.sovereign.panopticon.client.render
 import glm_.glm
 import glm_.mat4x4.Mat4
 import glm_.vec3.Vec3
+import org.ironlions.sovereign.panopticon.client.render.event.Event
+import org.ironlions.sovereign.panopticon.client.render.event.EventReceiver
 import org.lwjgl.glfw.GLFW.GLFW_KEY_A
 import org.lwjgl.glfw.GLFW.GLFW_KEY_D
 import org.lwjgl.glfw.GLFW.GLFW_KEY_S
 import org.lwjgl.glfw.GLFW.GLFW_KEY_W
+import org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE
+import org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT
 import org.lwjgl.glfw.GLFW.GLFW_PRESS
 import org.lwjgl.glfw.GLFW.glfwGetKey
 import kotlin.math.cos
@@ -19,9 +23,9 @@ class Camera(
     private var up: Vec3 = Vec3(0.0f, 1.0f, 0.0f),
     private var yaw: Float = -90.0f,
     private var pitch: Float = 0f,
-    private val cameraSpeed: Float = 0.05f,
+    private val cameraSpeed: Float = 0.1f,
     private val mouseSensitivity: Float = 0.1f,
-) {
+) : EventReceiver {
     var projectionMatrix: Mat4 = glm.perspective(glm.radians(45.0f), 1.7142857f, 0.1f, 100.0f)
     private var front: Vec3 = Vec3(0.0f, 0.0f, -1.0f)
     private var worldUp: Vec3 = Vec3(up.x, up.y, up.z)
@@ -49,7 +53,7 @@ class Camera(
         front.z = sin(glm.radians(yaw)) * cos(glm.radians(pitch))
         front = glm.normalize(front)
         right = glm.normalize(glm.cross(front, worldUp))
-        up    = glm.normalize(glm.cross(right, front))
+        up = glm.normalize(glm.cross(right, front))
     }
 
     fun processKeyboardInput(window: Long, deltaTime: Float) {
@@ -70,6 +74,14 @@ class Camera(
         if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_A)) {
             position -= right * velocity
         }
+
+        if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_SPACE)) {
+            position += up * velocity
+        }
+
+        if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) {
+            position -= up * velocity
+        }
     }
 
     fun processMouseInput(xOffset: Float, yOffset: Float) {
@@ -77,5 +89,11 @@ class Camera(
         pitch += yOffset * mouseSensitivity
         pitch = max(min(pitch, 89.0f), -89.0f)
         calculateCameraVectors()
+    }
+
+    override fun onEvent(event: Event) = when (event) {
+        is Event.Mouse -> processMouseInput(event.xOffset, event.yOffset)
+        is Event.Frame -> processKeyboardInput(event.window, event.deltaTime)
+        else -> {}
     }
 }
