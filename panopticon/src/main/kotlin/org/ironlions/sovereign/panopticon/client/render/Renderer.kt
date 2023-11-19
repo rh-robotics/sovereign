@@ -150,7 +150,7 @@ class Renderer {
         checkCapabilities()
         enableFeatures()
 
-        eventDispatcher.subscribe(activeCamera)
+        eventDispatcher.subscribe(activeCamera, listOf(Event.Mouse::class, Event.Frame::class))
 
         val entity = Entity(scene)
         entity.addComponent(
