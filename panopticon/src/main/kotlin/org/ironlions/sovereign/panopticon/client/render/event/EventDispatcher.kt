@@ -32,7 +32,7 @@ class EventDispatcher {
         if (subscribers.containsKey(it)) {
             if (subscribers[it]!!.contains(what)) subscribers[it]!!.remove(what)
             else Logging.logger.warn { "Attempted to unsubscribe from not-subscribed-to event." }
-        } else Logging.logger.warn { "Attempted to unsubscribe from null event type." }
+        } else Logging.logger.warn { "Attempted to unsubscribe from not-subscribed-to event." }
     }
 
     /** Unsubscribe from all events. */
