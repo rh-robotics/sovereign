@@ -12,6 +12,9 @@ import org.ironlions.sovereign.panopticon.client.util.IOUtil
 import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR
+import org.lwjgl.glfw.GLFW.GLFW_CURSOR
+import org.lwjgl.glfw.GLFW.GLFW_CURSOR_CAPTURED
+import org.lwjgl.glfw.GLFW.GLFW_CURSOR_DISABLED
 import org.lwjgl.glfw.GLFW.GLFW_FALSE
 import org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE
 import org.lwjgl.glfw.GLFW.GLFW_OPENGL_CORE_PROFILE
@@ -33,8 +36,10 @@ import org.lwjgl.glfw.GLFW.glfwGetWindowSize
 import org.lwjgl.glfw.GLFW.glfwInit
 import org.lwjgl.glfw.GLFW.glfwMakeContextCurrent
 import org.lwjgl.glfw.GLFW.glfwPollEvents
+import org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback
 import org.lwjgl.glfw.GLFW.glfwSetErrorCallback
 import org.lwjgl.glfw.GLFW.glfwSetFramebufferSizeCallback
+import org.lwjgl.glfw.GLFW.glfwSetInputMode
 import org.lwjgl.glfw.GLFW.glfwSetKeyCallback
 import org.lwjgl.glfw.GLFW.glfwSetWindowPos
 import org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose
@@ -92,6 +97,9 @@ class Renderer {
     private var framebufferHeight: Int? = null
     private var lastFrame: Float = 0f
     private var deltaTime: Float = 0f
+    private var lastMouseX: Float = 0f
+    private var lastMouseY: Float = 0f
+    private var firstMouse: Boolean = true
 
     var windowWidth = 1200
         private set
@@ -114,6 +122,7 @@ class Renderer {
         glfwSetKeyCallback(window, ::onKeyPress)
         glfwSetFramebufferSizeCallback(window, ::onFramebufferResize)
         glfwSetWindowSizeCallback(window, ::onWindowResize)
+        glfwSetCursorPosCallback(window, ::onMouseMove)
         getSizing()
 
         val vidmode: GLFWVidMode = glfwGetVideoMode(glfwGetPrimaryMonitor())!!
@@ -126,6 +135,7 @@ class Renderer {
         glfwMakeContextCurrent(window)
         glfwSwapInterval(1)
         glfwShowWindow(window)
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED)
         GL.createCapabilities()
         Logging.logger.debug { "$framebufferWidth, $framebufferHeight" }
         glViewport(0, 0, framebufferWidth!!, framebufferHeight!!)
@@ -155,7 +165,7 @@ class Renderer {
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
-            scene.camera.processInput(window, deltaTime)
+            scene.camera.processKeyboardInput(window, deltaTime)
             scene.draw(this)
 
             glfwSwapBuffers(window)
@@ -231,6 +241,32 @@ class Renderer {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
             glfwSetWindowShouldClose(window, true)
         }
+    }
+
+    /**
+     * Handle a mouse movement event.
+     *
+     * @param window The window that experienced the event.
+     * @param xIn The new x-value.
+     * @param yIn The new y-value.
+     */
+    private fun onMouseMove(window: Long, xIn: Double, yIn: Double) {
+        val x = xIn.toFloat()
+        val y = yIn.toFloat()
+
+        if (firstMouse) {
+            lastMouseX = x
+            lastMouseY = y
+            firstMouse = false
+        }
+
+        val xOffset = x - lastMouseX
+        val yOffset = lastMouseY - y
+
+        lastMouseX = x
+        lastMouseY = y
+
+        scene.camera.processMouseInput(xOffset, yOffset)
     }
 
     /**
