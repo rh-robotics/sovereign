@@ -19,7 +19,7 @@ import kotlin.math.min
 import kotlin.math.sin
 
 class Camera(
-    private val position: Vec3 = Vec3(0, 0, 2),
+    val position: Vec3 = Vec3(0, 0, 2),
     private var up: Vec3 = Vec3(0.0f, 1.0f, 0.0f),
     private var yaw: Float = -90.0f,
     private var pitch: Float = 0f,
@@ -56,7 +56,7 @@ class Camera(
         up = glm.normalize(glm.cross(right, front))
     }
 
-    fun processKeyboardInput(window: Long, deltaTime: Float) {
+    private fun processKeyboardInput(window: Long, deltaTime: Float) {
         val velocity = cameraSpeed * deltaTime
 
         if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_W)) {
@@ -84,7 +84,7 @@ class Camera(
         }
     }
 
-    fun processMouseInput(xOffset: Float, yOffset: Float) {
+    private fun processMouseInput(xOffset: Float, yOffset: Float) {
         yaw += xOffset * mouseSensitivity
         pitch += yOffset * mouseSensitivity
         pitch = max(min(pitch, 89.0f), -89.0f)

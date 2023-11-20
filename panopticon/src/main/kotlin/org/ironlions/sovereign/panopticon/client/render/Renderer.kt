@@ -79,17 +79,97 @@ class Renderer {
     private val requiredCapabilities = arrayOf("OpenGL41")
     private val eventDispatcher = EventDispatcher()
     private val vertices = listOf(
+        // Face 1 (closest to camera)
         Vertex(
-            Vec3(0.5, 0.5, 0.5), Vec3(0.0, 1.0, 1.0), Vec3(0.0, 0.0, 1.0)
+            Vec3(0.5, 0.5, 0.5), Vec3(1, 0, 0), Vec3(0.0, 0.0, 1.0)
         ), Vertex(
-            Vec3(0.5, -0.5, 0.5), Vec3(1.0, 0.0, 1.0), Vec3(0.0, 0.0, 1.0)
+            Vec3(0.5, -0.5, 0.5), Vec3(1, 0, 0), Vec3(0.0, 0.0, 1.0)
         ), Vertex(
-            Vec3(-0.5, -0.5, 0.5), Vec3(1.0, 1.0, 0.0), Vec3(0.0, 0.0, 1.0)
+            Vec3(-0.5, -0.5, 0.5), Vec3(1, 0, 0), Vec3(0.0, 0.0, 1.0)
         ), Vertex(
-            Vec3(-0.5, 0.5, 0.5), Vec3(0.0, 0.0, 0.0), Vec3(0.0, 0.0, 1.0)
+            Vec3(-0.5, 0.5, 0.5), Vec3(1, 0, 0), Vec3(0.0, 0.0, 1.0)
+        ),
+
+        // Face 2 (top)
+        Vertex(
+            Vec3(0.5, 0.5, 0.5), Vec3(1, 0, 0), Vec3(0.0, 1.0, 0.0)
+        ), Vertex(
+            Vec3(-0.5, 0.5, 0.5), Vec3(1, 0, 0), Vec3(0.0, 1.0, 0.0)
+        ), Vertex(
+            Vec3(-0.5, 0.5, -0.5), Vec3(1, 0, 0), Vec3(0.0, 1.0, 0.0)
+        ), Vertex(
+            Vec3(0.5, 0.5, -0.5), Vec3(1, 0, 0), Vec3(0.0, 1.0, 0.0)
+        ),
+
+        // Face 3 (bottom)
+        Vertex(
+            Vec3(0.5, -0.5, 0.5), Vec3(1, 0, 0), Vec3(0.0, -1.0, 0.0)
+        ), Vertex(
+            Vec3(-0.5, -0.5, 0.5), Vec3(1, 0, 0), Vec3(0.0, -1.0, 0.0)
+        ), Vertex(
+            Vec3(-0.5, -0.5, -0.5), Vec3(1, 0, 0), Vec3(0.0, -1.0, 0.0)
+        ), Vertex(
+            Vec3(0.5, -0.5, -0.5), Vec3(1, 0, 0), Vec3(0.0, -1.0, 0.0)
+        ),
+
+        // Face 4 (left)
+        Vertex(
+            Vec3(-0.5, 0.5, -0.5), Vec3(1, 0, 0), Vec3(-1.0, 0.0, 0.0)
+        ), Vertex(
+            Vec3(-0.5, -0.5, -0.5), Vec3(1, 0, 0), Vec3(-1.0, 0.0, 0.0)
+        ), Vertex(
+            Vec3(-0.5, -0.5, 0.5), Vec3(1, 0, 0), Vec3(-1.0, 0.0, 0.0)
+        ), Vertex(
+            Vec3(-0.5, 0.5, 0.5), Vec3(1, 0, 0), Vec3(-1.0, 0.0, 0.0)
+        ),
+
+        // Face 5 (right)
+        Vertex(
+            Vec3(0.5, 0.5, -0.5), Vec3(1, 0, 0), Vec3(1.0, 0.0, 0.0)
+        ), Vertex(
+            Vec3(0.5, -0.5, -0.5), Vec3(1, 0, 0), Vec3(1.0, 0.0, 0.0)
+        ), Vertex(
+            Vec3(0.5, -0.5, 0.5), Vec3(1, 0, 0), Vec3(1.0, 0.0, 0.0)
+        ), Vertex(
+            Vec3(0.5, 0.5, 0.5), Vec3(1, 0, 0), Vec3(1.0, 0.0, 0.0)
+        ),
+
+        // Face 6 (farthest from camera)
+        Vertex(
+            Vec3(-0.5, 0.5, -0.5), Vec3(1, 0, 0), Vec3(0.0, 0.0, -1.0)
+        ), Vertex(
+            Vec3(-0.5, -0.5, -0.5), Vec3(1, 0, 0), Vec3(0.0, 0.0, -1.0)
+        ), Vertex(
+            Vec3(0.5, -0.5, -0.5), Vec3(1, 0, 0), Vec3(0.0, 0.0, -1.0)
+        ), Vertex(
+            Vec3(0.5, 0.5, -0.5), Vec3(1, 0, 0), Vec3(0.0, 0.0, -1.0)
         )
     )
-    private val indices = listOf(3, 1, 0, 3, 2, 1)
+    private val indices = listOf(
+        // Face 1
+        3, 1, 0,
+        3, 2, 1,
+
+        // Face 2
+        3+4, 1+4, 0+4,
+        3+4, 2+4, 1+4,
+
+        // Face 3
+        0+8, 1+8, 3+8,
+        1+8, 2+8, 3+8,
+
+        // Face 4
+        0+12, 1+12, 3+12,
+        1+12, 2+12, 3+12,
+
+        // Face 5
+        3+16, 1+16, 0+16,
+        3+16, 2+16, 1+16,
+
+        // Face 6
+        3+20, 1+20, 0+20,
+        3+20, 2+20, 1+20,
+    )
     private val scene: Scene = Scene(
         name = "main",
     )
@@ -144,7 +224,7 @@ class Renderer {
         GL.createCapabilities()
         Logging.logger.debug { "$framebufferWidth, $framebufferHeight" }
         glViewport(0, 0, framebufferWidth!!, framebufferHeight!!)
-        glClearColor(0.93359375f, 0.1875f, 0.328125f, 0.0f)
+        glClearColor(153f / 255, 185f / 255, 229f / 225, 0.0f)
 
         describeOpenGL()
         checkCapabilities()
