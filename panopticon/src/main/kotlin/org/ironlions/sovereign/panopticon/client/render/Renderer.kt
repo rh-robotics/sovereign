@@ -224,7 +224,7 @@ class Renderer {
         GL.createCapabilities()
         Logging.logger.debug { "$framebufferWidth, $framebufferHeight" }
         glViewport(0, 0, framebufferWidth!!, framebufferHeight!!)
-        glClearColor(153f / 255, 185f / 255, 229f / 225, 0.0f)
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f)
 
         describeOpenGL()
         checkCapabilities()

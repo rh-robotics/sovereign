@@ -8,13 +8,13 @@ layout (location = 0) out vec4 color;
 
 uniform vec3 viewPosition;
 
-/* Implements the Phong reflection model. */
+/* Implements the Lambertian + Phong reflection model. */
 void
 main()
 {
     /* Setup. */
     vec3 lightColor = vec3(1.0, 1.0, 1.0);
-    vec3 lightPosition = vec3(1.2, 1.0, 2.0);
+    vec3 lightPosition = vec3(2.0, 2.0, 2.0);
 
     /* Ambient lighting calculations. */
     float ambientStregth = 0.05;
