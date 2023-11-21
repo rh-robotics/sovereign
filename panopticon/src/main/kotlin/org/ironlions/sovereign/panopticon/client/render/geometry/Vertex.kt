@@ -20,21 +20,5 @@ class Vertex(
     @JvmField
     val normal: Vec3
 ) {
-    fun bindVAO(buffer: ByteBuffer) {
-        // TODO: Abstract to a VAO class and autogenerate with reflection.
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, stride, buffer)
-        glEnableVertexAttribArray(0)
-
-        glVertexAttribPointer(
-            1, 3, GL_FLOAT, false, stride, buffer.position(Float.SIZE_BYTES * 3)
-        )
-        glEnableVertexAttribArray(1)
-
-        glVertexAttribPointer(
-            2, 3, GL_FLOAT, false, stride, buffer.position(Float.SIZE_BYTES * 3)
-        )
-        glEnableVertexAttribArray(2)
-    }
-
     companion object : Packable<Vertex>(Vertex::class)
 }
