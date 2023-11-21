@@ -10,7 +10,11 @@ import org.lwjgl.opengl.GL41.glBindBuffer
 import org.lwjgl.opengl.GL41.glGenBuffers
 import java.nio.ByteBuffer
 
-/** Wraps an OpenGL Vertex Buffer. */
+/**
+ * Wraps an OpenGL Vertex Buffer.
+ *
+ * @param vertices The vertices to go into the buffer.
+ */
 class VertexBuffer(vertices: List<Vertex>) : BufferObject {
     private val buffer: ByteBuffer = BufferUtils.createByteBuffer(vertices.size * Vertex.stride)
     private val vbo: GenericBuffer

@@ -72,6 +72,7 @@ import org.lwjgl.opengl.GLCapabilities
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil
 
+/** The renderer to render a scene with. */
 class Renderer {
     private var window: Long = 0
     private val openGLMajor = 4
@@ -183,11 +184,14 @@ class Renderer {
     private var lastMouseX: Float = 0f
     private var lastMouseY: Float = 0f
     private var firstMouse: Boolean = true
+
+    /** The active camera. */
     var activeCamera: Camera = Camera()
         private set
-
+    /** The width of the window. */
     var windowWidth = 1200
         private set
+    /** The height of the window. */
     var windowHeight = 700
         private set
 

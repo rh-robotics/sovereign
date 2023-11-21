@@ -8,7 +8,13 @@ import org.lwjgl.opengl.GL20.glEnableVertexAttribArray
 import org.lwjgl.opengl.GL20.glVertexAttribPointer
 import java.nio.ByteBuffer
 
-/** Data that is shipped off to the GPU. */
+/**
+ * Vertex geometry. data
+ *
+ * @param position The position of the vertex.
+ * @param color The color of the vertex.
+ * @param normal The normal of the vertex.
+ */
 class Vertex(
     @PackMe
     @JvmField

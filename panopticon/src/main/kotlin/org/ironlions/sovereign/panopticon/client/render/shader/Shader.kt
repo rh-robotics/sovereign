@@ -22,7 +22,8 @@ import java.nio.ByteBuffer
  * @param source The shader source code.
  */
 class Shader(type: Int, name: String, source: ByteBuffer) : Closeable {
-    var shader: Int
+    /** The shader object as seen by OpenGL. */
+    internal var shader: Int
         private set
 
     init {

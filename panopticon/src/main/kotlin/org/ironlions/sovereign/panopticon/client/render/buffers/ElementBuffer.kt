@@ -8,6 +8,11 @@ import org.lwjgl.opengl.GL41.glGenBuffers
 import org.lwjgl.opengl.GL41.glBufferData
 import org.lwjgl.opengl.GL41.glDeleteBuffers
 
+/**
+ * Indices into a list of vertices to draw triangles. Analogous to an EBO.
+ *
+ * @param indices The indices to use.
+ */
 class ElementBuffer(indices: List<Int>) : BufferObject {
     private val buffer = BufferUtils.createIntBuffer(indices.size)
     private val ebo: Int = glGenBuffers()

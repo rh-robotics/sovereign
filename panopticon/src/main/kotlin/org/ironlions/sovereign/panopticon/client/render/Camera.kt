@@ -18,6 +18,16 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sin
 
+/**
+ * A camera from which to render a scene.
+ *
+ * @param position The position of the camera.
+ * @param up The up vector.
+ * @param yaw The amount of yaw.
+ * @param pitch The amount of pitch.
+ * @param cameraSpeed The speed at which the camera moves per frame.
+ * @param mouseSensitivity The amount at which to multiply camera input.
+ */
 class Camera(
     val position: Vec3 = Vec3(0, 0, 2),
     private var up: Vec3 = Vec3(0.0f, 1.0f, 0.0f),
@@ -26,15 +36,21 @@ class Camera(
     private val cameraSpeed: Float = 0.1f,
     private val mouseSensitivity: Float = 0.1f,
 ) : EventReceiver {
-    var projectionMatrix: Mat4 = glm.perspective(glm.radians(45.0f), 1.7142857f, 0.1f, 100.0f)
     private var front: Vec3 = Vec3(0.0f, 0.0f, -1.0f)
     private var worldUp: Vec3 = Vec3(up.x, up.y, up.z)
     private lateinit var right: Vec3
+    /** The projection matrix to use. */
+    var projectionMatrix: Mat4 = glm.perspective(glm.radians(45.0f), 1.7142857f, 0.1f, 100.0f)
 
     init {
         calculateCameraVectors()
     }
 
+    /**
+     * Get the view matrix from all the vectors.
+     *
+     * @param renderer The render to use.
+     */
     fun getViewMatrix(renderer: Renderer): Mat4 {
         projectionMatrix =
             glm.perspective(
@@ -47,6 +63,7 @@ class Camera(
         return glm.lookAt(position, position + front, up)
     }
 
+    /** Recalculate all the camera vectors. */
     private fun calculateCameraVectors() {
         front.x = cos(glm.radians(yaw)) * cos(glm.radians(pitch))
         front.y = sin(glm.radians(pitch))
@@ -56,6 +73,11 @@ class Camera(
         up = glm.normalize(glm.cross(right, front))
     }
 
+    /** Process some keyword input.
+     *
+     * @param window The window receiving the event.
+     * @param deltaTime The time since the last frame.
+     */
     private fun processKeyboardInput(window: Long, deltaTime: Float) {
         val velocity = cameraSpeed * deltaTime
 
@@ -84,6 +106,12 @@ class Camera(
         }
     }
 
+    /**
+     * Process any nascent mouse movement.
+     *
+     * @param xOffset The amount the mouse has moved in the X direction since the last frame.
+     * @param yOffset The amount the mouse has moved in the Y direction since the last frame.
+     */
     private fun processMouseInput(xOffset: Float, yOffset: Float) {
         yaw += xOffset * mouseSensitivity
         pitch += yOffset * mouseSensitivity

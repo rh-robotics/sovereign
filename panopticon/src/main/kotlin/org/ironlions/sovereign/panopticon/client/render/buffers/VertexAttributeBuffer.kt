@@ -8,9 +8,11 @@ import org.lwjgl.opengl.GL41.glVertexAttribPointer
 import org.lwjgl.opengl.GL41.glGenVertexArrays
 import org.lwjgl.opengl.GL41.glDeleteVertexArrays
 
+/** Holds attribute data about a vertex buffer. Analogous to a VAO. */
 class VertexAttributeBuffer : BufferObject {
     private val vao = glGenVertexArrays()
 
+    /** Set up the attribute pointers. */
     fun installPointers() {
         var offset = 0
 

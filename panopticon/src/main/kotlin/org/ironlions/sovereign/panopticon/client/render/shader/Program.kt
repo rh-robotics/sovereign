@@ -38,7 +38,11 @@ class Program(private val name: String, vertexSource: ByteBuffer, fragmentSource
         }
     }
 
-    /** Attach a shader to a program. */
+    /**
+     * Attach a shader to a program.
+     *
+     * @param shader The shader to attach.
+     */
     fun attach(shader: Shader) = glAttachShader(program, shader.shader)
 
     /** Link the attached shaders together into a program. */
@@ -56,7 +60,11 @@ class Program(private val name: String, vertexSource: ByteBuffer, fragmentSource
     /** Bind the program. */
     fun use() = glUseProgram(program)
 
-    /** Get the location of a uniform in the program. */
+    /**
+     * Get the location of a uniform in the program.
+     *
+     * @param name The uniform name.
+     */
     fun loc(name: String) = glGetUniformLocation(program, name)
 
     /** Print what's gone wrong! */

@@ -4,7 +4,11 @@ import org.ironlions.sovereign.panopticon.client.ecs.components.Component
 import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
 
-/** An entity is a thing within a [Scene]. */
+/**
+ * An entity is a thing within a [Scene].
+ *
+ * @param parent The parent scene.
+ */
 class Entity(val parent: Scene) {
     val components: HashMap<KClass<*>, Component> = HashMap()
 

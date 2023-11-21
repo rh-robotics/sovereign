@@ -13,7 +13,14 @@ import org.lwjgl.opengl.GL41.GL_UNSIGNED_INT
 import org.lwjgl.opengl.GL41.glDrawElements
 import org.lwjgl.opengl.GL41.glUniformMatrix4fv
 
-/** This component allows for the rendering of an entity. */
+/**
+ * This component allows for the rendering of an entity.
+ *
+ * @param modelMatrix The model matrix of the mesh (displacement).
+ * @param program The shader program to use to draw this.
+ * @param vertices The vertices that make up the mesh.
+ * @param indices The triangle indices into the vertices list to draw with.
+ */
 class Mesh(
     override val parent: Entity,
     private val modelMatrix: Mat4,
