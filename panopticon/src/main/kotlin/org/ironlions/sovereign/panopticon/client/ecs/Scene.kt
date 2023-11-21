@@ -7,7 +7,7 @@ import org.ironlions.sovereign.panopticon.client.render.Renderer
 class Scene(
     val name: String
 ) {
-    private val entities: MutableList<Entity> = ArrayList()
+    val entities: MutableList<Entity> = ArrayList()
 
     /** An an entity to the scene. */
     fun add(entity: Entity) = apply { entities.add(entity) }

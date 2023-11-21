@@ -13,22 +13,16 @@ import java.nio.ByteBuffer
 /** Wraps an OpenGL Vertex Buffer. */
 class VertexBuffer(vertices: List<Vertex>) : BufferObject {
     private val buffer: ByteBuffer = BufferUtils.createByteBuffer(vertices.size * Vertex.stride)
-    private val vbo: Int = glGenBuffers()
+    private val vbo: GenericBuffer
 
     init {
         // Pack the vertices into a continuous buffer.
         vertices.forEach { it.pack(buffer) }
         buffer.flip()
-
-        // Set up the vertex buffer.
-        bind()
-        glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW)
-        unbind()
+        vbo = GenericBuffer(GL_ARRAY_BUFFER, buffer)
     }
 
-    override fun bind() = glBindBuffer(GL_ARRAY_BUFFER, vbo)
-
-    override fun unbind() = glBindBuffer(GL_ARRAY_BUFFER, 0)
-
-    override fun close() = glDeleteBuffers(vbo)
+    override fun bind() = vbo.bind()
+    override fun unbind() = vbo.unbind()
+    override fun close() = vbo.close()
 }

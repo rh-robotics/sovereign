@@ -42,12 +42,10 @@ class Mesh(
         program.use()
         attributes.bind()
 
-        // TODO: this is inefficient.
+        // Set our uniforms. TODO: this is inefficient.
         glUniformMatrix4fv(program.loc("model"), false, modelMatrix.array)
         glUniformMatrix4fv(
-            program.loc("view"),
-            false,
-            renderer.activeCamera.getViewMatrix(renderer).array
+            program.loc("view"), false, renderer.activeCamera.getViewMatrix(renderer).array
         )
         glUniformMatrix4fv(
             program.loc("projection"), false, renderer.activeCamera.projectionMatrix.array
@@ -55,6 +53,17 @@ class Mesh(
         glUniformMatrix4fv(
             program.loc("viewPosition"), false, renderer.activeCamera.position.array
         )
+
+        // Light our object. TODO: this is inefficient.
+        for (entity in parent.parent.entities) {
+            for (component in entity.components) {
+                if (component.key == Light::class) {
+                    (component.value as? Light)!!.light(program)
+                }
+            }
+        }
+
+        // Draw everything
         glDrawElements(GL_TRIANGLES, indices.size, GL_UNSIGNED_INT, 0)
     }
 
