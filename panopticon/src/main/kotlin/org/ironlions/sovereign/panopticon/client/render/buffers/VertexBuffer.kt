@@ -17,7 +17,7 @@ class VertexBuffer(vertices: List<Vertex>) : BufferObject {
 
     init {
         // Pack the vertices into a continuous buffer.
-        vertices.forEach { it.pack(buffer) }
+        vertices.forEach { Vertex.pack(it, buffer) }
         buffer.flip()
         vbo = GenericBuffer(GL_ARRAY_BUFFER, buffer)
     }
