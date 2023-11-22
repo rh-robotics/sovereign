@@ -61,15 +61,6 @@ class Mesh(
             program.loc("viewPosition"), false, renderer.activeCamera.position.array
         )
 
-        // Light our object. TODO: this is inefficient.
-        for (entity in parent.parent.entities) {
-            for (component in entity.components) {
-                if (component.key == Light::class) {
-                    (component.value as? Light)!!.light(program)
-                }
-            }
-        }
-
         // Draw everything
         glDrawElements(GL_TRIANGLES, indices.size, GL_UNSIGNED_INT, 0)
     }
