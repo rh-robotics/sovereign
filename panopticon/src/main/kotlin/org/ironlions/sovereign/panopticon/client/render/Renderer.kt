@@ -15,7 +15,6 @@ import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR
 import org.lwjgl.glfw.GLFW.GLFW_CURSOR
-import org.lwjgl.glfw.GLFW.GLFW_CURSOR_CAPTURED
 import org.lwjgl.glfw.GLFW.GLFW_CURSOR_DISABLED
 import org.lwjgl.glfw.GLFW.GLFW_FALSE
 import org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE
@@ -55,6 +54,7 @@ import org.lwjgl.glfw.GLFW.glfwWindowShouldClose
 import org.lwjgl.glfw.GLFWErrorCallback
 import org.lwjgl.glfw.GLFWVidMode
 import org.lwjgl.opengl.GL
+import org.lwjgl.opengl.GL41.GL_FRAMEBUFFER_SRGB
 import org.lwjgl.opengl.GL41.GL_COLOR_BUFFER_BIT
 import org.lwjgl.opengl.GL41.GL_CULL_FACE
 import org.lwjgl.opengl.GL41.GL_DEPTH_BUFFER_BIT
@@ -62,12 +62,12 @@ import org.lwjgl.opengl.GL41.GL_DEPTH_TEST
 import org.lwjgl.opengl.GL41.GL_RENDERER
 import org.lwjgl.opengl.GL41.GL_VENDOR
 import org.lwjgl.opengl.GL41.GL_VERSION
+import org.lwjgl.opengl.GL41.GL_MULTISAMPLE
 import org.lwjgl.opengl.GL41.glClear
 import org.lwjgl.opengl.GL41.glClearColor
 import org.lwjgl.opengl.GL41.glEnable
 import org.lwjgl.opengl.GL41.glGetString
 import org.lwjgl.opengl.GL41.glViewport
-import org.lwjgl.opengl.GL43.GL_MULTISAMPLE
 import org.lwjgl.opengl.GLCapabilities
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil
@@ -316,6 +316,7 @@ class Renderer {
         glEnable(GL_CULL_FACE)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_MULTISAMPLE)
+        glEnable(GL_FRAMEBUFFER_SRGB)
     }
 
     /**
