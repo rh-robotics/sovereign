@@ -2,7 +2,9 @@ package org.ironlions.sovereign.panopticon.client.ecs.components
 
 import glm_.vec3.Vec3
 import org.ironlions.sovereign.panopticon.client.ecs.Entity
+import org.ironlions.sovereign.panopticon.client.render.geometry.Vertex
 import org.ironlions.sovereign.panopticon.client.render.shader.Program
+import org.ironlions.sovereign.panopticon.client.util.Packable
 import java.nio.ByteBuffer
 
 /**
@@ -18,24 +20,10 @@ class Light(
     val color: Vec3,
     val intensity: Float,
 ) : Component(parent) {
-    // TODO: Remove me in favour of [Packable].
-    fun pack(buffer: ByteBuffer) {
-        // Position
-        buffer.putFloat(position.x)
-        buffer.putFloat(position.y)
-        buffer.putFloat(position.z)
-
-        // Color
-        buffer.putFloat(color.r)
-        buffer.putFloat(color.g)
-        buffer.putFloat(color.b)
-
-        // Intensity
-        buffer.putFloat(intensity)
-    }
-
     /** Send the lighting data to the shader. */
     fun light(program: Program) {
 
     }
+
+    companion object : Packable<Light>(Light::class)
 }
