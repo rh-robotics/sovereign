@@ -16,7 +16,7 @@ open class Event {
      * @param xOffset The X offset of the mouse since the last read.
      * @param yOffset The y offset of the mouse since the last read.
      */
-    class Mouse(val xOffset: Float, val yOffset: Float) : Event()
+    class Mouse(val window: Long, val xOffset: Float, val yOffset: Float) : Event()
 
     /**
      * A framebuffer resize event occurred.

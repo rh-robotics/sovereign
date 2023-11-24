@@ -52,7 +52,7 @@ class Mesh(
         // Set our uniforms. TODO: this is inefficient.
         glUniformMatrix4fv(program.loc("model"), false, modelMatrix.array)
         glUniformMatrix4fv(
-            program.loc("view"), false, renderer.activeCamera.getViewMatrix(renderer).array
+            program.loc("view"), false, renderer.activeCamera.getViewMatrix().array
         )
         glUniformMatrix4fv(
             program.loc("projection"), false, renderer.activeCamera.projectionMatrix.array

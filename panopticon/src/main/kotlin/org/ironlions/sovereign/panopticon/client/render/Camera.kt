@@ -11,8 +11,10 @@ import org.lwjgl.glfw.GLFW.GLFW_KEY_S
 import org.lwjgl.glfw.GLFW.GLFW_KEY_W
 import org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE
 import org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT
+import org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT
 import org.lwjgl.glfw.GLFW.GLFW_PRESS
 import org.lwjgl.glfw.GLFW.glfwGetKey
+import org.lwjgl.glfw.GLFW.glfwGetMouseButton
 import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.min
@@ -39,6 +41,7 @@ class Camera(
     private var front: Vec3 = Vec3(0.0f, 0.0f, -1.0f)
     private var worldUp: Vec3 = Vec3(up.x, up.y, up.z)
     private lateinit var right: Vec3
+
     /** The projection matrix to use. */
     var projectionMatrix: Mat4 = glm.perspective(glm.radians(45.0f), 1.7142857f, 0.1f, 100.0f)
 
@@ -48,19 +51,9 @@ class Camera(
 
     /**
      * Get the view matrix from all the vectors.
-     *
-     * @param renderer The render to use.
      */
-    fun getViewMatrix(renderer: Renderer): Mat4 {
-        projectionMatrix =
-            glm.perspective(
-                glm.radians(45.0f),
-                renderer.windowWidth.toFloat() / renderer.windowHeight.toFloat(),
-                0.1f,
-                100.0f
-            )
-
-        return glm.lookAt(position, position + front, up)
+    fun getViewMatrix(): Mat4 {
+        return glm.lookAt(position, front + position, up)
     }
 
     /** Recalculate all the camera vectors. */
@@ -112,16 +105,32 @@ class Camera(
      * @param xOffset The amount the mouse has moved in the X direction since the last frame.
      * @param yOffset The amount the mouse has moved in the Y direction since the last frame.
      */
-    private fun processMouseInput(xOffset: Float, yOffset: Float) {
-        yaw += xOffset * mouseSensitivity
-        pitch += yOffset * mouseSensitivity
-        pitch = max(min(pitch, 89.0f), -89.0f)
-        calculateCameraVectors()
+    private fun processMouseInput(window: Long, xOffset: Float, yOffset: Float) {
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
+            yaw += xOffset * mouseSensitivity
+            pitch += yOffset * mouseSensitivity
+            calculateCameraVectors()
+        }
+    }
+
+    /** Calculate the projection matrix.
+     *
+     * @param width The width of the framebuffer.
+     * @param height The height of the framebuffer.
+     */
+    private fun calculateProjectionMatrix(width: Float, height: Float) {
+        projectionMatrix = glm.perspective(
+            glm.radians(45.0f),
+            width / height,
+            0.1f,
+            100.0f
+        )
     }
 
     override fun onEvent(event: Event) = when (event) {
-        is Event.Mouse -> processMouseInput(event.xOffset, event.yOffset)
+        is Event.Mouse -> processMouseInput(event.window, event.xOffset, event.yOffset)
         is Event.Frame -> processKeyboardInput(event.window, event.deltaTime)
+        is Event.FramebufferResize -> calculateProjectionMatrix(event.width.toFloat(), event.height.toFloat())
         else -> {}
     }
 }

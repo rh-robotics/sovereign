@@ -159,24 +159,24 @@ class Renderer {
         3, 2, 1,
 
         // Face 2
-        3+4, 1+4, 0+4,
-        3+4, 2+4, 1+4,
+        3 + 4, 1 + 4, 0 + 4,
+        3 + 4, 2 + 4, 1 + 4,
 
         // Face 3
-        0+8, 1+8, 3+8,
-        1+8, 2+8, 3+8,
+        0 + 8, 1 + 8, 3 + 8,
+        1 + 8, 2 + 8, 3 + 8,
 
         // Face 4
-        0+12, 1+12, 3+12,
-        1+12, 2+12, 3+12,
+        0 + 12, 1 + 12, 3 + 12,
+        1 + 12, 2 + 12, 3 + 12,
 
         // Face 5
-        3+16, 1+16, 0+16,
-        3+16, 2+16, 1+16,
+        3 + 16, 1 + 16, 0 + 16,
+        3 + 16, 2 + 16, 1 + 16,
 
         // Face 6
-        3+20, 1+20, 0+20,
-        3+20, 2+20, 1+20,
+        3 + 20, 1 + 20, 0 + 20,
+        3 + 20, 2 + 20, 1 + 20,
     )
     private val scene: Scene = Scene(
         name = "main",
@@ -195,9 +195,11 @@ class Renderer {
     /** The active camera. */
     var activeCamera: Camera = Camera()
         private set
+
     /** The width of the window. */
     var windowWidth = 1200
         private set
+
     /** The height of the window. */
     var windowHeight = 700
         private set
@@ -242,7 +244,10 @@ class Renderer {
 
         setupImGui(window)
 
-        eventDispatcher.subscribe(activeCamera, listOf(Event.Mouse::class, Event.Frame::class))
+        eventDispatcher.subscribe(
+            activeCamera,
+            listOf(Event.Mouse::class, Event.Frame::class, Event.FramebufferResize::class)
+        )
 
         val entity = Entity(scene)
         entity.addComponent(
@@ -341,6 +346,8 @@ class Renderer {
         val io = ImGui.getIO()
         io.configFlags /= ImGuiConfigFlags.NavEnableKeyboard
         io.configFlags /= ImGuiConfigFlags.NavEnableGamepad
+        io.iniFilename = null
+        io.logFilename = null
 
         ImGui.styleColorsDark()
         imGuiImplGlfw.init(window, true)
@@ -387,7 +394,9 @@ class Renderer {
         lastMouseX = x
         lastMouseY = y
 
-        eventDispatcher.broadcastToSubscribers(Event.Mouse(xOffset, yOffset))
+        if (!ImGui.getIO().wantCaptureMouse) {
+            eventDispatcher.broadcastToSubscribers(Event.Mouse(window, xOffset, yOffset))
+        }
     }
 
     /**
