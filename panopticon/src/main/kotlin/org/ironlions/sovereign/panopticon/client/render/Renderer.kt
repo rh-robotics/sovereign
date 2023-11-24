@@ -2,6 +2,11 @@ package org.ironlions.sovereign.panopticon.client.render
 
 import glm_.mat4x4.Mat4
 import glm_.vec3.Vec3
+import imgui.ImGui
+import imgui.flag.ImGuiConfigFlags
+import imgui.glfw.ImGuiImplGlfw
+import imgui.gl3.ImGuiImplGl3
+import imgui.lwjgl3.glfw.ImGuiImplGlfwNative
 import org.ironlions.sovereign.panopticon.client.Logging
 import org.ironlions.sovereign.panopticon.client.ecs.Entity
 import org.ironlions.sovereign.panopticon.client.ecs.Scene
@@ -79,16 +84,18 @@ class Renderer {
     private val openGLMinor = 1
     private val requiredCapabilities = arrayOf("OpenGL41")
     private val eventDispatcher = EventDispatcher()
+    private var imGuiImplGlfw: ImGuiImplGlfw = ImGuiImplGlfw()
+    private var imGuiImplGl3: ImGuiImplGl3 = ImGuiImplGl3()
     private val vertices = listOf(
         // Face 1 (closest to camera)
         Vertex(
             Vec3(0.5, 0.5, 0.5), Vec3(1, 0, 0), Vec3(0.0, 0.0, 1.0)
         ), Vertex(
-            Vec3(0.5, -0.5, 0.5), Vec3(1, 0, 0), Vec3(0.0, 0.0, 1.0)
+            Vec3(0.5, -0.5, 0.5), Vec3(0, 1, 0), Vec3(0.0, 0.0, 1.0)
         ), Vertex(
-            Vec3(-0.5, -0.5, 0.5), Vec3(1, 0, 0), Vec3(0.0, 0.0, 1.0)
+            Vec3(-0.5, -0.5, 0.5), Vec3(0, 0, 1), Vec3(0.0, 0.0, 1.0)
         ), Vertex(
-            Vec3(-0.5, 0.5, 0.5), Vec3(1, 0, 0), Vec3(0.0, 0.0, 1.0)
+            Vec3(-0.5, 0.5, 0.5), Vec3(0, 0, 0), Vec3(0.0, 0.0, 1.0)
         ),
 
         // Face 2 (top)
@@ -224,7 +231,6 @@ class Renderer {
         glfwMakeContextCurrent(window)
         glfwSwapInterval(1)
         glfwShowWindow(window)
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED)
         GL.createCapabilities()
         Logging.logger.debug { "$framebufferWidth, $framebufferHeight" }
         glViewport(0, 0, framebufferWidth!!, framebufferHeight!!)
@@ -233,6 +239,8 @@ class Renderer {
         describeOpenGL()
         checkCapabilities()
         enableFeatures()
+
+        setupImGui(window)
 
         eventDispatcher.subscribe(activeCamera, listOf(Event.Mouse::class, Event.Frame::class))
 
@@ -254,8 +262,16 @@ class Renderer {
         lastFrame = currentFrame
 
         while (!glfwWindowShouldClose(window)) {
+            imGuiImplGlfw.newFrame()
+            ImGui.newFrame()
+            ImGui.begin("Hello, ImGui!")
+            ImGui.text("Hello, world!")
+            ImGui.end()
+            ImGui.render()
+
             glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
+            imGuiImplGl3.renderDrawData(ImGui.getDrawData())
             eventDispatcher.broadcastToSubscribers(Event.Frame(window, deltaTime))
             scene.draw(this)
 
@@ -317,6 +333,18 @@ class Renderer {
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_MULTISAMPLE)
         glEnable(GL_FRAMEBUFFER_SRGB)
+    }
+
+    /** Initialize ImGui. */
+    private fun setupImGui(window: Long) {
+        ImGui.createContext()
+        val io = ImGui.getIO()
+        io.configFlags /= ImGuiConfigFlags.NavEnableKeyboard
+        io.configFlags /= ImGuiConfigFlags.NavEnableGamepad
+
+        ImGui.styleColorsDark()
+        imGuiImplGlfw.init(window, true)
+        imGuiImplGl3.init("#version 410 core")
     }
 
     /**

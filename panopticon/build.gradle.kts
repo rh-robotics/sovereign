@@ -74,13 +74,11 @@ dependencies {
     implementation("org.slf4j", "slf4j-reload4j", "2.0.9")
 
     /* Graphics */
-    //noinspection GradleDynamicVersion
-    implementation("kotlin.graphics", "imgui-core", "1.79+05")
-    //noinspection GradleDynamicVersion
-    implementation("kotlin.graphics", "imgui-gl", "1.79+05")
-    //noinspection GradleDynamicVersion
-    implementation("kotlin.graphics", "imgui-glfw", "1.79+05")
+    implementation("io.github.spair:imgui-java-app:1.86.11-10-g0dbf36c")
+    implementation("io.github.spair:imgui-java-natives-macos-ft:1.86.11-10-g0dbf36c")
+    implementation("io.github.spair:imgui-java-lwjgl3:1.86.11-10-g0dbf36c")
     implementation("kotlin.graphics", "glm", "0.9.9.1-11")
+    implementation("kotlin.graphics", "kool", "0.9.79")
 
     /* Graphics (LWJGL) */
     implementation(platform("org.lwjgl:lwjgl-bom:$lwjglVersion"))

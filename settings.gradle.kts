@@ -12,6 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
         maven("https://maven.brott.dev")
         maven("https://raw.githubusercontent.com/kotlin-graphics/mary/master")
+        maven("https://maven.realrobotix.me/imgui-java")
     }
 }
 
