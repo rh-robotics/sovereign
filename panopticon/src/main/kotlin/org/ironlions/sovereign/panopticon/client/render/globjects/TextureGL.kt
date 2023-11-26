@@ -1,4 +1,4 @@
-package org.ironlions.sovereign.panopticon.client.render.buffers
+package org.ironlions.sovereign.panopticon.client.render.globjects
 
 import org.lwjgl.opengl.GL41.GL_READ_ONLY
 import org.lwjgl.opengl.GL41.GL_TEXTURE_BUFFER
@@ -15,8 +15,8 @@ import java.nio.ByteBuffer
  * @param type The type of texture data.
  * @param data The texture.
  */
-class TextureBuffer(private val type: Int, data: ByteBuffer) : BufferObject {
-    private val buffer: GenericBuffer = GenericBuffer(GL_TEXTURE_BUFFER, data)
+class TextureGL(private val type: Int, data: ByteBuffer) : GLObject {
+    private val buffer: GenericGL = GenericGL(GL_TEXTURE_BUFFER, data)
     private val tbo: Int = glGenTextures()
 
     init {

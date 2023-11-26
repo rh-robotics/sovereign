@@ -5,7 +5,8 @@ import glm_.mat4x4.Mat4
 import glm_.vec3.Vec3
 import org.ironlions.sovereign.panopticon.client.render.event.Event
 import org.ironlions.sovereign.panopticon.client.render.event.EventReceiver
-import org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT
+import org.ironlions.sovereign.panopticon.client.render.globjects.Framebuffer
+import org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT
 import org.lwjgl.glfw.GLFW.GLFW_PRESS
 import org.lwjgl.glfw.GLFW.glfwGetMouseButton
 import kotlin.math.cos
@@ -14,14 +15,19 @@ import kotlin.math.sin
 /**
  * A camera from which to render a scene.
  *
+ * @param framebufferWidth The width of the framebuffer to render to.
+ * @param framebufferHeight The height of the framebuffer to render to.
  * @param position The position of the camera.
- * @param up The up vector.
- * @param yaw The amount of yaw.
- * @param pitch The amount of pitch.
+ * @param lookAt What the camera is looking at.
+ * @param phi The amount the camera is rotated around the origin on the x-axis.
+ * @param theta The amount of camera is rotated around the origin on the y-axis.
+ * @param radius The distance of the camera from the origin.
  * @param cameraSpeed The speed at which the camera moves per frame.
  * @param mouseSensitivity The amount at which to multiply camera input.
  */
 class Camera(
+    framebufferWidth: Int,
+    framebufferHeight: Int,
     var position: Vec3 = Vec3(0, 0, 2),
     private var lookAt: Vec3 = Vec3(0),
     private var phi: Float = -glm.PIf / 4,
@@ -33,7 +39,15 @@ class Camera(
     private var up: Vec3 = Vec3(0.0f, 1.0f, 0.0f)
 
     /** The projection matrix to use. */
-    var projectionMatrix: Mat4 = glm.perspective(glm.radians(45.0f), 1.7142857f, 0.1f, 100.0f)
+    var projectionMatrix: Mat4 = glm.perspective(
+        glm.radians(45.0f),
+        framebufferWidth.toFloat() / framebufferHeight,
+        0.1f,
+        100.0f
+    )
+
+    /** The framebuffer to use. */
+    var framebuffer: Framebuffer = Framebuffer(framebufferWidth, framebufferHeight)
 
     init {
         calculateCameraVectors()
@@ -62,12 +76,10 @@ class Camera(
      * @param yOffset The amount the mouse has moved in the Y direction since the last frame.
      */
     private fun processMouseInput(window: Long, xOffset: Float, yOffset: Float) {
-        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
             phi += xOffset * mouseSensitivity
-            theta -= yOffset * mouseSensitivity
+            theta += yOffset * mouseSensitivity
             theta = glm.clamp(glm.abs(theta), 0.1f, glm.PIf) * glm.sign(theta)
-
-            // if (glm.dot(-glm.transpose(getViewMatrix())[2], Vec4(up, 0)) * glm.sign(yOffset) > 0.99f)
 
             calculateCameraVectors()
         }
@@ -78,7 +90,7 @@ class Camera(
      * @param width The width of the framebuffer.
      * @param height The height of the framebuffer.
      */
-    private fun calculateProjectionMatrix(width: Float, height: Float) {
+    private fun onFramebufferResize(width: Float, height: Float) {
         projectionMatrix = glm.perspective(
             glm.radians(45.0f),
             width / height,
@@ -89,7 +101,11 @@ class Camera(
 
     override fun onEvent(event: Event) = when (event) {
         is Event.Mouse -> processMouseInput(event.window, event.xOffset, event.yOffset)
-        is Event.FramebufferResize -> calculateProjectionMatrix(event.width.toFloat(), event.height.toFloat())
+        is Event.FramebufferResize -> onFramebufferResize(
+            event.width.toFloat(),
+            event.height.toFloat()
+        )
+
         else -> {}
     }
 }

@@ -1,13 +1,8 @@
-package org.ironlions.sovereign.panopticon.client.render.buffers
+package org.ironlions.sovereign.panopticon.client.render.globjects
 
 import org.ironlions.sovereign.panopticon.client.render.geometry.Vertex
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL41.GL_ARRAY_BUFFER
-import org.lwjgl.opengl.GL41.GL_STATIC_DRAW
-import org.lwjgl.opengl.GL41.glBufferData
-import org.lwjgl.opengl.GL41.glDeleteBuffers
-import org.lwjgl.opengl.GL41.glBindBuffer
-import org.lwjgl.opengl.GL41.glGenBuffers
 import java.nio.ByteBuffer
 
 /**
@@ -15,15 +10,15 @@ import java.nio.ByteBuffer
  *
  * @param vertices The vertices to go into the buffer.
  */
-class VertexBuffer(vertices: List<Vertex>) : BufferObject {
+class VertexGL(vertices: List<Vertex>) : GLObject {
     private val buffer: ByteBuffer = BufferUtils.createByteBuffer(vertices.size * Vertex.stride)
-    private val vbo: GenericBuffer
+    private val vbo: GenericGL
 
     init {
         // Pack the vertices into a continuous buffer.
         vertices.forEach { Vertex.pack(it, buffer) }
         buffer.flip()
-        vbo = GenericBuffer(GL_ARRAY_BUFFER, buffer)
+        vbo = GenericGL(GL_ARRAY_BUFFER, buffer)
     }
 
     override fun bind() = vbo.bind()

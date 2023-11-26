@@ -1,4 +1,4 @@
-package org.ironlions.sovereign.panopticon.client.render.buffers
+package org.ironlions.sovereign.panopticon.client.render.globjects
 
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL41.GL_STATIC_DRAW
@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL41.glDeleteBuffers
  *
  * @param indices The indices to use.
  */
-class ElementBuffer(indices: List<Int>) : BufferObject {
+class ElementGL(indices: List<Int>) : GLObject {
     private val buffer = BufferUtils.createIntBuffer(indices.size)
     private val ebo: Int = glGenBuffers()
 

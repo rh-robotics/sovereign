@@ -3,7 +3,10 @@ package org.ironlions.sovereign.panopticon.client.render
 import glm_.mat4x4.Mat4
 import glm_.vec3.Vec3
 import imgui.ImGui
+import imgui.ImVec2
 import imgui.flag.ImGuiConfigFlags
+import imgui.flag.ImGuiFocusedFlags
+import imgui.flag.ImGuiWindowFlags
 import imgui.glfw.ImGuiImplGlfw
 import imgui.gl3.ImGuiImplGl3
 import org.ironlions.sovereign.panopticon.client.Logging
@@ -32,6 +35,7 @@ import org.lwjgl.glfw.GLFW.GLFW_VISIBLE
 import org.lwjgl.glfw.GLFW.glfwCreateWindow
 import org.lwjgl.glfw.GLFW.glfwDefaultWindowHints
 import org.lwjgl.glfw.GLFW.glfwDestroyWindow
+import org.lwjgl.glfw.GLFW.glfwGetCurrentContext
 import org.lwjgl.glfw.GLFW.glfwGetFramebufferSize
 import org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor
 import org.lwjgl.glfw.GLFW.glfwGetTime
@@ -80,6 +84,7 @@ class Renderer {
     private val openGLMajor = 4
     private val openGLMinor = 1
     private val requiredCapabilities = arrayOf("OpenGL41")
+    private val shaderPrelude = "#version 410 core"
     private val eventDispatcher = EventDispatcher()
     private var imGuiImplGlfw: ImGuiImplGlfw = ImGuiImplGlfw()
     private var imGuiImplGl3: ImGuiImplGl3 = ImGuiImplGl3()
@@ -188,9 +193,10 @@ class Renderer {
     private var lastMouseX: Float = 0f
     private var lastMouseY: Float = 0f
     private var firstMouse: Boolean = true
+    private var allowViewportPassthrough: Boolean = false
 
     /** The active camera. */
-    var activeCamera: Camera = Camera()
+    var activeCamera: Camera
         private set
 
     /** The width of the window. */
@@ -231,7 +237,7 @@ class Renderer {
         glfwSwapInterval(1)
         glfwShowWindow(window)
         GL.createCapabilities()
-        Logging.logger.debug { "$framebufferWidth, $framebufferHeight" }
+        activeCamera = Camera(framebufferWidth!!, framebufferHeight!!)
         glViewport(0, 0, framebufferWidth!!, framebufferHeight!!)
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f)
 
@@ -242,8 +248,7 @@ class Renderer {
         setupImGui(window)
 
         eventDispatcher.subscribe(
-            activeCamera,
-            listOf(Event.Mouse::class, Event.FramebufferResize::class)
+            activeCamera, listOf(Event.Mouse::class, Event.FramebufferResize::class)
         )
 
         val entity = Entity(scene)
@@ -263,23 +268,40 @@ class Renderer {
         deltaTime = currentFrame - lastFrame
         lastFrame = currentFrame
 
-        while (!glfwWindowShouldClose(window)) {
-            imGuiImplGlfw.newFrame()
-            ImGui.newFrame()
-            ImGui.begin("Hello, ImGui!")
-            ImGui.text("Hello, world!")
-            ImGui.end()
-            ImGui.render()
+        while (!glfwWindowShouldClose(window)) frame()
+    }
 
-            glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
+    /** Do a single frame. */
+    private fun frame() {
+        @Suppress("JoinDeclarationAndAssignment") val opdisplayAvail: ImVec2
 
-            eventDispatcher.broadcastToSubscribers(Event.Frame(window, deltaTime))
-            scene.draw(this)
-            imGuiImplGl3.renderDrawData(ImGui.getDrawData())
+        imGuiImplGlfw.newFrame()
+        ImGui.newFrame()
 
-            glfwSwapBuffers(window)
-            glfwPollEvents()
-        }
+        ImGui.setNextWindowSize(ImGui.getIO().displaySize.x, ImGui.getIO().displaySize.y)
+        ImGui.setNextWindowPos(0f, 0f)
+        ImGui.begin(
+            "Dock Space", ImGuiWindowFlags.NoBringToFrontOnFocus or ImGuiWindowFlags.NoTitleBar
+        )
+        ImGui.end()
+
+        ImGui.begin("Ontomorphic Phenomenographical Display")
+        opdisplayAvail = ImGui.getContentRegionAvail()
+        activeCamera.framebuffer.resize(opdisplayAvail.x.toInt(), opdisplayAvail.y.toInt())
+        activeCamera.framebuffer.imgui()
+        allowViewportPassthrough = ImGui.isWindowFocused(ImGuiFocusedFlags.RootWindow)
+        ImGui.end()
+        ImGui.render()
+
+        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
+        glViewport(0, 0, opdisplayAvail.x.toInt(), opdisplayAvail.y.toInt())
+        eventDispatcher.broadcastToSubscribers(Event.Frame(window, deltaTime))
+        scene.draw(this)
+
+        imGuiImplGl3.renderDrawData(ImGui.getDrawData())
+
+        glfwSwapBuffers(window)
+        glfwPollEvents()
     }
 
     /** Set GLFW and OpenGL loader hints. */
@@ -334,21 +356,20 @@ class Renderer {
         glEnable(GL_CULL_FACE)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_MULTISAMPLE)
-        glEnable(GL_FRAMEBUFFER_SRGB)
     }
 
     /** Initialize ImGui. */
     private fun setupImGui(window: Long) {
         ImGui.createContext()
         val io = ImGui.getIO()
-        io.configFlags /= ImGuiConfigFlags.NavEnableKeyboard
-        io.configFlags /= ImGuiConfigFlags.NavEnableGamepad
+        io.configFlags = io.configFlags or ImGuiConfigFlags.DockingEnable
+        io.configWindowsMoveFromTitleBarOnly = true
         io.iniFilename = null
         io.logFilename = null
 
         installImGuiTheme()
         imGuiImplGlfw.init(window, true)
-        imGuiImplGl3.init("#version 410 core")
+        imGuiImplGl3.init(shaderPrelude)
     }
 
     /**
@@ -374,7 +395,6 @@ class Renderer {
      * @param xIn The new x-value.
      * @param yIn The new y-value.
      */
-    @Suppress("UNUSED_PARAMETER")
     private fun onMouseMove(window: Long, xIn: Double, yIn: Double) {
         val x = xIn.toFloat()
         val y = yIn.toFloat()
@@ -391,7 +411,7 @@ class Renderer {
         lastMouseX = x
         lastMouseY = y
 
-        if (!ImGui.getIO().wantCaptureMouse) {
+        if (allowViewportPassthrough) {
             eventDispatcher.broadcastToSubscribers(Event.Mouse(window, xOffset, yOffset))
         }
     }

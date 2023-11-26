@@ -3,9 +3,9 @@ package org.ironlions.sovereign.panopticon.client.ecs.components
 import glm_.mat4x4.Mat4
 import org.ironlions.sovereign.panopticon.client.ecs.Entity
 import org.ironlions.sovereign.panopticon.client.render.Renderer
-import org.ironlions.sovereign.panopticon.client.render.buffers.ElementBuffer
-import org.ironlions.sovereign.panopticon.client.render.buffers.VertexAttributeBuffer
-import org.ironlions.sovereign.panopticon.client.render.buffers.VertexBuffer
+import org.ironlions.sovereign.panopticon.client.render.globjects.ElementGL
+import org.ironlions.sovereign.panopticon.client.render.globjects.VertexAttributeGL
+import org.ironlions.sovereign.panopticon.client.render.globjects.VertexGL
 import org.ironlions.sovereign.panopticon.client.render.geometry.Vertex
 import org.ironlions.sovereign.panopticon.client.render.shader.Program
 import org.lwjgl.opengl.GL41.GL_TRIANGLES
@@ -28,15 +28,15 @@ class Mesh(
     vertices: List<Vertex>,
     private val indices: List<Int>,
 ) : Component(parent) {
-    private val attributes = VertexAttributeBuffer()
-    private val buffer: VertexBuffer
-    private val elements: ElementBuffer
+    private val attributes = VertexAttributeGL()
+    private val buffer: VertexGL
+    private val elements: ElementGL
 
     init {
         // Construct the necessary buffers, sans attributes.
         attributes.bind()
-        buffer = VertexBuffer(vertices)
-        elements = ElementBuffer(indices)
+        buffer = VertexGL(vertices)
+        elements = ElementGL(indices)
 
         // Bind and construct attributes.
         buffer.bind()

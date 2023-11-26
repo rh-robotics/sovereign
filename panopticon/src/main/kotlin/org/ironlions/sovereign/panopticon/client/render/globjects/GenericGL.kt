@@ -1,4 +1,4 @@
-package org.ironlions.sovereign.panopticon.client.render.buffers
+package org.ironlions.sovereign.panopticon.client.render.globjects
 
 import org.lwjgl.opengl.GL41.GL_STATIC_DRAW
 import org.lwjgl.opengl.GL41.glBindBuffer
@@ -13,7 +13,7 @@ import java.nio.ByteBuffer
  * @param type The type of buffer.
  * @param data The data inside the buffer.
  */
-class GenericBuffer(private val type: Int, data: ByteBuffer) : BufferObject {
+class GenericGL(private val type: Int, data: ByteBuffer) : GLObject {
     /** The underlying OpenGL object. */
     val gbo: Int = glGenBuffers()
 

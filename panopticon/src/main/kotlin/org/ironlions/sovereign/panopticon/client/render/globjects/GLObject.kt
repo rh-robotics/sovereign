@@ -1,9 +1,9 @@
-package org.ironlions.sovereign.panopticon.client.render.buffers
+package org.ironlions.sovereign.panopticon.client.render.globjects
 
 import java.io.Closeable
 
 /** A buffer object, of some sort. */
-interface BufferObject : Closeable {
+interface GLObject : Closeable {
     /** Bind the buffer object. */
     fun bind()
 

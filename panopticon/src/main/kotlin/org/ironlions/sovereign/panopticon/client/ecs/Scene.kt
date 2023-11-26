@@ -1,9 +1,11 @@
 package org.ironlions.sovereign.panopticon.client.ecs
 
 import org.ironlions.sovereign.panopticon.client.ecs.components.Component
-import org.ironlions.sovereign.panopticon.client.ecs.components.Light
 import org.ironlions.sovereign.panopticon.client.ecs.components.Mesh
 import org.ironlions.sovereign.panopticon.client.render.Renderer
+import org.lwjgl.opengl.GL41.GL_COLOR_BUFFER_BIT
+import org.lwjgl.opengl.GL41.GL_DEPTH_BUFFER_BIT
+import org.lwjgl.opengl.GL41.glClear
 import kotlin.reflect.KClass
 
 /**
@@ -31,9 +33,15 @@ class Scene(
     fun remove(entity: Entity) = apply { entities.remove(entity) }
 
     /** Draw all the entities with a mesh in the scene. */
-    fun draw(renderer: Renderer) =
+    fun draw(renderer: Renderer) {
+        renderer.activeCamera.framebuffer.bind()
+        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
+
         components.getOrDefault(Mesh::class as KClass<out Component>, listOf())
             .forEach { (it as? Mesh)!!.draw(renderer) }
+
+        renderer.activeCamera.framebuffer.unbind()
+    }
 
     /** Destroy the scene and all entities along with it. */
     fun destroy() = entities.forEach { entity -> entity.destroy() }

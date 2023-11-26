@@ -1,4 +1,4 @@
-package org.ironlions.sovereign.panopticon.client.render.buffers
+package org.ironlions.sovereign.panopticon.client.render.globjects
 
 import glm_.asUnsignedLong
 import org.ironlions.sovereign.panopticon.client.render.geometry.Vertex
@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL41.glGenVertexArrays
 import org.lwjgl.opengl.GL41.glDeleteVertexArrays
 
 /** Holds attribute data about a vertex buffer. Analogous to a VAO. */
-class VertexAttributeBuffer : BufferObject {
+class VertexAttributeGL : GLObject {
     private val vao = glGenVertexArrays()
 
     /** Set up the attribute pointers. */
