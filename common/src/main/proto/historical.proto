@@ -1,8 +1,8 @@
 syntax = "proto3";
-package com.ironlions.sovereign.common.proto.historical;
+package org.ironlions.sovereign.common.proto.historical;
 
 import "environment.proto";
 
 message Record {
-  repeated com.ironlions.sovereign.common.proto.environment.Packet packet = 1;
+  repeated org.ironlions.sovereign.common.proto.environment.Packet packet = 1;
 }

@@ -15,6 +15,7 @@ import org.ironlions.sovereign.panopticon.client.render.imgui.installImGuiTheme
 import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR
+import org.lwjgl.glfw.GLFW.GLFW_DECORATED
 import org.lwjgl.glfw.GLFW.GLFW_FALSE
 import org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE
 import org.lwjgl.glfw.GLFW.GLFW_OPENGL_CORE_PROFILE
@@ -40,6 +41,7 @@ import org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback
 import org.lwjgl.glfw.GLFW.glfwSetErrorCallback
 import org.lwjgl.glfw.GLFW.glfwSetFramebufferSizeCallback
 import org.lwjgl.glfw.GLFW.glfwSetKeyCallback
+import org.lwjgl.glfw.GLFW.glfwSetWindowAttrib
 import org.lwjgl.glfw.GLFW.glfwSetWindowPos
 import org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose
 import org.lwjgl.glfw.GLFW.glfwSetWindowSizeCallback
@@ -111,6 +113,7 @@ class Renderer {
         glfwSetFramebufferSizeCallback(window, ::onFramebufferResize)
         glfwSetWindowSizeCallback(window, ::onWindowResize)
         glfwSetCursorPosCallback(window, ::onMouseMove)
+        setWindowAttribs(window)
         getSizing()
 
         val vidmode: GLFWVidMode = glfwGetVideoMode(glfwGetPrimaryMonitor())!!
@@ -181,6 +184,10 @@ class Renderer {
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE)
         glfwWindowHint(GLFW_SAMPLES, 4)
     }
+
+    /** Set GLFW window attributes. */
+    @Suppress("UNUSED_PARAMETER")
+    private fun setWindowAttribs(window: Long) {}
 
     /** Get window size and framebuffer size from GLFW> */
     private fun getSizing() {

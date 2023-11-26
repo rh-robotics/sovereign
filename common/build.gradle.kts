@@ -3,8 +3,6 @@ plugins {
     id("com.google.protobuf") version "0.9.4"
 }
 
-group = "com.ironlions.sovereign.common"
-
 sourceSets {
     main {
         proto {

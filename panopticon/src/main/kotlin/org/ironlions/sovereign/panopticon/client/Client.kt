@@ -3,11 +3,6 @@ package org.ironlions.sovereign.panopticon.client
 import org.apache.log4j.BasicConfigurator
 import org.ironlions.sovereign.panopticon.client.render.Renderer
 
-/** The panopticon client graphical user interface. */
-class Client {
-
-}
-
 fun main() {
     BasicConfigurator.configure()
 

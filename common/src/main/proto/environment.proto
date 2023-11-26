@@ -1,5 +1,5 @@
 syntax = "proto3";
-package com.ironlions.sovereign.common.proto.environment;
+package org.ironlions.sovereign.common.proto.environment;
 
 import "google/protobuf/timestamp.proto";
 
