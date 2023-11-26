@@ -1,13 +1,16 @@
 syntax = "proto3";
 package com.ironlions.sovereign.common.proto.environment;
 
+import "google/protobuf/timestamp.proto";
+
 // TODO: To update some telemetry data, we have to resend the entire field object (thing). This is not efficient.
 
 // A packet containing some update information.
 message Packet {
-  optional Robot robot = 1;
-  optional Field field = 2;
-  repeated Thing things = 3;
+  google.protobuf.Timestamp timestamp = 1;
+  optional Robot robot = 2;
+  optional Field field = 3;
+  repeated Thing things = 4;
 }
 
 // The current robot.
