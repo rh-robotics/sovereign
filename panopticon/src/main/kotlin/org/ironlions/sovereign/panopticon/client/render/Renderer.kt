@@ -5,6 +5,7 @@ import glm_.vec3.Vec3
 import imgui.ImGui
 import imgui.ImVec2
 import imgui.flag.ImGuiConfigFlags
+import imgui.flag.ImGuiDockNodeFlags
 import imgui.flag.ImGuiFocusedFlags
 import imgui.flag.ImGuiWindowFlags
 import imgui.glfw.ImGuiImplGlfw
@@ -16,7 +17,6 @@ import org.ironlions.sovereign.panopticon.client.ecs.components.Mesh
 import org.ironlions.sovereign.panopticon.client.render.event.Event
 import org.ironlions.sovereign.panopticon.client.render.event.EventDispatcher
 import org.ironlions.sovereign.panopticon.client.render.geometry.Vertex
-import org.ironlions.sovereign.panopticon.client.render.imgui.installImGuiTheme
 import org.ironlions.sovereign.panopticon.client.render.shader.Program
 import org.ironlions.sovereign.panopticon.client.util.IOUtil
 import org.lwjgl.glfw.Callbacks
@@ -35,7 +35,6 @@ import org.lwjgl.glfw.GLFW.GLFW_VISIBLE
 import org.lwjgl.glfw.GLFW.glfwCreateWindow
 import org.lwjgl.glfw.GLFW.glfwDefaultWindowHints
 import org.lwjgl.glfw.GLFW.glfwDestroyWindow
-import org.lwjgl.glfw.GLFW.glfwGetCurrentContext
 import org.lwjgl.glfw.GLFW.glfwGetFramebufferSize
 import org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor
 import org.lwjgl.glfw.GLFW.glfwGetTime
@@ -60,7 +59,6 @@ import org.lwjgl.glfw.GLFW.glfwWindowShouldClose
 import org.lwjgl.glfw.GLFWErrorCallback
 import org.lwjgl.glfw.GLFWVidMode
 import org.lwjgl.opengl.GL
-import org.lwjgl.opengl.GL41.GL_FRAMEBUFFER_SRGB
 import org.lwjgl.opengl.GL41.GL_COLOR_BUFFER_BIT
 import org.lwjgl.opengl.GL41.GL_CULL_FACE
 import org.lwjgl.opengl.GL41.GL_DEPTH_BUFFER_BIT
@@ -193,6 +191,7 @@ class Renderer {
     private var lastMouseX: Float = 0f
     private var lastMouseY: Float = 0f
     private var firstMouse: Boolean = true
+    private var firstLoop: Boolean = true
     private var allowViewportPassthrough: Boolean = false
 
     /** The active camera. */
@@ -273,8 +272,6 @@ class Renderer {
 
     /** Do a single frame. */
     private fun frame() {
-        @Suppress("JoinDeclarationAndAssignment") val opdisplayAvail: ImVec2
-
         imGuiImplGlfw.newFrame()
         ImGui.newFrame()
 
@@ -284,24 +281,40 @@ class Renderer {
             "Dock Space", ImGuiWindowFlags.NoBringToFrontOnFocus or ImGuiWindowFlags.NoTitleBar
         )
 
-        ImGui.begin("Ontomorphic Phenomenographical Display")
-        opdisplayAvail = ImGui.getContentRegionAvail()
-        activeCamera.framebuffer.resize(opdisplayAvail.x.toInt(), opdisplayAvail.y.toInt())
-        activeCamera.framebuffer.imgui()
-        allowViewportPassthrough = ImGui.isWindowFocused(ImGuiFocusedFlags.RootWindow)
-        ImGui.end()
+        val opdisplayAvail = scene()
+        inspector()
+
         ImGui.end()
         ImGui.render()
 
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
         glViewport(0, 0, opdisplayAvail.x.toInt(), opdisplayAvail.y.toInt())
         eventDispatcher.broadcastToSubscribers(Event.Frame(window, deltaTime))
-        scene.draw(this)
 
+        scene.draw(this)
         imGuiImplGl3.renderDrawData(ImGui.getDrawData())
 
         glfwSwapBuffers(window)
         glfwPollEvents()
+    }
+
+    /** Draw the inspector. */
+    private fun inspector() {
+        ImGui.begin("Inspector")
+        ImGui.text("This is the inspector.")
+        ImGui.end()
+    }
+
+    /** Draw the rendered scene. */
+    private fun scene(): ImVec2 {
+        ImGui.begin("Ontomorphic Phenomenographical Display")
+        val opdisplayAvail = ImGui.getContentRegionAvail()
+        activeCamera.framebuffer.resize(opdisplayAvail.x.toInt(), opdisplayAvail.y.toInt())
+        activeCamera.framebuffer.imgui()
+        allowViewportPassthrough = ImGui.isWindowFocused(ImGuiFocusedFlags.RootWindow)
+        ImGui.end()
+
+        return opdisplayAvail
     }
 
     /** Set GLFW and OpenGL loader hints. */
@@ -363,8 +376,8 @@ class Renderer {
         ImGui.createContext()
         val io = ImGui.getIO()
         io.fonts.addFontFromFileTTF(
-            this::class.java.classLoader.getResource("fonts/Roboto-Medium.ttf")
-                !!.path, 16.0f)
+            this::class.java.classLoader.getResource("fonts/Roboto-Medium.ttf")!!.path, 16.0f
+        )
         io.configFlags = io.configFlags or ImGuiConfigFlags.DockingEnable
         io.configWindowsMoveFromTitleBarOnly = true
         io.iniFilename = null
