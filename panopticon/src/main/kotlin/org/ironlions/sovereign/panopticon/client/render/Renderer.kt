@@ -11,6 +11,7 @@ import org.ironlions.sovereign.panopticon.client.render.event.EventDispatcher
 import org.ironlions.sovereign.panopticon.client.render.imgui.GraphicsScene
 import org.ironlions.sovereign.panopticon.client.render.imgui.Inspector
 import org.ironlions.sovereign.panopticon.client.render.imgui.Window
+import org.ironlions.sovereign.panopticon.client.render.imgui.installImGuiTheme
 import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR
@@ -235,6 +236,7 @@ class Renderer {
         io.iniFilename = null
         io.logFilename = null
 
+        installImGuiTheme()
         imGuiImplGlfw.init(window, true)
         imGuiImplGl3.init(shaderPrelude)
     }
