@@ -78,7 +78,7 @@ class Camera(
     private fun processMouseInput(window: Long, xOffset: Float, yOffset: Float) {
         if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
             phi += xOffset * mouseSensitivity
-            theta += yOffset * mouseSensitivity
+            theta -= yOffset * mouseSensitivity
             theta = glm.clamp(glm.abs(theta), 0.1f, glm.PIf) * glm.sign(theta)
 
             calculateCameraVectors()

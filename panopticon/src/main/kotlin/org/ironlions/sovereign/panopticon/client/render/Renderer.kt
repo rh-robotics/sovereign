@@ -3,10 +3,7 @@ package org.ironlions.sovereign.panopticon.client.render
 import glm_.mat4x4.Mat4
 import glm_.vec3.Vec3
 import imgui.ImGui
-import imgui.ImVec2
 import imgui.flag.ImGuiConfigFlags
-import imgui.flag.ImGuiDockNodeFlags
-import imgui.flag.ImGuiFocusedFlags
 import imgui.flag.ImGuiWindowFlags
 import imgui.glfw.ImGuiImplGlfw
 import imgui.gl3.ImGuiImplGl3
@@ -17,6 +14,9 @@ import org.ironlions.sovereign.panopticon.client.ecs.components.Mesh
 import org.ironlions.sovereign.panopticon.client.render.event.Event
 import org.ironlions.sovereign.panopticon.client.render.event.EventDispatcher
 import org.ironlions.sovereign.panopticon.client.render.geometry.Vertex
+import org.ironlions.sovereign.panopticon.client.render.imgui.GraphicsScene
+import org.ironlions.sovereign.panopticon.client.render.imgui.Inspector
+import org.ironlions.sovereign.panopticon.client.render.imgui.Window
 import org.ironlions.sovereign.panopticon.client.render.shader.Program
 import org.ironlions.sovereign.panopticon.client.util.IOUtil
 import org.lwjgl.glfw.Callbacks
@@ -86,6 +86,8 @@ class Renderer {
     private val eventDispatcher = EventDispatcher()
     private var imGuiImplGlfw: ImGuiImplGlfw = ImGuiImplGlfw()
     private var imGuiImplGl3: ImGuiImplGl3 = ImGuiImplGl3()
+    private var sceneWindow = GraphicsScene()
+    private val windows: List<Window> = listOf(sceneWindow, Inspector())
     private val vertices = listOf(
         // Face 1 (closest to camera)
         Vertex(
@@ -191,19 +193,16 @@ class Renderer {
     private var lastMouseX: Float = 0f
     private var lastMouseY: Float = 0f
     private var firstMouse: Boolean = true
-    private var allowViewportPassthrough: Boolean = false
 
     /** The active camera. */
     var activeCamera: Camera
         private set
 
     /** The width of the window. */
-    var windowWidth = 1200
-        private set
+    private var windowWidth = 1200
 
     /** The height of the window. */
-    var windowHeight = 700
-        private set
+    private var windowHeight = 700
 
     init {
         Logging.logger.debug { "Initializing renderer." }
@@ -280,14 +279,18 @@ class Renderer {
             "Dock Space", ImGuiWindowFlags.NoBringToFrontOnFocus or ImGuiWindowFlags.NoTitleBar
         )
 
-        val opdisplayAvail = scene()
-        inspector()
+        windows.forEach { it.frame(this) }
 
         ImGui.end()
         ImGui.render()
 
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
-        glViewport(0, 0, opdisplayAvail.x.toInt(), opdisplayAvail.y.toInt())
+        glViewport(
+            0,
+            0,
+            sceneWindow.availableSpace!!.x.toInt(),
+            sceneWindow.availableSpace!!.y.toInt()
+        )
         eventDispatcher.broadcastToSubscribers(Event.Frame(window, deltaTime))
 
         scene.draw(this)
@@ -295,29 +298,6 @@ class Renderer {
 
         glfwSwapBuffers(window)
         glfwPollEvents()
-    }
-
-    /** Draw the inspector. */
-    private fun inspector() {
-        ImGui.begin("Inspector")
-        ImGui.text("This is the inspector.")
-        ImGui.end()
-    }
-
-    /** Draw the rendered scene. */
-    private fun scene(): ImVec2 {
-        ImGui.begin("Ontomorphic Phenomenographical Display")
-        val opdisplayAvail = ImGui.getContentRegionAvail()
-        val availWidth = opdisplayAvail.x.toInt()
-        val availHeight = opdisplayAvail.y.toInt()
-
-        eventDispatcher.broadcastToSubscribers(Event.FramebufferResize(availWidth, availHeight))
-        activeCamera.framebuffer.resize(availWidth, availHeight)
-        activeCamera.framebuffer.imgui()
-        allowViewportPassthrough = ImGui.isWindowFocused(ImGuiFocusedFlags.RootWindow)
-        ImGui.end()
-
-        return opdisplayAvail
     }
 
     /** Set GLFW and OpenGL loader hints. */
@@ -430,7 +410,7 @@ class Renderer {
         lastMouseX = x
         lastMouseY = y
 
-        if (allowViewportPassthrough) {
+        if (sceneWindow.hovering) {
             eventDispatcher.broadcastToSubscribers(Event.Mouse(window, xOffset, yOffset))
         }
     }

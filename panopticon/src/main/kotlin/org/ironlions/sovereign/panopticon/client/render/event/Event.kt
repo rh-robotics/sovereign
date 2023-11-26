@@ -1,5 +1,7 @@
 package org.ironlions.sovereign.panopticon.client.render.event
 
+import org.ironlions.sovereign.panopticon.client.render.globjects.Framebuffer
+
 /** A subscribable event type. */
 open class Event {
     /**
@@ -21,8 +23,9 @@ open class Event {
     /**
      * A framebuffer resize event occurred.
      *
+     * @param framebuffer The framebuffer that experienced the resize.
      * @param width The new framebuffer width.
      * @param height The new framebuffer height
      */
-    class FramebufferResize(val width: Int, val height: Int) : Event()
+    class FramebufferResize(val framebuffer: Framebuffer, val width: Int, val height: Int) : Event()
 }

@@ -36,7 +36,6 @@ class Framebuffer(
 ) : GLObject {
     private val fbo = glGenFramebuffers()
     private val texture = Texture(GL_TEXTURE_2D)
-    private val textures: MutableList<Texture> = ArrayList()
 
     init {
         bind()
