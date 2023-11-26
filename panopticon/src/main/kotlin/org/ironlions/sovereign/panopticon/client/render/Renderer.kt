@@ -6,7 +6,6 @@ import imgui.ImGui
 import imgui.flag.ImGuiConfigFlags
 import imgui.glfw.ImGuiImplGlfw
 import imgui.gl3.ImGuiImplGl3
-import imgui.lwjgl3.glfw.ImGuiImplGlfwNative
 import org.ironlions.sovereign.panopticon.client.Logging
 import org.ironlions.sovereign.panopticon.client.ecs.Entity
 import org.ironlions.sovereign.panopticon.client.ecs.Scene
@@ -14,13 +13,12 @@ import org.ironlions.sovereign.panopticon.client.ecs.components.Mesh
 import org.ironlions.sovereign.panopticon.client.render.event.Event
 import org.ironlions.sovereign.panopticon.client.render.event.EventDispatcher
 import org.ironlions.sovereign.panopticon.client.render.geometry.Vertex
+import org.ironlions.sovereign.panopticon.client.render.imgui.installImGuiTheme
 import org.ironlions.sovereign.panopticon.client.render.shader.Program
 import org.ironlions.sovereign.panopticon.client.util.IOUtil
 import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR
-import org.lwjgl.glfw.GLFW.GLFW_CURSOR
-import org.lwjgl.glfw.GLFW.GLFW_CURSOR_DISABLED
 import org.lwjgl.glfw.GLFW.GLFW_FALSE
 import org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE
 import org.lwjgl.glfw.GLFW.GLFW_OPENGL_CORE_PROFILE
@@ -45,7 +43,6 @@ import org.lwjgl.glfw.GLFW.glfwPollEvents
 import org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback
 import org.lwjgl.glfw.GLFW.glfwSetErrorCallback
 import org.lwjgl.glfw.GLFW.glfwSetFramebufferSizeCallback
-import org.lwjgl.glfw.GLFW.glfwSetInputMode
 import org.lwjgl.glfw.GLFW.glfwSetKeyCallback
 import org.lwjgl.glfw.GLFW.glfwSetWindowPos
 import org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose
@@ -349,7 +346,7 @@ class Renderer {
         io.iniFilename = null
         io.logFilename = null
 
-        ImGui.styleColorsDark()
+        installImGuiTheme()
         imGuiImplGlfw.init(window, true)
         imGuiImplGl3.init("#version 410 core")
     }
