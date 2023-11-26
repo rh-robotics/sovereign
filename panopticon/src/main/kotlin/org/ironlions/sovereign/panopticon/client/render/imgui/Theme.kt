@@ -1,8 +1,6 @@
 package org.ironlions.sovereign.panopticon.client.render.imgui
 
 import imgui.ImGui
-import imgui.ImVec2
-import imgui.ImVec4
 import imgui.flag.ImGuiCol
 
 

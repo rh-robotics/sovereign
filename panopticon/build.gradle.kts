@@ -94,4 +94,7 @@ dependencies {
     runtimeOnly("org.lwjgl", "lwjgl-glfw", classifier = lwjglNatives)
     runtimeOnly("org.lwjgl", "lwjgl-jemalloc", classifier = lwjglNatives)
     runtimeOnly("org.lwjgl", "lwjgl-stb", classifier = lwjglNatives)
+
+    /* Common */
+    implementation(project(":common"))
 }

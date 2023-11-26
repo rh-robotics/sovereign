@@ -1,0 +1,65 @@
+syntax = "proto3";
+package com.ironlions.sovereign.common.proto.environment;
+
+// TODO: To update some telemetry data, we have to resend the entire field object (thing). This is not efficient.
+
+// A packet containing some update information.
+message Packet {
+  optional Robot robot = 1;
+  optional Field field = 2;
+  repeated Thing things = 3;
+}
+
+// The current robot.
+message Robot {
+  Region region = 1; // What space Sovereign thinks the robot takes up.
+  string model = 2;  // The model to show in the Panopticon client.
+  DataNode data = 3; // Arbitrary treed data that may be useful.
+}
+
+// The current field.
+message Field {
+  Region region = 1;         // The region the field occupies.
+  DataNode data = 3;         // Arbitrary treed data that may be useful.
+}
+
+// A region in space.
+message Region {
+  // Point 1
+  float x1 = 1;
+  float y1 = 2;
+  float z1 = 3;
+
+  // Point 2
+  float x2 = 4;
+  float y2 = 5;
+  float z2 = 6;
+}
+
+// A field thing.
+message Thing {
+  enum ThingType {
+    // The object is likely to move.
+    THING_TYPE_DYNAMIC = 0;
+
+    // The object is unlikely to move.
+    THING_TYPE_STATIC = 1;
+  }
+
+  ThingType type = 1; // How Sovereign sees the thing's type.
+  Region region = 2;  // What space Sovereign thinks the thing takes up.
+  UUID uuid = 3;      // A UUID for creating new things updating existing things.
+  DataNode data = 4;  // Arbitrary treed data that may be useful.
+}
+
+// A node to contain some sort of data.
+message DataNode {
+  string name = 1;                // The name of the data node.
+  map<string, string> data = 2;   // The data associated with the node.
+  repeated DataNode children = 3; // Any child data.
+}
+
+// A universally unique identifier.
+message UUID {
+  bytes uuid = 1; // A 128-bit identifier.
+}
