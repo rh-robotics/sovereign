@@ -276,9 +276,9 @@ class Renderer {
 
             glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
-            imGuiImplGl3.renderDrawData(ImGui.getDrawData())
             eventDispatcher.broadcastToSubscribers(Event.Frame(window, deltaTime))
             scene.draw(this)
+            imGuiImplGl3.renderDrawData(ImGui.getDrawData())
 
             glfwSwapBuffers(window)
             glfwPollEvents()
