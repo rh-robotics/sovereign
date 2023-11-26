@@ -5,19 +5,10 @@ import glm_.mat4x4.Mat4
 import glm_.vec3.Vec3
 import org.ironlions.sovereign.panopticon.client.render.event.Event
 import org.ironlions.sovereign.panopticon.client.render.event.EventReceiver
-import org.lwjgl.glfw.GLFW.GLFW_KEY_A
-import org.lwjgl.glfw.GLFW.GLFW_KEY_D
-import org.lwjgl.glfw.GLFW.GLFW_KEY_S
-import org.lwjgl.glfw.GLFW.GLFW_KEY_W
-import org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE
-import org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT
-import org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT
+import org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT
 import org.lwjgl.glfw.GLFW.GLFW_PRESS
-import org.lwjgl.glfw.GLFW.glfwGetKey
 import org.lwjgl.glfw.GLFW.glfwGetMouseButton
 import kotlin.math.cos
-import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.sin
 
 /**
@@ -31,16 +22,15 @@ import kotlin.math.sin
  * @param mouseSensitivity The amount at which to multiply camera input.
  */
 class Camera(
-    val position: Vec3 = Vec3(0, 0, 2),
-    private var up: Vec3 = Vec3(0.0f, 1.0f, 0.0f),
-    private var yaw: Float = -90.0f,
-    private var pitch: Float = 0f,
+    var position: Vec3 = Vec3(0, 0, 2),
+    private var lookAt: Vec3 = Vec3(0),
+    private var phi: Float = -glm.PIf / 4,
+    private var theta: Float = -1.0f,
+    private var radius: Float = 5.0f,
     private val cameraSpeed: Float = 0.1f,
-    private val mouseSensitivity: Float = 0.1f,
+    private val mouseSensitivity: Float = 0.01f,
 ) : EventReceiver {
-    private var front: Vec3 = Vec3(0.0f, 0.0f, -1.0f)
-    private var worldUp: Vec3 = Vec3(up.x, up.y, up.z)
-    private lateinit var right: Vec3
+    private var up: Vec3 = Vec3(0.0f, 1.0f, 0.0f)
 
     /** The projection matrix to use. */
     var projectionMatrix: Mat4 = glm.perspective(glm.radians(45.0f), 1.7142857f, 0.1f, 100.0f)
@@ -53,50 +43,16 @@ class Camera(
      * Get the view matrix from all the vectors.
      */
     fun getViewMatrix(): Mat4 {
-        return glm.lookAt(position, front + position, up)
+        return glm.lookAt(position, lookAt, up)
     }
 
     /** Recalculate all the camera vectors. */
     private fun calculateCameraVectors() {
-        front.x = cos(glm.radians(yaw)) * cos(glm.radians(pitch))
-        front.y = sin(glm.radians(pitch))
-        front.z = sin(glm.radians(yaw)) * cos(glm.radians(pitch))
-        front = glm.normalize(front)
-        right = glm.normalize(glm.cross(front, worldUp))
-        up = glm.normalize(glm.cross(right, front))
-    }
-
-    /** Process some keyword input.
-     *
-     * @param window The window receiving the event.
-     * @param deltaTime The time since the last frame.
-     */
-    private fun processKeyboardInput(window: Long, deltaTime: Float) {
-        val velocity = cameraSpeed * deltaTime
-
-        if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_W)) {
-            position += front * velocity
-        }
-
-        if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_S)) {
-            position -= front * velocity
-        }
-
-        if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_D)) {
-            position += right * velocity
-        }
-
-        if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_A)) {
-            position -= right * velocity
-        }
-
-        if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_SPACE)) {
-            position += up * velocity
-        }
-
-        if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) {
-            position -= up * velocity
-        }
+        position = Vec3(
+            lookAt.x + radius * sin(theta) * cos(phi),
+            lookAt.y + radius * cos(theta),
+            lookAt.z + radius * sin(theta) * sin(phi)
+        )
     }
 
     /**
@@ -106,9 +62,13 @@ class Camera(
      * @param yOffset The amount the mouse has moved in the Y direction since the last frame.
      */
     private fun processMouseInput(window: Long, xOffset: Float, yOffset: Float) {
-        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
-            yaw += xOffset * mouseSensitivity
-            pitch += yOffset * mouseSensitivity
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+            phi += xOffset * mouseSensitivity
+            theta -= yOffset * mouseSensitivity
+            theta = glm.clamp(glm.abs(theta), 0.1f, glm.PIf) * glm.sign(theta)
+
+            // if (glm.dot(-glm.transpose(getViewMatrix())[2], Vec4(up, 0)) * glm.sign(yOffset) > 0.99f)
+
             calculateCameraVectors()
         }
     }
@@ -129,7 +89,6 @@ class Camera(
 
     override fun onEvent(event: Event) = when (event) {
         is Event.Mouse -> processMouseInput(event.window, event.xOffset, event.yOffset)
-        is Event.Frame -> processKeyboardInput(event.window, event.deltaTime)
         is Event.FramebufferResize -> calculateProjectionMatrix(event.width.toFloat(), event.height.toFloat())
         else -> {}
     }

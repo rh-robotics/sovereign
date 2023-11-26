@@ -246,7 +246,7 @@ class Renderer {
 
         eventDispatcher.subscribe(
             activeCamera,
-            listOf(Event.Mouse::class, Event.Frame::class, Event.FramebufferResize::class)
+            listOf(Event.Mouse::class, Event.FramebufferResize::class)
         )
 
         val entity = Entity(scene)
