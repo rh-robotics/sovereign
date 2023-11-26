@@ -191,7 +191,6 @@ class Renderer {
     private var lastMouseX: Float = 0f
     private var lastMouseY: Float = 0f
     private var firstMouse: Boolean = true
-    private var firstLoop: Boolean = true
     private var allowViewportPassthrough: Boolean = false
 
     /** The active camera. */
@@ -309,7 +308,11 @@ class Renderer {
     private fun scene(): ImVec2 {
         ImGui.begin("Ontomorphic Phenomenographical Display")
         val opdisplayAvail = ImGui.getContentRegionAvail()
-        activeCamera.framebuffer.resize(opdisplayAvail.x.toInt(), opdisplayAvail.y.toInt())
+        val availWidth = opdisplayAvail.x.toInt()
+        val availHeight = opdisplayAvail.y.toInt()
+
+        eventDispatcher.broadcastToSubscribers(Event.FramebufferResize(availWidth, availHeight))
+        activeCamera.framebuffer.resize(availWidth, availHeight)
         activeCamera.framebuffer.imgui()
         allowViewportPassthrough = ImGui.isWindowFocused(ImGuiFocusedFlags.RootWindow)
         ImGui.end()
@@ -443,7 +446,6 @@ class Renderer {
     private fun onFramebufferResize(window: Long, width: Int, height: Int) {
         getSizing()
         glViewport(0, 0, width, height)
-        eventDispatcher.broadcastToSubscribers(Event.FramebufferResize(width, height))
     }
 
     /**
