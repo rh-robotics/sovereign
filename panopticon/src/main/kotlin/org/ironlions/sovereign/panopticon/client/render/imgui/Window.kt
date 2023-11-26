@@ -47,6 +47,7 @@ abstract class Window(
         lastAvailableSpace = availableSpace
     }
 
+    open fun destroy() {}
     open fun init(renderer: Renderer) {}
     open fun content(renderer: Renderer) =
         ImGui.textColored(252, 163, 17, 255, "This window has no content.")

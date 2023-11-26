@@ -1,24 +1,16 @@
 package org.ironlions.sovereign.panopticon.client.render
 
-import glm_.mat4x4.Mat4
-import glm_.vec3.Vec3
 import imgui.ImGui
 import imgui.flag.ImGuiConfigFlags
 import imgui.flag.ImGuiWindowFlags
 import imgui.glfw.ImGuiImplGlfw
 import imgui.gl3.ImGuiImplGl3
 import org.ironlions.sovereign.panopticon.client.Logging
-import org.ironlions.sovereign.panopticon.client.ecs.Entity
-import org.ironlions.sovereign.panopticon.client.ecs.Scene
-import org.ironlions.sovereign.panopticon.client.ecs.components.Mesh
 import org.ironlions.sovereign.panopticon.client.render.event.Event
 import org.ironlions.sovereign.panopticon.client.render.event.EventDispatcher
-import org.ironlions.sovereign.panopticon.client.render.geometry.Vertex
 import org.ironlions.sovereign.panopticon.client.render.imgui.GraphicsScene
 import org.ironlions.sovereign.panopticon.client.render.imgui.Inspector
 import org.ironlions.sovereign.panopticon.client.render.imgui.Window
-import org.ironlions.sovereign.panopticon.client.render.shader.Program
-import org.ironlions.sovereign.panopticon.client.util.IOUtil
 import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR
@@ -59,15 +51,12 @@ import org.lwjgl.glfw.GLFW.glfwWindowShouldClose
 import org.lwjgl.glfw.GLFWErrorCallback
 import org.lwjgl.glfw.GLFWVidMode
 import org.lwjgl.opengl.GL
-import org.lwjgl.opengl.GL41.GL_COLOR_BUFFER_BIT
 import org.lwjgl.opengl.GL41.GL_CULL_FACE
-import org.lwjgl.opengl.GL41.GL_DEPTH_BUFFER_BIT
 import org.lwjgl.opengl.GL41.GL_DEPTH_TEST
 import org.lwjgl.opengl.GL41.GL_RENDERER
 import org.lwjgl.opengl.GL41.GL_VENDOR
 import org.lwjgl.opengl.GL41.GL_VERSION
 import org.lwjgl.opengl.GL41.GL_MULTISAMPLE
-import org.lwjgl.opengl.GL41.glClear
 import org.lwjgl.opengl.GL41.glClearColor
 import org.lwjgl.opengl.GL41.glEnable
 import org.lwjgl.opengl.GL41.glGetString
@@ -78,7 +67,6 @@ import org.lwjgl.system.MemoryUtil
 
 /** The renderer to render a scene with. */
 class Renderer {
-    private var window: Long = 0
     private val openGLMajor = 4
     private val openGLMinor = 1
     private val requiredCapabilities = arrayOf("OpenGL41")
@@ -88,121 +76,22 @@ class Renderer {
     private var imGuiImplGl3: ImGuiImplGl3 = ImGuiImplGl3()
     private var sceneWindow = GraphicsScene()
     private val windows: List<Window> = listOf(sceneWindow, Inspector())
-    private val vertices = listOf(
-        // Face 1 (closest to camera)
-        Vertex(
-            Vec3(0.5, 0.5, 0.5), Vec3(1, 0, 0), Vec3(0.0, 0.0, 1.0)
-        ), Vertex(
-            Vec3(0.5, -0.5, 0.5), Vec3(0, 1, 0), Vec3(0.0, 0.0, 1.0)
-        ), Vertex(
-            Vec3(-0.5, -0.5, 0.5), Vec3(0, 0, 1), Vec3(0.0, 0.0, 1.0)
-        ), Vertex(
-            Vec3(-0.5, 0.5, 0.5), Vec3(0, 0, 0), Vec3(0.0, 0.0, 1.0)
-        ),
-
-        // Face 2 (top)
-        Vertex(
-            Vec3(0.5, 0.5, 0.5), Vec3(1, 0, 0), Vec3(0.0, 1.0, 0.0)
-        ), Vertex(
-            Vec3(-0.5, 0.5, 0.5), Vec3(1, 0, 0), Vec3(0.0, 1.0, 0.0)
-        ), Vertex(
-            Vec3(-0.5, 0.5, -0.5), Vec3(1, 0, 0), Vec3(0.0, 1.0, 0.0)
-        ), Vertex(
-            Vec3(0.5, 0.5, -0.5), Vec3(1, 0, 0), Vec3(0.0, 1.0, 0.0)
-        ),
-
-        // Face 3 (bottom)
-        Vertex(
-            Vec3(0.5, -0.5, 0.5), Vec3(1, 0, 0), Vec3(0.0, -1.0, 0.0)
-        ), Vertex(
-            Vec3(-0.5, -0.5, 0.5), Vec3(1, 0, 0), Vec3(0.0, -1.0, 0.0)
-        ), Vertex(
-            Vec3(-0.5, -0.5, -0.5), Vec3(1, 0, 0), Vec3(0.0, -1.0, 0.0)
-        ), Vertex(
-            Vec3(0.5, -0.5, -0.5), Vec3(1, 0, 0), Vec3(0.0, -1.0, 0.0)
-        ),
-
-        // Face 4 (left)
-        Vertex(
-            Vec3(-0.5, 0.5, -0.5), Vec3(1, 0, 0), Vec3(-1.0, 0.0, 0.0)
-        ), Vertex(
-            Vec3(-0.5, -0.5, -0.5), Vec3(1, 0, 0), Vec3(-1.0, 0.0, 0.0)
-        ), Vertex(
-            Vec3(-0.5, -0.5, 0.5), Vec3(1, 0, 0), Vec3(-1.0, 0.0, 0.0)
-        ), Vertex(
-            Vec3(-0.5, 0.5, 0.5), Vec3(1, 0, 0), Vec3(-1.0, 0.0, 0.0)
-        ),
-
-        // Face 5 (right)
-        Vertex(
-            Vec3(0.5, 0.5, -0.5), Vec3(1, 0, 0), Vec3(1.0, 0.0, 0.0)
-        ), Vertex(
-            Vec3(0.5, -0.5, -0.5), Vec3(1, 0, 0), Vec3(1.0, 0.0, 0.0)
-        ), Vertex(
-            Vec3(0.5, -0.5, 0.5), Vec3(1, 0, 0), Vec3(1.0, 0.0, 0.0)
-        ), Vertex(
-            Vec3(0.5, 0.5, 0.5), Vec3(1, 0, 0), Vec3(1.0, 0.0, 0.0)
-        ),
-
-        // Face 6 (farthest from camera)
-        Vertex(
-            Vec3(-0.5, 0.5, -0.5), Vec3(1, 0, 0), Vec3(0.0, 0.0, -1.0)
-        ), Vertex(
-            Vec3(-0.5, -0.5, -0.5), Vec3(1, 0, 0), Vec3(0.0, 0.0, -1.0)
-        ), Vertex(
-            Vec3(0.5, -0.5, -0.5), Vec3(1, 0, 0), Vec3(0.0, 0.0, -1.0)
-        ), Vertex(
-            Vec3(0.5, 0.5, -0.5), Vec3(1, 0, 0), Vec3(0.0, 0.0, -1.0)
-        )
-    )
-    private val indices = listOf(
-        // Face 1
-        3, 1, 0,
-        3, 2, 1,
-
-        // Face 2
-        3 + 4, 1 + 4, 0 + 4,
-        3 + 4, 2 + 4, 1 + 4,
-
-        // Face 3
-        0 + 8, 1 + 8, 3 + 8,
-        1 + 8, 2 + 8, 3 + 8,
-
-        // Face 4
-        0 + 12, 1 + 12, 3 + 12,
-        1 + 12, 2 + 12, 3 + 12,
-
-        // Face 5
-        3 + 16, 1 + 16, 0 + 16,
-        3 + 16, 2 + 16, 1 + 16,
-
-        // Face 6
-        3 + 20, 1 + 20, 0 + 20,
-        3 + 20, 2 + 20, 1 + 20,
-    )
-    private val scene: Scene = Scene(
-        name = "main",
-    )
-
     private var physicalWidth: Int? = null
     private var physicalHeight: Int? = null
     private var framebufferWidth: Int? = null
     private var framebufferHeight: Int? = null
     private var lastFrame: Float = 0f
-    private var deltaTime: Float = 0f
     private var lastMouseX: Float = 0f
     private var lastMouseY: Float = 0f
     private var firstMouse: Boolean = true
+    private var windowWidth = 1200
+    private var windowHeight = 700
+    var window: Long = 0
+    var deltaTime: Float = 0f
 
     /** The active camera. */
     var activeCamera: Camera
         private set
-
-    /** The width of the window. */
-    private var windowWidth = 1200
-
-    /** The height of the window. */
-    private var windowHeight = 700
 
     init {
         Logging.logger.debug { "Initializing renderer." }
@@ -247,16 +136,6 @@ class Renderer {
         eventDispatcher.subscribe(
             activeCamera, listOf(Event.Mouse::class, Event.FramebufferResize::class)
         )
-
-        val entity = Entity(scene)
-        entity.addComponent(
-            Mesh::class, Mat4(1), Program(
-                name = "main",
-                vertexSource = IOUtil.ioResourceToByteBuffer("shader.vert", 4096),
-                fragmentSource = IOUtil.ioResourceToByteBuffer("shader.frag", 4096)
-            ), vertices, indices
-        )
-        scene.add(entity)
     }
 
     /** Run per frame. */
@@ -284,16 +163,6 @@ class Renderer {
         ImGui.end()
         ImGui.render()
 
-        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
-        glViewport(
-            0,
-            0,
-            sceneWindow.availableSpace!!.x.toInt(),
-            sceneWindow.availableSpace!!.y.toInt()
-        )
-        eventDispatcher.broadcastToSubscribers(Event.Frame(window, deltaTime))
-
-        scene.draw(this)
         imGuiImplGl3.renderDrawData(ImGui.getDrawData())
 
         glfwSwapBuffers(window)
@@ -366,7 +235,6 @@ class Renderer {
         io.iniFilename = null
         io.logFilename = null
 
-        // installImGuiTheme()
         imGuiImplGlfw.init(window, true)
         imGuiImplGl3.init(shaderPrelude)
     }
@@ -443,8 +311,7 @@ class Renderer {
 
     /** Clean up the application, including GLFW and OpenGL stuff. */
     fun destroy() {
-        scene.destroy()
-
+        windows.forEach { it.destroy() }
         Callbacks.glfwFreeCallbacks(window)
         glfwDestroyWindow(window)
         glfwTerminate()
