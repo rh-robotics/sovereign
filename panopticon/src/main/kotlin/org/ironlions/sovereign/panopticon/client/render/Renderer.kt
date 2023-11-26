@@ -283,13 +283,13 @@ class Renderer {
         ImGui.begin(
             "Dock Space", ImGuiWindowFlags.NoBringToFrontOnFocus or ImGuiWindowFlags.NoTitleBar
         )
-        ImGui.end()
 
         ImGui.begin("Ontomorphic Phenomenographical Display")
         opdisplayAvail = ImGui.getContentRegionAvail()
         activeCamera.framebuffer.resize(opdisplayAvail.x.toInt(), opdisplayAvail.y.toInt())
         activeCamera.framebuffer.imgui()
         allowViewportPassthrough = ImGui.isWindowFocused(ImGuiFocusedFlags.RootWindow)
+        ImGui.end()
         ImGui.end()
         ImGui.render()
 
@@ -362,12 +362,15 @@ class Renderer {
     private fun setupImGui(window: Long) {
         ImGui.createContext()
         val io = ImGui.getIO()
+        io.fonts.addFontFromFileTTF(
+            this::class.java.classLoader.getResource("fonts/Roboto-Medium.ttf")
+                !!.path, 16.0f)
         io.configFlags = io.configFlags or ImGuiConfigFlags.DockingEnable
         io.configWindowsMoveFromTitleBarOnly = true
         io.iniFilename = null
         io.logFilename = null
 
-        installImGuiTheme()
+        // installImGuiTheme()
         imGuiImplGlfw.init(window, true)
         imGuiImplGl3.init(shaderPrelude)
     }
