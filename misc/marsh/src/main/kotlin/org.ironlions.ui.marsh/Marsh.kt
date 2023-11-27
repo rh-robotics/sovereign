@@ -16,7 +16,7 @@ object Marsh {
     fun show(toast: Toast) = activeToasts.add(toast)
 
     fun draw(deltaTime: Float) {
-        var heightOffset = 0f
+        var heightOffset = 20f
 
         activeToasts.forEach { it.timeToLive -= deltaTime }
         activeToasts.removeIf { it.timeToLive <= 0 }
