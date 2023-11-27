@@ -161,7 +161,7 @@ class Renderer {
         ImGui.newFrame()
 
         ImGui.dockSpaceOverViewport(ImGui.getMainViewport())
-
+        menuBar()
         windows.forEach { it.frame(this) }
 
         Marsh.draw(deltaTime)
@@ -171,6 +171,27 @@ class Renderer {
 
         glfwSwapBuffers(window)
         glfwPollEvents()
+    }
+
+    /** The menu bar. */
+    private fun menuBar() {
+        if (ImGui.beginMainMenuBar()) {
+            if (ImGui.beginMenu("Panopticon")) {
+                if (ImGui.menuItem("About")) TODO()
+                if (ImGui.menuItem("Settings")) TODO()
+                if (ImGui.menuItem("Fullscreen")) TODO()
+                ImGui.separator()
+                if (ImGui.menuItem("Quit")) TODO()
+                ImGui.endMenu()
+            }
+
+            if (ImGui.beginMenu("Data")) {
+                if (ImGui.menuItem("New")) TODO()
+                ImGui.endMenu()
+            }
+
+            ImGui.endMainMenuBar()
+        }
     }
 
     /** Set GLFW and OpenGL loader hints. */
@@ -187,7 +208,8 @@ class Renderer {
 
     /** Set GLFW window attributes. */
     @Suppress("UNUSED_PARAMETER")
-    private fun setWindowAttribs(window: Long) {}
+    private fun setWindowAttribs(window: Long) {
+    }
 
     /** Get window size and framebuffer size from GLFW> */
     private fun getSizing() {
