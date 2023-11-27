@@ -51,7 +51,7 @@ fun installImGuiTheme() {
     style.setColor(ImGuiCol.TabUnfocused, 0f, 0f, 0f, 0.52f)
     style.setColor(ImGuiCol.TabUnfocusedActive, 0.14f, 0.14f, 0.14f, 1f)
     style.setColor(ImGuiCol.DockingPreview, 0.33f, 0.67f, 0.86f, 1f)
-    style.setColor(ImGuiCol.DockingEmptyBg, 1f, 0f, 0f, 1f)
+    style.setColor(ImGuiCol.DockingEmptyBg, 0.10f, 0.10f, 0.10f, 1f)
     style.setColor(ImGuiCol.PlotLines, 1f, 0f, 0f, 1f)
     style.setColor(ImGuiCol.PlotLinesHovered, 1f, 0f, 0f, 1f)
     style.setColor(ImGuiCol.PlotHistogram, 1f, 0f, 0f, 1f)

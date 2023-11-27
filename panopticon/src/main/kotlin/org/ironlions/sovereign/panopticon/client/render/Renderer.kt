@@ -2,6 +2,7 @@ package org.ironlions.sovereign.panopticon.client.render
 
 import imgui.ImGui
 import imgui.flag.ImGuiConfigFlags
+import imgui.flag.ImGuiDockNodeFlags
 import imgui.flag.ImGuiWindowFlags
 import imgui.glfw.ImGuiImplGlfw
 import imgui.gl3.ImGuiImplGl3
@@ -159,15 +160,10 @@ class Renderer {
         imGuiImplGlfw.newFrame()
         ImGui.newFrame()
 
-        ImGui.setNextWindowSize(ImGui.getIO().displaySize.x, ImGui.getIO().displaySize.y)
-        ImGui.setNextWindowPos(0f, 0f)
-        ImGui.begin(
-            "Dock Space", ImGuiWindowFlags.NoBringToFrontOnFocus or ImGuiWindowFlags.NoTitleBar
-        )
+        ImGui.dockSpaceOverViewport(ImGui.getMainViewport())
 
         windows.forEach { it.frame(this) }
 
-        ImGui.end()
         Marsh.draw(deltaTime)
         ImGui.render()
 
