@@ -68,5 +68,5 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     /* Common */
-    implementation(project(":common"))
+    implementation(project(":misc:common"))
 }

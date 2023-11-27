@@ -97,5 +97,5 @@ dependencies {
     runtimeOnly("org.lwjgl", "lwjgl-stb", classifier = lwjglNatives)
 
     /* Common */
-    implementation(project(":common"))
+    implementation(project(":misc:common"))
 }
