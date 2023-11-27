@@ -17,8 +17,8 @@ private enum class DataSourcePickingStage {
 
 class Inspector : Window("Inspector") {
     private var dataSourcePickingStage = DataSourcePickingStage.START
-    private var wantConnect: Boolean = false
-    private var dataSource: DataSource? = null
+    var dataSource: DataSource? = null
+    var wantConnect: Boolean = false
 
     override fun content(renderer: Renderer) {
         if (wantConnect) pickDataSource()
@@ -56,7 +56,7 @@ class Inspector : Window("Inspector") {
                     dataSource = RecordDataSource(Path(pick))
                 } catch (e: InvalidProtocolBufferException) {
                     Marsh.show(Toast.Error("Recorded data file is malformed.").setException(e))
-                    dataSourcePickingStage = DataSourcePickingStage.START
+                    wantConnect = false
                 }
             }
 

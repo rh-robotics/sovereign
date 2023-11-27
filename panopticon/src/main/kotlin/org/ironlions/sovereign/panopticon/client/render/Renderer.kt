@@ -16,6 +16,7 @@ import org.ironlions.sovereign.panopticon.client.render.imgui.Inspector
 import org.ironlions.sovereign.panopticon.client.render.imgui.Window
 import org.ironlions.sovereign.panopticon.client.render.imgui.installImGuiTheme
 import org.ironlions.ui.marsh.Marsh
+import org.ironlions.ui.marsh.Toast
 import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR
@@ -71,6 +72,7 @@ import org.lwjgl.opengl.GL41.glViewport
 import org.lwjgl.opengl.GLCapabilities
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil
+import kotlin.reflect.KClass
 
 /** The renderer to render a scene with. */
 class Renderer {
@@ -81,8 +83,8 @@ class Renderer {
     private val eventDispatcher = EventDispatcher()
     private var imGuiImplGlfw: ImGuiImplGlfw = ImGuiImplGlfw()
     private var imGuiImplGl3: ImGuiImplGl3 = ImGuiImplGl3()
-    private var sceneWindow = GraphicsScene()
-    private val windows: List<Window> = listOf(sceneWindow, Inspector())
+    private val windows: Map<KClass<*>, Window> =
+        mapOf(Pair(GraphicsScene::class, GraphicsScene()), Pair(Inspector::class, Inspector()))
     private var physicalWidth: Int? = null
     private var physicalHeight: Int? = null
     private var framebufferWidth: Int? = null
@@ -164,7 +166,7 @@ class Renderer {
 
         ImGui.dockSpaceOverViewport(ImGui.getMainViewport())
         menuBar()
-        windows.forEach { it.frame(this) }
+        windows.forEach { it.value.frame(this) }
 
         Marsh.draw(deltaTime)
         ImGui.render()
@@ -179,16 +181,20 @@ class Renderer {
     private fun menuBar() {
         if (ImGui.beginMainMenuBar()) {
             if (ImGui.beginMenu("Panopticon")) {
-                if (ImGui.menuItem("About")) TODO()
-                if (ImGui.menuItem("Settings")) TODO()
-                if (ImGui.menuItem("Fullscreen")) TODO()
-                ImGui.separator()
-                if (ImGui.menuItem("Quit")) TODO()
-                ImGui.endMenu()
-            }
+                if (ImGui.menuItem("About")) Marsh.show(Toast.Error("This is not implemented."))
+                if (ImGui.menuItem("Settings")) Marsh.show(Toast.Error("This is not implemented."))
+                if (ImGui.beginMenu("Data")) {
+                    val inspector = windows[Inspector::class]!! as Inspector
+                    if (ImGui.menuItem(if (inspector.dataSource == null) "Connect" else "Reconnect")) {
+                        inspector.wantConnect = true
+                    }
 
-            if (ImGui.beginMenu("Data")) {
-                if (ImGui.menuItem("New")) TODO()
+                    ImGui.endMenu()
+                }
+
+                ImGui.separator()
+
+                if (ImGui.menuItem("Quit")) glfwSetWindowShouldClose(window, true)
                 ImGui.endMenu()
             }
 
@@ -313,7 +319,7 @@ class Renderer {
         lastMouseX = x
         lastMouseY = y
 
-        if (sceneWindow.hovering) {
+        if (windows[GraphicsScene::class]!!.hovering) {
             eventDispatcher.broadcastToSubscribers(Event.Mouse(window, xOffset, yOffset))
         }
     }
@@ -346,7 +352,7 @@ class Renderer {
 
     /** Clean up the application, including GLFW and OpenGL stuff. */
     fun destroy() {
-        windows.forEach { it.destroy() }
+        windows.forEach { it.value.destroy() }
         Callbacks.glfwFreeCallbacks(window)
         glfwDestroyWindow(window)
         glfwTerminate()

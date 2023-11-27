@@ -10,7 +10,7 @@ object Marsh {
     private const val TOAST_PADDING_X = 10f
     private const val TOAST_PADDING_Y = 10f
     private const val TOAST_WINDOW_FLAGS: Int =
-        ImGuiWindowFlags.NoTitleBar or ImGuiWindowFlags.NoScrollbar or ImGuiWindowFlags.NoMove or ImGuiWindowFlags.NoResize or ImGuiWindowFlags.NoInputs or ImGuiWindowFlags.NoBringToFrontOnFocus
+        ImGuiWindowFlags.NoTitleBar or ImGuiWindowFlags.NoScrollbar or ImGuiWindowFlags.NoMove or ImGuiWindowFlags.NoResize or ImGuiWindowFlags.NoInputs
     private val activeToasts: MutableList<Toast> = mutableListOf()
 
     fun show(toast: Toast) = activeToasts.add(toast)
@@ -25,11 +25,7 @@ object Marsh {
             val toastWidth = ImGui.getIO().displaySizeX / 3
             val toastXPos = ImGui.getIO().displaySizeX - toastWidth - TOAST_PADDING_X
             val toastYPos = heightOffset + TOAST_PADDING_Y
-            val windowClass = ImGuiWindowClass()
 
-            windowClass.viewportFlagsOverrideSet = ImGuiViewportFlags.TopMost
-
-            ImGui.setNextWindowClass(windowClass)
             ImGui.setNextWindowSize(toastWidth, 0f)
             ImGui.setNextWindowPos(toastXPos, toastYPos, ImGuiCond.Always)
 
