@@ -14,6 +14,7 @@ import org.ironlions.sovereign.panopticon.client.render.event.EventDispatcher
 import org.ironlions.sovereign.panopticon.client.render.imgui.GraphicsScene
 import org.ironlions.sovereign.panopticon.client.render.imgui.Inspector
 import org.ironlions.sovereign.panopticon.client.render.imgui.Window
+import org.ironlions.sovereign.panopticon.client.render.imgui.button
 import org.ironlions.sovereign.panopticon.client.render.imgui.installImGuiTheme
 import org.ironlions.ui.marsh.Marsh
 import org.ironlions.ui.marsh.Toast
@@ -93,8 +94,9 @@ class Renderer {
     private var lastMouseX: Float = 0f
     private var lastMouseY: Float = 0f
     private var firstMouse: Boolean = true
-    private var windowWidth = 1200
-    private var windowHeight = 700
+    private var displayAbout: Boolean = false
+    private var windowWidth: Int = 1200
+    private var windowHeight: Int = 700
     var window: Long = 0
     var deltaTime: Float = 0f
 
@@ -167,6 +169,8 @@ class Renderer {
         menuBar()
         windows.forEach { it.value.frame(this) }
 
+        if (displayAbout) aboutWindow()
+
         Marsh.draw(deltaTime)
         ImGui.render()
 
@@ -180,7 +184,7 @@ class Renderer {
     private fun menuBar() {
         if (ImGui.beginMainMenuBar()) {
             if (ImGui.beginMenu("Panopticon")) {
-                if (ImGui.menuItem("About")) Marsh.show(Toast.Error("This is not implemented."))
+                if (ImGui.menuItem("About")) displayAbout = true
                 if (ImGui.menuItem("Settings")) Marsh.show(Toast.Error("This is not implemented."))
                 if (ImGui.beginMenu("Data")) {
                     val inspector = windows[Inspector::class]!! as Inspector
@@ -200,6 +204,16 @@ class Renderer {
 
             ImGui.endMainMenuBar()
         }
+    }
+
+    /** Display information about Panopticon. */
+    private fun aboutWindow() {
+        ImGui.begin("About Panopticon")
+        ImGui.text("Panopticon is brought to you by The Iron Lions (FTC 19922).")
+        ImGui.separator()
+        ImGui.text("Copyright 2023 Milo Banks (The Principle Architect).")
+        button("Close") { displayAbout = false }
+        ImGui.end()
     }
 
     /** Set GLFW and OpenGL loader hints. */
