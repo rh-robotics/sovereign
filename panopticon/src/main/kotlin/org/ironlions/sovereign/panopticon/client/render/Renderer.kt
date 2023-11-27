@@ -2,10 +2,12 @@ package org.ironlions.sovereign.panopticon.client.render
 
 import imgui.ImGui
 import imgui.flag.ImGuiConfigFlags
+import imgui.flag.ImGuiDir
 import imgui.flag.ImGuiDockNodeFlags
 import imgui.flag.ImGuiWindowFlags
 import imgui.glfw.ImGuiImplGlfw
 import imgui.gl3.ImGuiImplGl3
+import imgui.internal.ImGuiDockNode
 import org.ironlions.sovereign.panopticon.client.Logging
 import org.ironlions.sovereign.panopticon.client.render.event.Event
 import org.ironlions.sovereign.panopticon.client.render.event.EventDispatcher
@@ -256,6 +258,8 @@ class Renderer {
     /** Initialize ImGui. */
     private fun setupImGui(window: Long) {
         ImGui.createContext()
+        ImGui.loadIniSettingsFromDisk(this::class.java.classLoader.getResource("imgui.ini")!!.path)
+
         val io = ImGui.getIO()
         io.fonts.addFontFromFileTTF(
             this::class.java.classLoader.getResource("fonts/Roboto-Medium.ttf")!!.path, 16.0f
