@@ -2,7 +2,6 @@ package org.ironlions.sovereign.panopticon.client.render.imgui
 
 import kotlin.io.path.Path
 import com.google.protobuf.InvalidProtocolBufferException
-import imgui.ImGui
 import imgui.ImGui.sameLine
 import imgui.ImGui.text
 import org.ironlions.sovereign.panopticon.client.data.DataSource
@@ -33,7 +32,7 @@ class Inspector : Window("Inspector") {
 
     private fun pickDataSource() {
         when (dataSourcePickingStage) {
-            DataSourcePickingStage.START -> modal("Setup Data Source") {
+            DataSourcePickingStage.START -> window("Setup Data Source") {
                 text("Let's connect to a data source.")
 
                 button("Use Recorded Data") {

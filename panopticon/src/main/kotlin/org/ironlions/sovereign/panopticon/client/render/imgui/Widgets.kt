@@ -1,12 +1,9 @@
 package org.ironlions.sovereign.panopticon.client.render.imgui
 
-import imgui.ImColor
 import imgui.ImGui
-import imgui.ImGuiStyle
-import imgui.ImVec4
 import imgui.extension.imguifiledialog.ImGuiFileDialog
 import imgui.extension.imguifiledialog.flag.ImGuiFileDialogFlags
-import imgui.flag.ImGuiCol
+import imgui.flag.ImGuiPopupFlags
 import imgui.flag.ImGuiStyleVar
 import imgui.flag.ImGuiWindowFlags
 import imgui.internal.flag.ImGuiItemFlags
@@ -18,17 +15,28 @@ open class FilePickerType(val count: Int, val title: String) {
 }
 
 private const val MODAL_WINDOW_FLAGS: Int =
-    ImGuiWindowFlags.NoResize or ImGuiWindowFlags.NoCollapse or ImGuiWindowFlags.NoMove
+    ImGuiWindowFlags.NoCollapse or ImGuiWindowFlags.NoResize or ImGuiWindowFlags.NoMove
+private const val DIALOG_WINDOW_FLAGS =
+    ImGuiWindowFlags.NoCollapse
 
 fun modal(name: String, content: (() -> Unit)) {
     if (ImGui.beginPopupModal(
             name, MODAL_WINDOW_FLAGS
         )
     ) {
-        content(); ImGui.endPopup()
+        content()
+        ImGui.endPopup()
     }
 
     ImGui.openPopup(name)
+}
+
+fun window(name: String, content: (() -> Unit)) {
+    if (ImGui.begin(name, DIALOG_WINDOW_FLAGS)) {
+        content()
+
+        ImGui.end()
+    }
 }
 
 fun filePicker(
@@ -37,7 +45,7 @@ fun filePicker(
     filter: String? = null,
     content: ((Map<String, String>) -> Unit)
 ) {
-    ImGuiFileDialog.openModal(
+    ImGuiFileDialog.openDialog(
         name,
         type.title,
         filter,
@@ -50,7 +58,7 @@ fun filePicker(
 
     if (ImGuiFileDialog.display(
             name,
-            MODAL_WINDOW_FLAGS or ImGuiWindowFlags.NoScrollWithMouse,
+            DIALOG_WINDOW_FLAGS or ImGuiWindowFlags.NoScrollWithMouse,
             600f,
             400f,
             10000f,

@@ -115,7 +115,6 @@ class Renderer {
         )
         if (window == MemoryUtil.NULL) throw RuntimeException("Failed to create the GLFW window")
 
-        glfwSetKeyCallback(window, ::onKeyPress)
         glfwSetFramebufferSizeCallback(window, ::onFramebufferResize)
         glfwSetWindowSizeCallback(window, ::onWindowResize)
         glfwSetCursorPosCallback(window, ::onMouseMove)
@@ -186,6 +185,7 @@ class Renderer {
                 if (ImGui.beginMenu("Data")) {
                     val inspector = windows[Inspector::class]!! as Inspector
                     if (ImGui.menuItem(if (inspector.dataSource == null) "Connect" else "Reconnect")) {
+                        inspector.dataSource = null
                         inspector.wantConnect = true
                     }
 
@@ -278,22 +278,6 @@ class Renderer {
         installImGuiTheme()
         imGuiImplGlfw.init(window, true)
         imGuiImplGl3.init(shaderPrelude)
-    }
-
-    /**
-     * Handle a key press event.
-     *
-     * @param window The window that experienced the event.
-     * @param key The key that was pressed.
-     * @param scancode The scancode of the key that was pressed.
-     * @param action Who knows what this is?
-     * @param mods Any modifiers to the pressed key.
-     */
-    @Suppress("UNUSED_PARAMETER")
-    private fun onKeyPress(window: Long, key: Int, scancode: Int, action: Int, mods: Int) {
-        if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-            glfwSetWindowShouldClose(window, true)
-        }
     }
 
     /**
