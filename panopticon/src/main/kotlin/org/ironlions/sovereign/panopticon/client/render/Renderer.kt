@@ -12,6 +12,7 @@ import org.ironlions.sovereign.panopticon.client.render.imgui.GraphicsScene
 import org.ironlions.sovereign.panopticon.client.render.imgui.Inspector
 import org.ironlions.sovereign.panopticon.client.render.imgui.Window
 import org.ironlions.sovereign.panopticon.client.render.imgui.installImGuiTheme
+import org.ironlions.ui.marsh.Marsh
 import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR
@@ -144,11 +145,13 @@ class Renderer {
 
     /** Run per frame. */
     fun loop() {
-        val currentFrame = glfwGetTime().toFloat()
-        deltaTime = currentFrame - lastFrame
-        lastFrame = currentFrame
+        while (!glfwWindowShouldClose(window)) {
+            val currentFrame = glfwGetTime().toFloat()
+            deltaTime = currentFrame - lastFrame
+            lastFrame = currentFrame
 
-        while (!glfwWindowShouldClose(window)) frame()
+            frame()
+        }
     }
 
     /** Do a single frame. */
@@ -165,6 +168,7 @@ class Renderer {
         windows.forEach { it.frame(this) }
 
         ImGui.end()
+        Marsh.draw(deltaTime)
         ImGui.render()
 
         imGuiImplGl3.renderDrawData(ImGui.getDrawData())

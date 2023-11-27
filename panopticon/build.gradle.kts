@@ -98,4 +98,5 @@ dependencies {
 
     /* Common */
     implementation(project(":misc:common"))
+    implementation(project(":misc:marsh"))
 }

@@ -19,4 +19,5 @@ dependencyResolutionManagement {
 rootProject.name = "sovereign"
 include(":sovereign")
 include(":panopticon")
+include(":misc:marsh")
 include(":misc:common")

@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/misc" />
             <option value="$PROJECT_DIR$/misc/common" />
+            <option value="$PROJECT_DIR$/misc/marsh" />
             <option value="$PROJECT_DIR$/panopticon" />
             <option value="$PROJECT_DIR$/sovereign" />
           </set>

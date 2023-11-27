@@ -1,12 +1,14 @@
 package org.ironlions.sovereign.panopticon.client.render.imgui
 
+import kotlin.io.path.Path
 import com.google.protobuf.InvalidProtocolBufferException
 import imgui.ImGui.sameLine
 import imgui.ImGui.text
 import org.ironlions.sovereign.panopticon.client.data.DataSource
 import org.ironlions.sovereign.panopticon.client.data.RecordDataSource
 import org.ironlions.sovereign.panopticon.client.render.Renderer
-import kotlin.io.path.Path
+import org.ironlions.ui.marsh.Marsh
+import org.ironlions.ui.marsh.Toast
 
 private enum class DataSourcePickingStage {
     START, BLUETOOTH, RECORD, END
@@ -48,7 +50,8 @@ class Inspector : Window("Inspector") {
                 try {
                     dataSource = RecordDataSource(Path(pick))
                 } catch (e: InvalidProtocolBufferException) {
-                    TODO()
+                    Marsh.show(Toast.Error("Recorded data file is malformed.").setException(e))
+                    dataSourcePickingStage = DataSourcePickingStage.START
                 }
             }
 
