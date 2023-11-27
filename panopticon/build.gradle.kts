@@ -68,15 +68,16 @@ dependencies {
     /* Kotlin */
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.7.3")
 
-    /* Misc */
+/* Misc */
     implementation("io.github.oshai", "kotlin-logging-jvm", "5.1.0")
     implementation("org.slf4j", "slf4j-reload4j", "2.0.9")
 
     /* Graphics */
-    implementation("io.github.spair:imgui-java-app:1.86.11-10-g0dbf36c")
-    implementation("io.github.spair:imgui-java-natives-macos-ft:1.86.11-10-g0dbf36c")
-    implementation("io.github.spair:imgui-java-lwjgl3:1.86.11-10-g0dbf36c")
+    implementation("io.github.spair", "imgui-java-app", "1.86.11-10-g0dbf36c")
+    implementation("io.github.spair", "imgui-java-natives-macos-ft", "1.86.11-10-g0dbf36c")
+    implementation("io.github.spair", "imgui-java-lwjgl3", "1.86.11-10-g0dbf36c")
     implementation("kotlin.graphics", "glm", "0.9.9.1-11")
     implementation("kotlin.graphics", "kool", "0.9.79")
 

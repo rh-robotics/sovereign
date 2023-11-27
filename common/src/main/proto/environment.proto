@@ -64,5 +64,5 @@ message DataNode {
 
 // A universally unique identifier.
 message UUID {
-  bytes uuid = 1; // A 128-bit identifier.
+  string uuid = 1; // A 128-bit identifier.
 }

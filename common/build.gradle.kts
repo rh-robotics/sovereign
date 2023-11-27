@@ -26,5 +26,6 @@ tasks {
 }
 
 dependencies {
-    implementation("com.google.protobuf:protobuf-java:3.25.0")
+    implementation("com.google.protobuf", "protobuf-java", "3.25.0")
+    api("com.google.protobuf", "protobuf-java", "3.25.0")
 }

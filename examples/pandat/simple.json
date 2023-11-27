@@ -1,0 +1,73 @@
+{
+  "packets": [
+    {
+      "timestamp": {
+        "seconds": 1701042100,
+        "nanos": 17
+      },
+
+      "robot": {
+        "region": {
+          "x1": -15,
+          "y1": -15,
+          "z1": 0,
+          "x2": 15,
+          "y2": 15,
+          "z2": 30
+        },
+        "model": "bounding",
+        "data": {
+          "name": "general",
+          "data": {
+            "name": "henry",
+            "status": "alive"
+          },
+          "children": []
+        }
+      },
+
+      "field": {
+        "region": {
+          "x1": -1829,
+          "y1": -1829,
+          "z1": 0,
+          "x2": 1829,
+          "y2": 1829,
+          "z2": 0
+        },
+
+        "data": {
+          "name": "general",
+          "data": {
+            "season": "CENTERSTAGE"
+          },
+          "children": []
+        }
+      },
+
+      "things": [
+        {
+          "type": 0,
+          "region": {
+            "x1": 30,
+            "y1": 30,
+            "z1": 0,
+            "x2": 60,
+            "y2": 60,
+            "z2": 60
+          },
+          "uuid": {
+            "uuid": "8a385096-8cb6-11ee-b9d1-0242ac120002"
+          },
+          "data": {
+            "name": "general",
+            "data": {
+              "name": "teapot"
+            },
+            "children": []
+          }
+        }
+      ]
+    }
+  ]
+}
