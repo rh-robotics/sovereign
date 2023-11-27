@@ -66,7 +66,7 @@ fun installImGuiTheme() {
     style.setColor(ImGuiCol.NavHighlight, 1f, 0f, 0f, 1f)
     style.setColor(ImGuiCol.NavWindowingHighlight, 1f, 0f, 0f, 0.70f)
     style.setColor(ImGuiCol.NavWindowingDimBg, 1f, 0f, 0f, 0.20f)
-    style.setColor(ImGuiCol.ModalWindowDimBg, 1f, 0f, 0f, 0.35f)
+    style.setColor(ImGuiCol.ModalWindowDimBg, 0.10f, 0.10f, 0.10f, 0.8f)
 
     style.windowPadding.set(8f, 8f)
     style.framePadding.set(5f, 2f)

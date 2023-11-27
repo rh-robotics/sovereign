@@ -2,6 +2,7 @@ package org.ironlions.sovereign.panopticon.client.render.imgui
 
 import kotlin.io.path.Path
 import com.google.protobuf.InvalidProtocolBufferException
+import imgui.ImGui
 import imgui.ImGui.sameLine
 import imgui.ImGui.text
 import org.ironlions.sovereign.panopticon.client.data.DataSource
@@ -11,7 +12,7 @@ import org.ironlions.ui.marsh.Marsh
 import org.ironlions.ui.marsh.Toast
 
 private enum class DataSourcePickingStage {
-    START, BLUETOOTH, RECORD, END
+    START, BLUETOOTH, RECORD
 }
 
 class Inspector : Window("Inspector") {
@@ -43,7 +44,6 @@ class Inspector : Window("Inspector") {
                 }
             }
 
-            DataSourcePickingStage.BLUETOOTH -> TODO()
             DataSourcePickingStage.RECORD -> filePicker("Pick Recorded Data", FilePickerType.OneFile(), ".pandat") {
                 val pick = it.values.first()
 
@@ -55,7 +55,7 @@ class Inspector : Window("Inspector") {
                 }
             }
 
-            DataSourcePickingStage.END -> TODO()
+            DataSourcePickingStage.BLUETOOTH -> TODO()
         }
     }
 }
