@@ -17,15 +17,18 @@ private enum class DataSourcePickingStage {
 
 class Inspector : Window("Inspector") {
     private var dataSourcePickingStage = DataSourcePickingStage.START
+    private var wantConnect: Boolean = false
     private var dataSource: DataSource? = null
 
     override fun content(renderer: Renderer) {
+        if (wantConnect) pickDataSource()
         if (dataSource == null) {
             warningText("No data source!")
-            pickDataSource()
-        } else {
-            text("This is the inspector.")
-        }
+            button("Connect") { wantConnect = true }
+            return
+        } else wantConnect = false
+
+        text("This is the inspector.")
     }
 
     private fun pickDataSource() {
@@ -44,7 +47,9 @@ class Inspector : Window("Inspector") {
                 }
             }
 
-            DataSourcePickingStage.RECORD -> filePicker("Pick Recorded Data", FilePickerType.OneFile(), ".pandat") {
+            DataSourcePickingStage.RECORD -> filePicker(
+                "Pick Recorded Data", FilePickerType.OneFile(), ".pandat"
+            ) {
                 val pick = it.values.first()
 
                 try {

@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL41.GL_DEPTH_BUFFER_BIT
 import org.lwjgl.opengl.GL41.glClear
 import org.lwjgl.opengl.GL41.glViewport
 
-class GraphicsScene : Window("Ontomorphic Phenomenographical Display"), EventReceiver {
+class GraphicsScene : Window("Viewer"), EventReceiver {
     private val vertices = listOf(
         // Face 1 (closest to camera)
         Vertex(
