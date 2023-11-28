@@ -1,6 +1,5 @@
 package org.ironlions.sovereign.panopticon.client.render.imgui
 
-import kotlin.io.path.Path
 import com.google.protobuf.InvalidProtocolBufferException
 import imgui.ImGui.sameLine
 import imgui.ImGui.text
@@ -9,6 +8,7 @@ import org.ironlions.sovereign.panopticon.client.data.RecordDataSource
 import org.ironlions.sovereign.panopticon.client.render.Renderer
 import org.ironlions.ui.marsh.Marsh
 import org.ironlions.ui.marsh.Toast
+import kotlin.io.path.Path
 
 private enum class DataSourcePickingStage {
     START, BLUETOOTH, RECORD
@@ -20,6 +20,10 @@ class Inspector : Window("Inspector") {
     var wantConnect: Boolean = false
 
     override fun content(renderer: Renderer) {
+        // Easier development.
+        if (dataSource == null && System.getenv("PANOPTICON_PANDAT") != null) dataSource =
+            RecordDataSource(Path(System.getenv("PANOPTICON_PANDAT")))
+
         if (wantConnect) pickDataSource()
         if (dataSource == null) {
             warningText("No data source!")
