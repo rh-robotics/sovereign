@@ -9,7 +9,9 @@ import org.ironlions.sovereign.panopticon.client.render.event.Event
 import org.ironlions.sovereign.panopticon.client.render.event.EventDispatcher
 
 abstract class Window(
-    private val name: String, private val options: Int = ImGuiWindowFlags.None
+    private val name: String,
+    private val options: Int = ImGuiWindowFlags.None,
+    private val waitForDataSource: Boolean = false
 ) {
     protected var eventDispatcher = EventDispatcher()
     private var firstFrame: Boolean = true
@@ -19,7 +21,16 @@ abstract class Window(
     var hovering: Boolean = false
 
     fun frame(renderer: Renderer) {
+        val inspector = renderer.windows[Inspector::class] as Inspector
+
         ImGui.begin(name, options)
+
+        if (waitForDataSource && inspector.dataSource == null) {
+            warningText("No data source!")
+            ImGui.end()
+            return
+        }
+
         active = ImGui.isWindowFocused(ImGuiFocusedFlags.RootWindow)
         hovering =
             (ImGui.getMousePos().x in (ImGui.getWindowPosX())..(ImGui.getWindowPosX() + ImGui.getWindowWidth())) && (ImGui.getMousePos().y in (ImGui.getWindowPosY())..(ImGui.getWindowPosY() + ImGui.getWindowHeight()))
@@ -28,7 +39,7 @@ abstract class Window(
         val availWidth = availableSpace!!.x.toInt()
         val availHeight = availableSpace!!.y.toInt()
 
-        if (availableSpace != lastAvailableSpace) {
+        if (availableSpace != lastAvailableSpace || firstFrame) {
             eventDispatcher.broadcastToSubscribers(
                 Event.FramebufferResize(
                     renderer.activeCamera.framebuffer, availWidth, availHeight

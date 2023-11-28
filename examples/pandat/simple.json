@@ -6,63 +6,110 @@
         "nanos": 17
       },
 
-      "robot": {
-        "region": {
-          "x1": -15,
-          "y1": -15,
-          "z1": 0,
-          "x2": 15,
-          "y2": 15,
-          "z2": 30
-        },
-        "model": "bounding",
-        "data": {
-          "name": "general",
-          "data": {
-            "name": "henry",
-            "status": "alive"
-          },
-          "children": []
-        }
-      },
-
-      "field": {
-        "region": {
-          "x1": -1829,
-          "y1": -1829,
-          "z1": 0,
-          "x2": 1829,
-          "y2": 1829,
-          "z2": 0
-        },
-
-        "data": {
-          "name": "general",
-          "data": {
-            "season": "CENTERSTAGE"
-          },
-          "children": []
-        }
-      },
-
       "things": [
         {
+          "uuid": "745e2c3a-67d1-4b80-8a09-a991e1998bac",
           "type": 0,
-          "region": {
-            "x1": 30,
-            "y1": 30,
-            "z1": 0,
-            "x2": 60,
-            "y2": 60,
-            "z2": 60
+          "speciality": 0,
+          "geometry": {
+            "model": "bounding",
+            "region": {
+              "x1": -15,
+              "y1": -15,
+              "z1": 0,
+              "x2": 15,
+              "y2": 15,
+              "z2": 30
+            }
           },
-          "uuid": {
-            "uuid": "8a385096-8cb6-11ee-b9d1-0242ac120002"
+
+          "data": {
+            "name": "general",
+            "data": {
+              "name": "henry",
+              "status": "alive"
+            },
+            "children": []
+          }
+        },
+        {
+          "uuid": "32e92fec-eb14-4f32-9a23-ecfe61949337",
+          "type": 1,
+          "speciality": 2,
+          "geometry": {
+            "model": "bounding",
+            "region": {
+              "x1": -1829,
+              "y1": -1829,
+              "z1": 0,
+              "x2": 1829,
+              "y2": 1829,
+              "z2": 0
+            }
           },
+
+          "data": {
+            "name": "general",
+            "data": {
+              "season": "CENTERSTAGE"
+            },
+            "children": []
+          }
+        },
+        {
+          "uuid": "3d5beac8-e1ac-4be4-b571-a0b79bd515bb",
+          "type": 0,
+          "speciality": 2,
+          "geometry": {
+            "model": "bounding",
+            "region": {
+              "x1": 30,
+              "y1": 30,
+              "z1": 0,
+              "x2": 60,
+              "y2": 60,
+              "z2": 60
+            }
+          },
+
           "data": {
             "name": "general",
             "data": {
               "name": "teapot"
+            },
+            "children": []
+          }
+        }
+      ]
+    },
+
+    {
+      "timestamp": {
+        "seconds": 1701042105,
+        "nanos": 56
+      },
+
+      "things": [
+        {
+          "uuid": "3d5beac8-e1ac-4be4-b571-a0b79bd515bb",
+          "type": 0,
+          "speciality": 2,
+          "geometry": {
+            "model": "bounding",
+            "region": {
+              "x1": 45,
+              "y1": 45,
+              "z1": 0,
+              "x2": 75,
+              "y2": 75,
+              "z2": 60
+            }
+          },
+
+          "data": {
+            "name": "general",
+            "data": {
+              "name": "kettle"
             },
             "children": []
           }

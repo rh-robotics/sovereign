@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.isActive
 import java.time.Instant
 
-import org.ironlions.sovereign.common.proto.environment.Environment
+import org.ironlions.sovereign.proto.environment.Environment
 
 /** A source of data from the robot. */
 abstract class DataSource : CoroutineScope by MainScope() {
@@ -27,12 +27,20 @@ abstract class DataSource : CoroutineScope by MainScope() {
     abstract fun listenFrame()
 
     /**
-     * Get all packets since the before the specified time.
-     *
-     * @param time The time to get all the packets before.
+     * Advance the cursor one space. If there is no space to move forward, it will do nothing.
      */
-    abstract fun since(time: Instant): List<Environment.Packet>?
+    abstract fun next()
 
-    /** The timestamp for the last available packet. */
-    abstract fun lastAvailable(): Instant
+    /**
+     * Move the cursor one back. If there is no space to move back, it will do nothing.
+     */
+    abstract fun prior()
+
+    /**
+     * Get all the things on the field at the current cursor.
+     */
+    abstract fun things(): List<Environment.Thing>
+
+    /** The number of packets available. */
+    abstract fun size(): Int
 }

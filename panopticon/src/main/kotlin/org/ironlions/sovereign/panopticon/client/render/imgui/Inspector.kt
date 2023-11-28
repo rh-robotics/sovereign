@@ -23,11 +23,10 @@ class Inspector : Window("Inspector") {
         if (wantConnect) pickDataSource()
         if (dataSource == null) {
             warningText("No data source!")
-            button("Connect") { wantConnect = true }
             return
         } else wantConnect = false
 
-        text("This is the inspector.")
+        text(dataSource.toString())
     }
 
     private fun pickDataSource() {

@@ -11,6 +11,7 @@ import imgui.internal.ImGuiDockNode
 import org.ironlions.sovereign.panopticon.client.Logging
 import org.ironlions.sovereign.panopticon.client.render.event.Event
 import org.ironlions.sovereign.panopticon.client.render.event.EventDispatcher
+import org.ironlions.sovereign.panopticon.client.render.imgui.Controls
 import org.ironlions.sovereign.panopticon.client.render.imgui.GraphicsScene
 import org.ironlions.sovereign.panopticon.client.render.imgui.Inspector
 import org.ironlions.sovereign.panopticon.client.render.imgui.Window
@@ -84,8 +85,6 @@ class Renderer {
     private val eventDispatcher = EventDispatcher()
     private var imGuiImplGlfw: ImGuiImplGlfw = ImGuiImplGlfw()
     private var imGuiImplGl3: ImGuiImplGl3 = ImGuiImplGl3()
-    private val windows: Map<KClass<*>, Window> =
-        mapOf(Pair(GraphicsScene::class, GraphicsScene()), Pair(Inspector::class, Inspector()))
     private var physicalWidth: Int? = null
     private var physicalHeight: Int? = null
     private var framebufferWidth: Int? = null
@@ -99,6 +98,12 @@ class Renderer {
     private var windowHeight: Int = 700
     var window: Long = 0
     var deltaTime: Float = 0f
+    val windows: Map<KClass<*>, Window> =
+        mapOf(
+            Pair(GraphicsScene::class, GraphicsScene()),
+            Pair(Inspector::class, Inspector()),
+            Pair(Controls::class, Controls())
+        )
 
     /** The active camera. */
     var activeCamera: Camera
@@ -166,6 +171,7 @@ class Renderer {
         ImGui.newFrame()
 
         ImGui.dockSpaceOverViewport(ImGui.getMainViewport())
+        ImGui.showDemoWindow()
         menuBar()
         windows.forEach { it.value.frame(this) }
 

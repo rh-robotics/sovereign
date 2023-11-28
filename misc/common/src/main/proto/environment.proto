@@ -1,29 +1,29 @@
 syntax = "proto3";
-package org.ironlions.sovereign.common.proto.environment;
+package org.ironlions.sovereign.proto.environment;
 
 import "google/protobuf/timestamp.proto";
 
 // TODO: To update some telemetry data, we have to resend the entire field object (thing). This is not efficient.
 
+// A collection of packets to serialize to a file.
+message Packets {
+  repeated Packet packets = 1;
+}
+
 // A packet containing some update information.
 message Packet {
   google.protobuf.Timestamp timestamp = 1;
-  optional Robot robot = 2;
-  optional Field field = 3;
   repeated Thing things = 4;
 }
 
-// The current robot.
-message Robot {
-  Region region = 1; // What space Sovereign thinks the robot takes up.
-  string model = 2;  // The model to show in the Panopticon client.
-  DataNode data = 3; // Arbitrary treed data that may be useful.
-}
-
-// The current field.
-message Field {
-  Region region = 1;         // The region the field occupies.
-  DataNode data = 3;         // Arbitrary treed data that may be useful.
+// The type of thing we're dealing with.
+enum ThingSpeciality {
+  // The thing is a robot.
+  THING_ROBOT = 0;
+  // The thing is a field.
+  THING_FIELD = 1;
+  // The thing is something else.
+  THING_AD_HOC = 2;
 }
 
 // A region in space.
@@ -39,6 +39,11 @@ message Region {
   float z2 = 6;
 }
 
+message Geometry {
+  string model = 1;
+  Region region = 2;
+}
+
 // A field thing.
 message Thing {
   enum ThingType {
@@ -49,10 +54,11 @@ message Thing {
     THING_TYPE_STATIC = 1;
   }
 
-  ThingType type = 1; // How Sovereign sees the thing's type.
-  Region region = 2;  // What space Sovereign thinks the thing takes up.
-  UUID uuid = 3;      // A UUID for creating new things updating existing things.
-  DataNode data = 4;  // Arbitrary treed data that may be useful.
+  string uuid = 1;                // Thing persistence.
+  ThingType type = 2;             // How Sovereign sees the thing's type.
+  ThingSpeciality speciality = 3; // The speciality of the thing.
+  Geometry geometry = 4;          // Where the object is and what to display it as.
+  DataNode data = 5;              // Arbitrary treed data that may be useful.
 }
 
 // A node to contain some sort of data.
@@ -60,9 +66,4 @@ message DataNode {
   string name = 1;                // The name of the data node.
   map<string, string> data = 2;   // The data associated with the node.
   repeated DataNode children = 3; // Any child data.
-}
-
-// A universally unique identifier.
-message UUID {
-  string uuid = 1; // A 128-bit identifier.
 }
