@@ -70,7 +70,7 @@ dependencies {
     implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.7.3")
 
-/* Misc */
+    /* Misc */
     implementation("io.github.oshai", "kotlin-logging-jvm", "5.1.0")
     implementation("org.slf4j", "slf4j-reload4j", "2.0.9")
 
