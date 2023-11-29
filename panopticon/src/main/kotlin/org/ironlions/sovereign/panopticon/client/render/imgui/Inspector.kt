@@ -58,11 +58,15 @@ class Inspector : Window("Inspector") {
             ImGui.treePop()
         }
 
+        ImGui.spacing()
+        ImGui.separator()
+        ImGui.spacing()
+
         ImGui.setNextItemOpen(true)
         if (ImGui.treeNode("Filter")) {
             if (ImGui.beginTable(
                     "Filter",
-                    1,
+                    2,
                     ImGuiTableFlags.Resizable or ImGuiTableFlags.NoSavedSettings or ImGuiTableFlags.Borders
                 )
             ) {
@@ -72,6 +76,9 @@ class Inspector : Window("Inspector") {
                     ImGui.selectable(
                         extra.key.human, extra.value, ImGuiSelectableFlags.SpanAllColumns
                     )
+
+                    ImGui.tableNextColumn()
+                    ImGui.text(if (extra.value.get()) "Shown" else "Hidden")
                 }
 
                 ImGui.endTable()
