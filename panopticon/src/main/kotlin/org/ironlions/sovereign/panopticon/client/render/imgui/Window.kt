@@ -10,7 +10,7 @@ import org.ironlions.sovereign.panopticon.client.render.event.EventDispatcher
 
 abstract class Window(
     private val name: String,
-    private val options: Int = ImGuiWindowFlags.None,
+    private val options: Int = ImGuiWindowFlags.HorizontalScrollbar,
     private val waitForDataSource: Boolean = false
 ) {
     protected var eventDispatcher = EventDispatcher()

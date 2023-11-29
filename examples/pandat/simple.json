@@ -9,6 +9,7 @@
       "things": [
         {
           "uuid": "745e2c3a-67d1-4b80-8a09-a991e1998bac",
+          "human_name": "Bronto",
           "type": 0,
           "speciality": 0,
           "geometry": {
@@ -34,6 +35,7 @@
         },
         {
           "uuid": "32e92fec-eb14-4f32-9a23-ecfe61949337",
+          "human_name": "Field",
           "type": 1,
           "speciality": 2,
           "geometry": {
@@ -58,6 +60,7 @@
         },
         {
           "uuid": "3d5beac8-e1ac-4be4-b571-a0b79bd515bb",
+          "human_name": "Generic Field Object",
           "type": 0,
           "speciality": 2,
           "geometry": {
@@ -92,6 +95,7 @@
       "things": [
         {
           "uuid": "3d5beac8-e1ac-4be4-b571-a0b79bd515bb",
+          "human_name": "Generic Field Object",
           "type": 0,
           "speciality": 2,
           "geometry": {

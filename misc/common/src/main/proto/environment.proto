@@ -55,10 +55,11 @@ message Thing {
   }
 
   string uuid = 1;                // Thing persistence.
-  ThingType type = 2;             // How Sovereign sees the thing's type.
-  ThingSpeciality speciality = 3; // The speciality of the thing.
-  Geometry geometry = 4;          // Where the object is and what to display it as.
-  DataNode data = 5;              // Arbitrary treed data that may be useful.
+  string human_name = 2;          // A human friendly name.
+  ThingType type = 3;             // How Sovereign sees the thing's type.
+  ThingSpeciality speciality = 4; // The speciality of the thing.
+  Geometry geometry = 5;          // Where the object is and what to display it as.
+  DataNode data = 6;              // Arbitrary treed data that may be useful.
 }
 
 // A node to contain some sort of data.
