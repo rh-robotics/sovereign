@@ -11,11 +11,13 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/misc" />
-            <option value="$PROJECT_DIR$/misc/common" />
-            <option value="$PROJECT_DIR$/misc/marsh" />
-            <option value="$PROJECT_DIR$/panopticon" />
-            <option value="$PROJECT_DIR$/sovereign" />
+            <option value="$PROJECT_DIR$/android" />
+            <option value="$PROJECT_DIR$/android/sovereign" />
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/common/common" />
+            <option value="$PROJECT_DIR$/native" />
+            <option value="$PROJECT_DIR$/native/marsh" />
+            <option value="$PROJECT_DIR$/native/panopticon" />
           </set>
         </option>
       </GradleProjectSettings>
