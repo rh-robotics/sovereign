@@ -18,4 +18,4 @@ jobs:
         with:
           java-version: 17
       - name: Build documentation
-        run: ./gradlew :sovereign:dokkaHtml --no-daemon
+        run: ./gradlew :android:sovereign:dokkaHtml --no-daemon

@@ -25,12 +25,12 @@ jobs:
         with:
           java-version: 17
       - name: Build documentation
-        run: ./gradlew :sovereign:dokkaHtml --no-daemon
+        run: ./gradlew :android:sovereign:dokkaHtml --no-daemon
 
       - name: Deploy to GitHub Pages
         uses: actions/upload-pages-artifact@v1
         with:
-          path: './sovereign/build/dokka/html'
+          path: './android/sovereign/build/dokka/html'
 
       - name: Deploy to GitHub Pages
         id: deployment
