@@ -8,6 +8,9 @@ import org.ironlions.sovereign.panopticon.client.ClientApplication
 import org.ironlions.sovereign.panopticon.client.Logging
 import org.ironlions.sovereign.panopticon.client.event.Event
 import org.ironlions.sovereign.panopticon.client.event.EventDispatcher
+import org.ironlions.sovereign.panopticon.client.render.camera.ArcBallCamera
+import org.ironlions.sovereign.panopticon.client.render.camera.Camera
+import org.ironlions.sovereign.panopticon.client.render.camera.FpsCamera
 import org.ironlions.sovereign.panopticon.client.ui.GraphicsScene
 import org.ironlions.sovereign.panopticon.client.ui.Inspector
 import org.ironlions.sovereign.panopticon.client.ui.button
@@ -122,7 +125,7 @@ class Renderer {
         glfwSwapInterval(1)
         glfwShowWindow(window)
         GL.createCapabilities()
-        activeCamera = Camera(framebufferWidth!!, framebufferHeight!!)
+        activeCamera = FpsCamera(framebufferWidth!!, framebufferHeight!!)
         glViewport(0, 0, framebufferWidth!!, framebufferHeight!!)
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f)
 
@@ -133,7 +136,8 @@ class Renderer {
         setupImGui(window)
 
         eventDispatcher.subscribe(
-            activeCamera, listOf(Event.Mouse::class, Event.FramebufferResize::class)
+            activeCamera,
+            listOf(Event.Mouse::class, Event.Frame::class, Event.FramebufferResize::class)
         )
     }
 
@@ -156,6 +160,8 @@ class Renderer {
         ImGui.dockSpaceOverViewport(ImGui.getMainViewport())
         ImGui.showDemoWindow()
         menuBar()
+
+        eventDispatcher.broadcastToSubscribers(Event.Frame(window, deltaTime))
         ClientApplication.windows.forEach { it.value.frame(this) }
 
         if (displayAbout) aboutWindow()

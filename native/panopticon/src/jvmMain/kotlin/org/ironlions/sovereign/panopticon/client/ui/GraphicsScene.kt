@@ -11,13 +11,11 @@ import org.ironlions.sovereign.panopticon.client.event.EventReceiver
 import org.ironlions.sovereign.panopticon.client.render.geometry.BoundingBox
 import org.ironlions.sovereign.panopticon.client.render.shader.Program
 import org.ironlions.sovereign.panopticon.client.util.IOUtil
+import org.ironlions.sovereign.panopticon.client.util.sensibilitize
 import org.lwjgl.opengl.GL41.GL_COLOR_BUFFER_BIT
 import org.lwjgl.opengl.GL41.GL_DEPTH_BUFFER_BIT
 import org.lwjgl.opengl.GL41.GL_LINES
-import org.lwjgl.opengl.GL41.glVertex3f
-import org.lwjgl.opengl.GL41.glBegin
 import org.lwjgl.opengl.GL41.glClear
-import org.lwjgl.opengl.GL41.glEnd
 import org.lwjgl.opengl.GL41.glViewport
 
 class GraphicsScene : Window("Viewer"), EventReceiver {
@@ -59,7 +57,7 @@ class GraphicsScene : Window("Viewer"), EventReceiver {
                     entity,
                     Mat4(1),
                     program,
-                    BoundingBox.vertices(it.geometry!!.region!!),
+                    BoundingBox.vertices(it.geometry!!.region!!.sensibilitize()),
                     BoundingBox.indices,
                     type = GL_LINES,
                 ))
