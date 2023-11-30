@@ -3,6 +3,7 @@ package org.ironlions.sovereign.panopticon.client.render.imgui
 import glm_.glm
 import imgui.ImGui
 import imgui.flag.ImGuiDir
+import org.ironlions.sovereign.panopticon.client.ClientApplication
 import org.ironlions.sovereign.panopticon.client.render.Renderer
 import org.ironlions.ui.marsh.Marsh
 import org.ironlions.ui.marsh.Toast
@@ -13,7 +14,7 @@ class Controls : Window("Controls", waitForDataSource = true) {
     private var isPlaying: Boolean = false
 
     override fun content(renderer: Renderer) {
-        val inspector = renderer.windows[Inspector::class] as Inspector
+        val inspector = ClientApplication.windows[Inspector::class] as Inspector
         val numPackets = inspector.dataSource!!.size()
 
         ImGui.text("Fine Timing")

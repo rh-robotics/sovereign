@@ -8,6 +8,7 @@ import imgui.flag.ImGuiWindowFlags
 import imgui.glfw.ImGuiImplGlfw
 import imgui.gl3.ImGuiImplGl3
 import imgui.internal.ImGuiDockNode
+import org.ironlions.sovereign.panopticon.client.ClientApplication
 import org.ironlions.sovereign.panopticon.client.Logging
 import org.ironlions.sovereign.panopticon.client.render.event.Event
 import org.ironlions.sovereign.panopticon.client.render.event.EventDispatcher
@@ -98,12 +99,6 @@ class Renderer {
     private var windowHeight: Int = 700
     var window: Long = 0
     var deltaTime: Float = 0f
-    val windows: Map<KClass<*>, Window> =
-        mapOf(
-            Pair(GraphicsScene::class, GraphicsScene()),
-            Pair(Inspector::class, Inspector()),
-            Pair(Controls::class, Controls())
-        )
 
     /** The active camera. */
     var activeCamera: Camera
@@ -173,7 +168,7 @@ class Renderer {
         ImGui.dockSpaceOverViewport(ImGui.getMainViewport())
         ImGui.showDemoWindow()
         menuBar()
-        windows.forEach { it.value.frame(this) }
+        ClientApplication.windows.forEach { it.value.frame(this) }
 
         if (displayAbout) aboutWindow()
 
@@ -193,7 +188,7 @@ class Renderer {
                 if (ImGui.menuItem("About")) displayAbout = true
                 if (ImGui.menuItem("Settings")) Marsh.show(Toast.Error("This is not implemented."))
                 if (ImGui.beginMenu("Data")) {
-                    val inspector = windows[Inspector::class]!! as Inspector
+                    val inspector = ClientApplication.windows[Inspector::class]!! as Inspector
                     if (ImGui.menuItem(if (inspector.dataSource == null) "Connect" else "Reconnect")) {
                         inspector.dataSource = null
                         inspector.wantConnect = true
@@ -323,7 +318,7 @@ class Renderer {
         lastMouseX = x
         lastMouseY = y
 
-        if (windows[GraphicsScene::class]!!.hovering) {
+        if (ClientApplication.windows[GraphicsScene::class]!!.hovering) {
             eventDispatcher.broadcastToSubscribers(Event.Mouse(window, xOffset, yOffset))
         }
     }
@@ -356,7 +351,7 @@ class Renderer {
 
     /** Clean up the application, including GLFW and OpenGL stuff. */
     fun destroy() {
-        windows.forEach { it.value.destroy() }
+        ClientApplication.windows.forEach { it.value.destroy() }
         Callbacks.glfwFreeCallbacks(window)
         glfwDestroyWindow(window)
         glfwTerminate()

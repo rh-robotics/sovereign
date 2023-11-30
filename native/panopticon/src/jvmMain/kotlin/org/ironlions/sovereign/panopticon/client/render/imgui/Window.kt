@@ -4,6 +4,7 @@ import imgui.ImGui
 import imgui.ImVec2
 import imgui.flag.ImGuiFocusedFlags
 import imgui.flag.ImGuiWindowFlags
+import org.ironlions.sovereign.panopticon.client.ClientApplication
 import org.ironlions.sovereign.panopticon.client.render.Renderer
 import org.ironlions.sovereign.panopticon.client.render.event.Event
 import org.ironlions.sovereign.panopticon.client.render.event.EventDispatcher
@@ -21,7 +22,7 @@ abstract class Window(
     var hovering: Boolean = false
 
     fun frame(renderer: Renderer) {
-        val inspector = renderer.windows[Inspector::class] as Inspector
+        val inspector = ClientApplication.windows[Inspector::class] as Inspector
 
         ImGui.begin(name, options)
 
