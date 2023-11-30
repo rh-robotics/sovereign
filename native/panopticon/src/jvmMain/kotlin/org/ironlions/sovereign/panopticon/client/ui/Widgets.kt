@@ -1,9 +1,8 @@
-package org.ironlions.sovereign.panopticon.client.render.imgui
+package org.ironlions.sovereign.panopticon.client.ui
 
 import imgui.ImGui
 import imgui.extension.imguifiledialog.ImGuiFileDialog
 import imgui.extension.imguifiledialog.flag.ImGuiFileDialogFlags
-import imgui.flag.ImGuiPopupFlags
 import imgui.flag.ImGuiStyleVar
 import imgui.flag.ImGuiWindowFlags
 import imgui.internal.flag.ImGuiItemFlags

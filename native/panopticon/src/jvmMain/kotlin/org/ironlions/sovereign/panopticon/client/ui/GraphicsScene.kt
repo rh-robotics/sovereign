@@ -1,13 +1,14 @@
-package org.ironlions.sovereign.panopticon.client.render.imgui
+package org.ironlions.sovereign.panopticon.client.ui
 
 import glm_.mat4x4.Mat4
 import glm_.vec3.Vec3
+import org.ironlions.sovereign.panopticon.client.data.DataSource
 import org.ironlions.sovereign.panopticon.client.ecs.Entity
 import org.ironlions.sovereign.panopticon.client.ecs.Scene
 import org.ironlions.sovereign.panopticon.client.ecs.components.Mesh
 import org.ironlions.sovereign.panopticon.client.render.Renderer
-import org.ironlions.sovereign.panopticon.client.render.event.Event
-import org.ironlions.sovereign.panopticon.client.render.event.EventReceiver
+import org.ironlions.sovereign.panopticon.client.event.Event
+import org.ironlions.sovereign.panopticon.client.event.EventReceiver
 import org.ironlions.sovereign.panopticon.client.render.geometry.Vertex
 import org.ironlions.sovereign.panopticon.client.render.shader.Program
 import org.ironlions.sovereign.panopticon.client.util.IOUtil

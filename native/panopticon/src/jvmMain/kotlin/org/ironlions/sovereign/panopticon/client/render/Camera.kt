@@ -3,8 +3,8 @@ package org.ironlions.sovereign.panopticon.client.render
 import glm_.glm
 import glm_.mat4x4.Mat4
 import glm_.vec3.Vec3
-import org.ironlions.sovereign.panopticon.client.render.event.Event
-import org.ironlions.sovereign.panopticon.client.render.event.EventReceiver
+import org.ironlions.sovereign.panopticon.client.event.Event
+import org.ironlions.sovereign.panopticon.client.event.EventReceiver
 import org.ironlions.sovereign.panopticon.client.render.globjects.Framebuffer
 import org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT
 import org.lwjgl.glfw.GLFW.GLFW_PRESS

@@ -1,4 +1,4 @@
-package org.ironlions.sovereign.panopticon.client.render.imgui
+package org.ironlions.sovereign.panopticon.client.ui
 
 import imgui.ImGui
 import imgui.ImVec2
@@ -6,8 +6,8 @@ import imgui.flag.ImGuiFocusedFlags
 import imgui.flag.ImGuiWindowFlags
 import org.ironlions.sovereign.panopticon.client.ClientApplication
 import org.ironlions.sovereign.panopticon.client.render.Renderer
-import org.ironlions.sovereign.panopticon.client.render.event.Event
-import org.ironlions.sovereign.panopticon.client.render.event.EventDispatcher
+import org.ironlions.sovereign.panopticon.client.event.Event
+import org.ironlions.sovereign.panopticon.client.event.EventDispatcher
 
 abstract class Window(
     private val name: String,

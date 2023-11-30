@@ -2,34 +2,25 @@ package org.ironlions.sovereign.panopticon.client.render
 
 import imgui.ImGui
 import imgui.flag.ImGuiConfigFlags
-import imgui.flag.ImGuiDir
-import imgui.flag.ImGuiDockNodeFlags
-import imgui.flag.ImGuiWindowFlags
 import imgui.glfw.ImGuiImplGlfw
 import imgui.gl3.ImGuiImplGl3
-import imgui.internal.ImGuiDockNode
 import org.ironlions.sovereign.panopticon.client.ClientApplication
 import org.ironlions.sovereign.panopticon.client.Logging
-import org.ironlions.sovereign.panopticon.client.render.event.Event
-import org.ironlions.sovereign.panopticon.client.render.event.EventDispatcher
-import org.ironlions.sovereign.panopticon.client.render.imgui.Controls
-import org.ironlions.sovereign.panopticon.client.render.imgui.GraphicsScene
-import org.ironlions.sovereign.panopticon.client.render.imgui.Inspector
-import org.ironlions.sovereign.panopticon.client.render.imgui.Window
-import org.ironlions.sovereign.panopticon.client.render.imgui.button
-import org.ironlions.sovereign.panopticon.client.render.imgui.installImGuiTheme
+import org.ironlions.sovereign.panopticon.client.event.Event
+import org.ironlions.sovereign.panopticon.client.event.EventDispatcher
+import org.ironlions.sovereign.panopticon.client.ui.GraphicsScene
+import org.ironlions.sovereign.panopticon.client.ui.Inspector
+import org.ironlions.sovereign.panopticon.client.ui.button
+import org.ironlions.sovereign.panopticon.client.ui.installImGuiTheme
 import org.ironlions.ui.marsh.Marsh
 import org.ironlions.ui.marsh.Toast
 import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR
 import org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR
-import org.lwjgl.glfw.GLFW.GLFW_DECORATED
 import org.lwjgl.glfw.GLFW.GLFW_FALSE
-import org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE
 import org.lwjgl.glfw.GLFW.GLFW_OPENGL_CORE_PROFILE
 import org.lwjgl.glfw.GLFW.GLFW_OPENGL_FORWARD_COMPAT
 import org.lwjgl.glfw.GLFW.GLFW_OPENGL_PROFILE
-import org.lwjgl.glfw.GLFW.GLFW_RELEASE
 import org.lwjgl.glfw.GLFW.GLFW_RESIZABLE
 import org.lwjgl.glfw.GLFW.GLFW_SAMPLES
 import org.lwjgl.glfw.GLFW.GLFW_TRUE
@@ -48,8 +39,6 @@ import org.lwjgl.glfw.GLFW.glfwPollEvents
 import org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback
 import org.lwjgl.glfw.GLFW.glfwSetErrorCallback
 import org.lwjgl.glfw.GLFW.glfwSetFramebufferSizeCallback
-import org.lwjgl.glfw.GLFW.glfwSetKeyCallback
-import org.lwjgl.glfw.GLFW.glfwSetWindowAttrib
 import org.lwjgl.glfw.GLFW.glfwSetWindowPos
 import org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose
 import org.lwjgl.glfw.GLFW.glfwSetWindowSizeCallback
@@ -75,7 +64,6 @@ import org.lwjgl.opengl.GL41.glViewport
 import org.lwjgl.opengl.GLCapabilities
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil
-import kotlin.reflect.KClass
 
 /** The renderer to render a scene with. */
 class Renderer {

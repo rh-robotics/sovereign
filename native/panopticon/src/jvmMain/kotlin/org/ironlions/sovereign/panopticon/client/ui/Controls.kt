@@ -1,4 +1,4 @@
-package org.ironlions.sovereign.panopticon.client.render.imgui
+package org.ironlions.sovereign.panopticon.client.ui
 
 import glm_.glm
 import imgui.ImGui

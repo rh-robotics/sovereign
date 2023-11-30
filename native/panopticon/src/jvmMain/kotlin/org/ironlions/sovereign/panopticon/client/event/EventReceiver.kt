@@ -1,4 +1,4 @@
-package org.ironlions.sovereign.panopticon.client.render.event
+package org.ironlions.sovereign.panopticon.client.event
 
 /** Something that can receive an event from [EventDispatcher]. */
 interface EventReceiver {

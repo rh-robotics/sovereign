@@ -2,10 +2,10 @@ package org.ironlions.sovereign.panopticon.client
 
 import org.apache.log4j.BasicConfigurator
 import org.ironlions.sovereign.panopticon.client.render.Renderer
-import org.ironlions.sovereign.panopticon.client.render.imgui.Controls
-import org.ironlions.sovereign.panopticon.client.render.imgui.GraphicsScene
-import org.ironlions.sovereign.panopticon.client.render.imgui.Inspector
-import org.ironlions.sovereign.panopticon.client.render.imgui.Window
+import org.ironlions.sovereign.panopticon.client.ui.Controls
+import org.ironlions.sovereign.panopticon.client.ui.GraphicsScene
+import org.ironlions.sovereign.panopticon.client.ui.Inspector
+import org.ironlions.sovereign.panopticon.client.ui.Window
 import kotlin.reflect.KClass
 
 object ClientApplication {
