@@ -127,7 +127,7 @@ class Renderer {
         GL.createCapabilities()
         activeCamera = FpsCamera(framebufferWidth!!, framebufferHeight!!)
         glViewport(0, 0, framebufferWidth!!, framebufferHeight!!)
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f)
+        glClearColor(19f/255, 19f/255, 19f/255, 0.0f)
 
         describeOpenGL()
         checkCapabilities()
