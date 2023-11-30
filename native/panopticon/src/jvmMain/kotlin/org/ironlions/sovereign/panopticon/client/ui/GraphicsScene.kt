@@ -53,14 +53,16 @@ class GraphicsScene : Window("Viewer"), EventReceiver {
                 val entity = Entity(scene)
 
                 entity.components.clear()
-                entity.attachComponent(Mesh::class, Mesh(
-                    entity,
-                    Mat4(1),
-                    program,
-                    BoundingBox.vertices(it.geometry!!.region!!.sensibilitize()),
-                    BoundingBox.indices,
-                    type = GL_LINES,
-                ))
+                entity.attachComponent(
+                    Mesh::class, Mesh(
+                        entity,
+                        Mat4(1),
+                        program,
+                        BoundingBox.vertices(it.look!!.region!!.sensibilitize(), it.look!!.color!!),
+                        BoundingBox.indices,
+                        type = GL_LINES,
+                    )
+                )
 
                 scene[it.uuid] = entity
             }

@@ -39,9 +39,19 @@ message Region {
   float z2 = 6;
 }
 
-message Geometry {
+// A color.
+message Color {
+  float r = 1;
+  float g = 2;
+  float b = 3;
+  float a = 4;
+}
+
+// How something is.
+message Look {
   string model = 1;
   Region region = 2;
+  Color color = 3;
 }
 
 // A field thing.
@@ -58,7 +68,7 @@ message Thing {
   string humanName = 2;           // A human friendly name.
   ThingType type = 3;             // How Sovereign sees the thing's type.
   ThingSpeciality speciality = 4; // The speciality of the thing.
-  Geometry geometry = 5;          // Where the object is and what to display it as.
+  Look look = 5;                  // Where the object is and what to display it as.
   DataNode data = 6;              // Arbitrary treed data that may be useful.
 }
 

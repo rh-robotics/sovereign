@@ -93,9 +93,9 @@ class Inspector : Window("Inspector") {
     private fun displayThingInfo(thing: Thing) {
         val extra = displayableInherentProperty.filter { it.value.get() }.keys.associate {
             it.human to when (it) {
-                is InherentProperty.Uuid -> thing.uuid.toString()
-                is InherentProperty.Region -> "(${thing.geometry!!.region!!.x1}, ${thing.geometry!!.region!!.y1}, ${thing.geometry!!.region!!.z1}) - (${thing.geometry!!.region!!.x2}, ${thing.geometry!!.region!!.y2}, ${thing.geometry!!.region!!.z2})"
-                is InherentProperty.Model -> thing.geometry!!.model
+                is InherentProperty.Uuid -> thing.uuid
+                is InherentProperty.Region -> "(${thing.look!!.region!!.x1}, ${thing.look!!.region!!.y1}, ${thing.look!!.region!!.z1}) - (${thing.look!!.region!!.x2}, ${thing.look!!.region!!.y2}, ${thing.look!!.region!!.z2})"
+                is InherentProperty.Model -> thing.look!!.model
                 else -> throw RuntimeException("Unreachable.")
             }
         }

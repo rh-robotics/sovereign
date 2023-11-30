@@ -24,10 +24,10 @@ import kotlin.math.sin
 class FpsCamera(
     framebufferWidth: Int,
     framebufferHeight: Int,
-    position: Vec3 = Vec3(0, 0, 2),
+    position: Vec3 = Vec3(-35, 20, 0),
     private var mouseSensitivity: Float = 0.35f,
-    private var yaw: Float = -90.0f,
-    private var pitch: Float = 0f,
+    private var yaw: Float = 0f,
+    private var pitch: Float = -35.0f,
     private val cameraSpeed: Float = 3f,
 ) : Camera(framebufferWidth, framebufferHeight, position) {
     private var up: Vec3 = Vec3(0.0f, 1.0f, 0.0f)
@@ -83,7 +83,7 @@ class FpsCamera(
         if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_SPACE)) position = position + (worldUp * velocity)
         if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_C)) position = position - (worldUp * velocity)
 
-        println("$yaw, $pitch")
+        println("$position")
     }
 
     /** Calculate the projection matrix.
