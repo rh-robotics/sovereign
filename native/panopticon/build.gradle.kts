@@ -101,7 +101,7 @@ java {
 }
 
 application {
-    mainClass.set("org.ironlions.sovereign.panopticon.client.ClientApplicationKt")
+    mainClass.set("org.ironlions.panopticon.client.ClientApplicationKt")
     applicationDefaultJvmArgs = listOf("-XstartOnFirstThread")
 }
 
