@@ -6,6 +6,7 @@ import java.time.Instant
 import org.ironlions.proto.panopticon.environment.Thing
 import org.ironlions.proto.panopticon.environment.Packet
 import org.ironlions.proto.panopticon.environment.Packets
+import org.ironlions.sovereign.panopticon.client.event.Event
 import java.lang.StringBuilder
 import java.util.Stack
 import java.util.TreeMap
@@ -47,7 +48,7 @@ class RecordDataSource(source: Path) : DataSource() {
         packets[cursor]!!.things.forEach {
             val stack = thingStacks.getOrPut(it.uuid) { Stack() }
 
-            Logging.logger.debug { "Applying thing '${it.uuid}' v${stack.size+1}" }
+            Logging.logger.debug { "Applying thing '${it.uuid}' v${stack.size + 1}" }
             stack.push(it)
         }
     }

@@ -10,8 +10,10 @@ import org.ironlions.sovereign.panopticon.client.render.geometry.Vertex
 import org.ironlions.sovereign.panopticon.client.render.shader.Program
 import org.lwjgl.opengl.GL41.GL_TRIANGLES
 import org.lwjgl.opengl.GL41.GL_UNSIGNED_INT
+import org.lwjgl.opengl.GL41.glDrawArrays
 import org.lwjgl.opengl.GL41.glDrawElements
 import org.lwjgl.opengl.GL41.glUniformMatrix4fv
+import org.lwjgl.opengl.GL41.glUniform1f
 
 /**
  * This component allows for the rendering of an entity.
@@ -25,22 +27,25 @@ class Mesh(
     override val parent: Entity,
     private val modelMatrix: Mat4,
     private val program: Program,
-    vertices: List<Vertex>,
-    private val indices: List<Int>,
+    private val vertices: List<Vertex>,
+    private val indices: List<Int>?,
+    private val type: Int = GL_TRIANGLES
 ) : Component(parent) {
     private val attributes = VertexAttributeGL()
     private val buffer: VertexGL
-    private val elements: ElementGL
+    private val elements: ElementGL?
 
     init {
         // Construct the necessary buffers, sans attributes.
         attributes.bind()
         buffer = VertexGL(vertices)
-        elements = ElementGL(indices)
+
+        elements = if (indices != null) ElementGL(indices)
+        else null
 
         // Bind and construct attributes.
         buffer.bind()
-        elements.bind()
+        elements?.bind()
         attributes.installPointers()
     }
 
@@ -61,13 +66,17 @@ class Mesh(
             program.loc("viewPosition"), false, renderer.activeCamera.position.array
         )
 
+        if (type != GL_TRIANGLES) glUniform1f(program.loc("isComplex"), 1.0f)
+        else glUniform1f(program.loc("isComplex"), 0.0f)
+
         // Draw everything
-        glDrawElements(GL_TRIANGLES, indices.size, GL_UNSIGNED_INT, 0)
+        if (indices != null) glDrawElements(type, indices.size, GL_UNSIGNED_INT, 0)
+        else glDrawArrays(type, 0, vertices.size)
     }
 
     override fun destroy() {
         attributes.close()
         buffer.close()
-        elements.close()
+        elements?.close()
     }
 }

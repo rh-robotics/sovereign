@@ -18,8 +18,8 @@ class Entity(val parent: Scene) {
      * @param component The component type to add.
      * @param args The arguments to pass along to the component constructor.
      */
-    fun <T : Component> addComponent(component: KClass<T>, vararg args: Any) = apply {
-        components[component] = component.primaryConstructor!!.call(this, *args)
+    fun <T : Component> attachComponent(type: KClass<T>, component: T) = apply {
+        components[type] = component
     }
 
     /**

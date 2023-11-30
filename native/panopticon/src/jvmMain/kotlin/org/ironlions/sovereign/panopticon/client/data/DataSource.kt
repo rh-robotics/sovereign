@@ -6,9 +6,11 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.isActive
 import org.ironlions.proto.panopticon.environment.Thing
+import org.ironlions.sovereign.panopticon.client.event.EventDispatcher
 
 /** A source of data from the robot. */
 abstract class DataSource : CoroutineScope by MainScope() {
+    var eventDispatcher = EventDispatcher()
     private var job: Job? = null
 
     /** Start listening on the data source. */

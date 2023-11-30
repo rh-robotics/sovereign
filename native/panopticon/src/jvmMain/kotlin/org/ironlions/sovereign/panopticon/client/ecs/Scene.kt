@@ -16,13 +16,13 @@ import kotlin.reflect.KClass
 class Scene(
     val name: String
 ) {
-    val entities: MutableList<Entity> = mutableListOf()
+    private val entities: MutableMap<String, Entity> = mutableMapOf()
     val components: MutableMap<KClass<out Component>, MutableList<Component>> = mutableMapOf()
 
     /** An an entity to the scene. */
     @Suppress("UNCHECKED_CAST")
-    fun add(entity: Entity) = apply {
-        entities.add(entity)
+    operator fun set(uuid: String, entity: Entity) = apply {
+        entities[uuid] = entity
 
         entity.components.forEach {
             components.getOrPut(it.key as KClass<out Component>) { mutableListOf() }.add(it.value)
@@ -30,7 +30,7 @@ class Scene(
     }
 
     /** Remove an entity from the scene. */
-    fun remove(entity: Entity) = apply { entities.remove(entity) }
+    fun remove(uuid: String) = apply { entities.remove(uuid) }
 
     /** Draw all the entities with a mesh in the scene. */
     fun draw(renderer: Renderer) {
@@ -44,5 +44,5 @@ class Scene(
     }
 
     /** Destroy the scene and all entities along with it. */
-    fun destroy() = entities.forEach { entity -> entity.destroy() }
+    fun destroy() = entities.forEach { entity -> entity.value.destroy() }
 }

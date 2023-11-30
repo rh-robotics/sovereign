@@ -14,12 +14,13 @@ abstract class Window(
     private val options: Int = ImGuiWindowFlags.HorizontalScrollbar,
     private val waitForDataSource: Boolean = false
 ) {
-    protected var eventDispatcher = EventDispatcher()
     private var firstFrame: Boolean = true
     private var lastAvailableSpace: ImVec2? = null
     var availableSpace: ImVec2? = null
     var active: Boolean = false
     var hovering: Boolean = false
+    var eventDispatcher = EventDispatcher()
+        private set
 
     fun frame(renderer: Renderer) {
         val inspector = ClientApplication.windows[Inspector::class] as Inspector

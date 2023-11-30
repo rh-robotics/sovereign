@@ -22,9 +22,12 @@ class EventDispatcher {
      * @param what The subscribing event receiver.
      * @param to The events in which to subscribe to.
      */
-    fun subscribe(what: EventReceiver, to: List<KClass<out Event>>) = to.forEach {
-        if (subscribers.containsKey(it)) subscribers[it]!!.add(what)
-        else subscribers[it] = mutableListOf(what)
+    fun subscribe(what: EventReceiver, to: List<KClass<out Event>>) {
+        Logging.logger.debug { "EventReceiver '${what::class.simpleName}' is now listening to ${to.size} event${if (to.size != 1) "s" else ""}." }
+        to.forEach {
+            if (subscribers.containsKey(it)) subscribers[it]!!.add(what)
+            else subscribers[it] = mutableListOf(what)
+        }
     }
 
     /**
@@ -33,10 +36,14 @@ class EventDispatcher {
      * @param what The subscribing event receiver.
      */
     @Suppress("UNCHECKED_CAST")
-    fun subscribe(what: EventReceiver) = Event::class.nestedClasses.forEach {
-        assert(it.isInstance(Event::class))
-        if (subscribers.containsKey(it)) subscribers[it]!!.add(what)
-        else subscribers.put(it.java as KClass<out Event>, mutableListOf(what))
+    fun subscribe(what: EventReceiver) {
+        Logging.logger.debug { "EventReceiver '${what::class.simpleName}' is now listening to all events." }
+        Event::class.nestedClasses.forEach {
+            assert(it.isInstance(Event::class))
+
+            if (subscribers.containsKey(it)) subscribers[it]!!.add(what)
+            else subscribers.put(it.java as KClass<out Event>, mutableListOf(what))
+        }
     }
 
     /**

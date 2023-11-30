@@ -1,5 +1,6 @@
 package org.ironlions.sovereign.panopticon.client.event
 
+import org.ironlions.proto.panopticon.environment.Thing
 import org.ironlions.sovereign.panopticon.client.render.globjects.Framebuffer
 
 /** A subscribable event type. */

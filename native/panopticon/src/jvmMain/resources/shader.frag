@@ -6,12 +6,18 @@ in vec3 fragPosition;
 
 layout (location = 0) out vec4 color;
 
+uniform float isComplex;
 uniform vec3 viewPosition;
 
 /* Implements the Lambertian + Phong reflection model. */
 void
 main()
 {
+    if (isComplex == 0.0) {
+        color = vec4(fragColor, 1.0);
+        return;
+    }
+
     /* Setup. */
     vec3 lightColor = vec3(1.0, 1.0, 1.0);
     vec3 lightPosition = vec3(2.0, 2.0, 2.0);

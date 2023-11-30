@@ -43,7 +43,7 @@ class Camera(
         glm.radians(45.0f),
         framebufferWidth.toFloat() / framebufferHeight,
         0.1f,
-        100.0f
+        5000.0f
     )
 
     /** The framebuffer to use. */

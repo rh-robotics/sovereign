@@ -11,6 +11,7 @@ import org.ironlions.sovereign.panopticon.client.render.Renderer
 import org.ironlions.proto.panopticon.environment.Thing
 import org.ironlions.proto.panopticon.environment.DataNode
 import org.ironlions.common.titlecase
+import org.ironlions.sovereign.panopticon.client.event.Event
 import org.ironlions.ui.marsh.Marsh
 import org.ironlions.ui.marsh.Toast
 import kotlin.io.path.Path
@@ -32,13 +33,14 @@ class Inspector : Window("Inspector") {
         InherentProperty.Region() to ImBoolean(true),
         InherentProperty.Model() to ImBoolean(false),
     )
-    var dataSource: DataSource? = null
     var wantConnect: Boolean = false
+    var dataSource: DataSource? = null
 
     override fun content(renderer: Renderer) {
         // Easier development.
-        if (dataSource == null && System.getenv("PANOPTICON_PANDAT") != null) dataSource =
-            RecordDataSource(Path(System.getenv("PANOPTICON_PANDAT")))
+        if (dataSource == null && System.getenv("PANOPTICON_PANDAT") != null) {
+            dataSource = RecordDataSource(Path(System.getenv("PANOPTICON_PANDAT")))
+        }
 
         if (wantConnect) pickDataSource()
         if (dataSource == null) {
