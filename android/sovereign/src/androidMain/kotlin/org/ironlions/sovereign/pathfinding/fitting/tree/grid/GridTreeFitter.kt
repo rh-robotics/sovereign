@@ -86,12 +86,12 @@ class GridTreeFitter(
         // Draw a bounding box from the ground to the top of the robot, for the cell.
         val cellRegion = Region(
             v1 = PrototypicalField.grid.toReal(x, y),
-            v2 = PrototypicalField.grid.toReal(x + 1, y + 1, environment.robot.geometry.height)
+            v2 = PrototypicalField.grid.toReal(x + 1, y + 1, environment.robot.region.height)
         )
 
         // TODO: Separate out dimensional collapse once more?
 
         // Look through every object and see if it overlaps with the current cell.
-        environment.things.forEach { fitting[x][y].occupied = cellRegion.overlaps(it.geometry) }
+        environment.things.forEach { fitting[x][y].occupied = cellRegion.overlaps(it.region) }
     }
 }

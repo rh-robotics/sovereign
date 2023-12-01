@@ -3,9 +3,9 @@ package org.ironlions.panopticon.client.data
 import org.ironlions.panopticon.client.Logging
 import java.nio.file.Path
 import java.time.Instant
-import org.ironlions.panopticon.proto.Thing
-import org.ironlions.panopticon.proto.Packet
-import org.ironlions.panopticon.proto.Packets
+import org.ironlions.common.panopticon.proto.Thing
+import org.ironlions.common.panopticon.proto.Packet
+import org.ironlions.common.panopticon.proto.Packets
 import java.lang.StringBuilder
 import java.util.Stack
 import java.util.TreeMap

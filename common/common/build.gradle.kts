@@ -32,7 +32,7 @@ kotlin {
 }
 
 android {
-    namespace = "org.ironlions.panopticon.proto"
+    namespace = "org.ironlions.common.panopticon.proto"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

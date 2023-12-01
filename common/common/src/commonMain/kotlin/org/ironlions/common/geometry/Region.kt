@@ -7,8 +7,8 @@ import org.ironlions.common.math.rangesOverlap
  * contrast to [Volume], it has a position, and can thus be used for checking if a point is inside
  * of it.
  *
- * @param v1 The upper left vertex of the region.
- * @param v2 The lower right vertex of the region.
+ * @param v1 The back, lower left vertex of the region.
+ * @param v2 The front, upper right vertex of the region.
  */
 class Region(
     val v1: Point,

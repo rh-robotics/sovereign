@@ -1,6 +1,6 @@
 package org.ironlions.panopticon.client.util
 
-import org.ironlions.panopticon.proto.Region
+import org.ironlions.common.panopticon.proto.Region
 
 fun Region.sensibilitize(): Region = Region(
     x1 = this.x1 / 100,

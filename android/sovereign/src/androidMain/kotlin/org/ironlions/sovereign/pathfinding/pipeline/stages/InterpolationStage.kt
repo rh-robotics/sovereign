@@ -2,7 +2,7 @@ package org.ironlions.sovereign.pathfinding.pipeline.stages
 
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.Vector2d
-import org.ironlions.sovereign.pathfinding.environment.things.Robot
+import org.ironlions.sovereign.pathfinding.environment.Robot
 import org.ironlions.sovereign.pathfinding.fitting.tree.TreeFitting
 
 class InterpolationStage(

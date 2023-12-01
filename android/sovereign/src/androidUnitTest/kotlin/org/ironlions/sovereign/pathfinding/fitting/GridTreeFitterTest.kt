@@ -4,8 +4,8 @@ import org.ironlions.common.geometry.Measurement
 import org.ironlions.common.geometry.Point
 import org.ironlions.sovereign.pathfinding.pipeline.Pipeline
 import org.ironlions.sovereign.pathfinding.algorithms.AStar
-import org.ironlions.sovereign.pathfinding.environment.things.Pin
-import org.ironlions.sovereign.pathfinding.environment.things.Robot
+import org.ironlions.common.environment.things.Pin
+import org.ironlions.sovereign.pathfinding.environment.Robot
 import org.ironlions.sovereign.pathfinding.environment.Environment
 import org.ironlions.sovereign.pathfinding.fitting.tree.grid.GridTreeFitter
 import org.ironlions.sovereign.pathfinding.fitting.tree.grid.GridTreeFitting
@@ -27,6 +27,7 @@ class GridTreeFitterTest {
             pathfinder = AStar.Builder(),
             environment = Environment.Builder(
                 Robot(
+                    "Testing Robot",
                     actualizationContext = null,
                     Point(
                         x = Measurement.Feet(3.0),
@@ -57,6 +58,7 @@ class GridTreeFitterTest {
             pathfinder = AStar.Builder(),
             environment = Environment.Builder(
                 Robot(
+                    "Testing Robot",
                     actualizationContext = null,
                     Point(
                         x = Measurement.Feet(3.0),
@@ -95,6 +97,7 @@ class GridTreeFitterTest {
             pathfinder = AStar.Builder(),
             environment = Environment.Builder(
                 Robot(
+                    "Testing Robot",
                     actualizationContext = null,
                     Point(
                         x = Measurement.Feet(3.0),

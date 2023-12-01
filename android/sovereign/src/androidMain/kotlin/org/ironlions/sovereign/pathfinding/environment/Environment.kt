@@ -1,8 +1,6 @@
 package org.ironlions.sovereign.pathfinding.environment
 
-import org.ironlions.common.geometry.Grid
-import org.ironlions.common.geometry.Measurement
-import org.ironlions.sovereign.pathfinding.environment.things.Robot
+import org.ironlions.common.environment.FieldThing
 
 /**
  * A map of the entire game field, including all field objects.

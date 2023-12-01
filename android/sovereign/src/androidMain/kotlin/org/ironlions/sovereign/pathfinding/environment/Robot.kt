@@ -1,37 +1,33 @@
-package org.ironlions.sovereign.pathfinding.environment.things
+package org.ironlions.sovereign.pathfinding.environment
 
-import com.acmerobotics.roadrunner.AccelConstraint
 import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder
-import com.acmerobotics.roadrunner.TrajectoryActionFactory
-import com.acmerobotics.roadrunner.TurnActionFactory
-import com.acmerobotics.roadrunner.TurnConstraints
 import com.acmerobotics.roadrunner.Vector2d
-import com.acmerobotics.roadrunner.VelConstraint
 import org.ironlions.sovereign.actualization.ActualizationContext
 import org.ironlions.common.geometry.Measurement
 import org.ironlions.common.geometry.Point
 import org.ironlions.common.geometry.Region
 import org.ironlions.common.geometry.Volume
-import org.ironlions.sovereign.pathfinding.environment.ThingType
-import org.ironlions.sovereign.pathfinding.environment.FieldThing
+import org.ironlions.common.environment.ThingType
+import org.ironlions.common.environment.FieldThing
+import org.ironlions.common.panopticon.proto.Thing
+import java.util.UUID
 
 /**
  * A robot on the field.
+ *
  * TODO: Change volume and position to be accurate.
  *
  * @param position The position of the robot.
  */
 class Robot(
-    actualizationContext: ActualizationContext?,
-    position: Point
-) : FieldThing(
-    Region(
-        position, Volume(Measurement.Feet(3.0), Measurement.Feet(3.0), Measurement.Feet(3.0))
-    ),
-    ThingType.DYNAMIC,
+    val name: String, actualizationContext: ActualizationContext?, position: Point
 ) {
+    private val uuid = UUID.randomUUID()
     val trajectoryActionBuilder: TrajectoryActionBuilder?
+    val region: Region = Region(
+        position, Volume(Measurement.Feet(3.0), Measurement.Feet(3.0), Measurement.Feet(3.0))
+    )
 
     init {
         trajectoryActionBuilder = if (actualizationContext != null) {
@@ -49,4 +45,6 @@ class Robot(
             null
         }
     }
+
+    fun serialize(): Thing = TODO("Not yet implemented")
 }
