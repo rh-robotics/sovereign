@@ -1,8 +1,8 @@
 @Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797#issuecomment-1385330558
 plugins {
-    alias(libs.plugins.dokka)
-    alias(libs.plugins.kotlin.multiplatform)
     id("application")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.dokka)
 }
 
 val extJvmTarget: String by project
@@ -91,10 +91,6 @@ kotlin {
     }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = extJvmTarget
-}
-
 java {
     sourceCompatibility = extSourceCompatibility
     targetCompatibility = extTargetCompatibility
@@ -103,23 +99,4 @@ java {
 application {
     mainClass.set("org.ironlions.panopticon.client.ClientApplicationKt")
     applicationDefaultJvmArgs = listOf("-XstartOnFirstThread")
-}
-
-tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
-    dokkaSourceSets {
-        configureEach {
-            moduleName.set("Panopticon")
-            suppressObviousFunctions.set(false) // For the FTC rookies
-            suppressInheritedMembers.set(false) // For the FTC rookies
-            includes.from(project.files(), "overview.md")
-        }
-    }
-}
-
-tasks {
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>().configureEach {
-        compilerOptions.freeCompilerArgs.addAll(
-            "-opt-in=kotlin.RequiresOptIn", "-Xallow-kotlin-package"
-        )
-    }
 }

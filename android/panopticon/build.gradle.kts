@@ -64,18 +64,3 @@ android {
         targetCompatibility = extTargetCompatibility
     }
 }
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = extJvmTarget
-}
-
-tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
-    dokkaSourceSets {
-        configureEach {
-            moduleName.set("Panopticon")
-            suppressObviousFunctions.set(false) // For the FTC rookies
-            suppressInheritedMembers.set(false) // For the FTC rookies
-            includes.from(project.files(), "overview.md")
-        }
-    }
-}

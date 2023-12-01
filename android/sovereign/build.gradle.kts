@@ -1,8 +1,8 @@
 @Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797#issuecomment-1385330558
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.dokka)
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.dokka)
 }
 
 val extJvmTarget: String by project
@@ -76,20 +76,5 @@ android {
     compileOptions {
         sourceCompatibility = extSourceCompatibility
         targetCompatibility = extTargetCompatibility
-    }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = extJvmTarget
-}
-
-tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
-    dokkaSourceSets {
-        configureEach {
-            moduleName.set("Sovereign")
-            suppressObviousFunctions.set(false) // For the FTC rookies
-            suppressInheritedMembers.set(false) // For the FTC rookies
-            includes.from(project.files(), "overview.md")
-        }
     }
 }
