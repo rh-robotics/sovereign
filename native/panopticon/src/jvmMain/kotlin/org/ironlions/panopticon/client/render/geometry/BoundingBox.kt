@@ -1,8 +1,8 @@
 package org.ironlions.panopticon.client.render.geometry
 
 import glm_.vec3.Vec3
-import org.ironlions.proto.panopticon.environment.Color
-import org.ironlions.proto.panopticon.environment.Region
+import org.ironlions.panopticon.proto.Color
+import org.ironlions.panopticon.proto.Region
 
 object BoundingBox {
     fun vertices(region: Region, boundingColor: Color): List<Vertex> {

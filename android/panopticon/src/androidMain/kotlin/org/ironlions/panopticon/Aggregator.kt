@@ -2,8 +2,8 @@ package org.ironlions.panopticon
 
 import org.ironlions.panopticon.monitor.Watcher
 import org.ironlions.panopticon.monitor.Monitored
-import org.ironlions.proto.panopticon.environment.Packet
-import org.ironlions.proto.panopticon.environment.Thing
+import org.ironlions.panopticon.proto.Packet
+import org.ironlions.panopticon.proto.Thing
 import java.time.Instant
 import java.util.UUID
 

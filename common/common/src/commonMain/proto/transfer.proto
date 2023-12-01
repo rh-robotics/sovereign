@@ -1,7 +1,7 @@
 syntax = "proto3";
-package org.ironlions.proto.panopticon.environment;
+package org.ironlions.panopticon.proto;
 
-import "timestamp.proto";
+import "google/protobuf/timestamp.proto";
 
 // TODO: To update some telemetry data, we have to resend the entire field object (thing). This is not efficient.
 

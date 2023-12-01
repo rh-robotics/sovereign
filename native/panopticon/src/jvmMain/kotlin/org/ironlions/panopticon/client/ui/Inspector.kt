@@ -8,8 +8,8 @@ import imgui.type.ImBoolean
 import org.ironlions.panopticon.client.data.DataSource
 import org.ironlions.panopticon.client.data.RecordDataSource
 import org.ironlions.panopticon.client.render.Renderer
-import org.ironlions.proto.panopticon.environment.Thing
-import org.ironlions.proto.panopticon.environment.DataNode
+import org.ironlions.panopticon.proto.Thing
+import org.ironlions.panopticon.proto.DataNode
 import org.ironlions.common.titlecase
 import org.ironlions.ui.marsh.Marsh
 import org.ironlions.ui.marsh.Toast
