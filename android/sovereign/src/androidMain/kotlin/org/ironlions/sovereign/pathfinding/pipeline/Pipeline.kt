@@ -1,7 +1,7 @@
 package org.ironlions.sovereign.pathfinding.pipeline
 
 import com.acmerobotics.roadrunner.Action
-import org.ironlions.sovereign.geometry.Point
+import org.ironlions.common.geometry.Point
 import org.ironlions.sovereign.pathfinding.algorithms.Pathfinder
 import org.ironlions.sovereign.pathfinding.algorithms.PathfinderBuilder
 import org.ironlions.sovereign.pathfinding.environment.Environment

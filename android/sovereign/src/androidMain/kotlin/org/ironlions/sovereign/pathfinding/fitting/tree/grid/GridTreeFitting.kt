@@ -1,8 +1,8 @@
 package org.ironlions.sovereign.pathfinding.fitting.tree.grid
 
-import org.ironlions.sovereign.geometry.Grid
-import org.ironlions.sovereign.geometry.Measurement
-import org.ironlions.sovereign.geometry.Point
+import org.ironlions.common.geometry.Grid
+import org.ironlions.common.geometry.Measurement
+import org.ironlions.common.geometry.Point
 import org.ironlions.sovereign.pathfinding.environment.Environment
 import org.ironlions.sovereign.pathfinding.fitting.tree.TreeFitting
 import org.ironlions.sovereign.pathfinding.fitting.tree.TreeFittingMode

@@ -1,6 +1,6 @@
 package org.ironlions.sovereign.pathfinding.algorithms
 
-import org.ironlions.sovereign.geometry.euclideanHeuristic
+import org.ironlions.common.geometry.euclideanHeuristic
 import org.ironlions.sovereign.pathfinding.fitting.tree.TreeFitting
 import java.util.PriorityQueue
 
@@ -11,7 +11,9 @@ class AStar(
     /** Builds a new [AStar] pathfinder. */
     class Builder : PathfinderBuilder {
         /** Function to estimate the cost to reach the goal from the current node. */
-        private var heuristic: (TreeFitting.Node, TreeFitting.Node) -> Double = ::euclideanHeuristic
+        private var heuristic: (TreeFitting.Node, TreeFitting.Node) -> Double = { from, goal ->
+            euclideanHeuristic(from.position, goal.position)
+        }
 
         /**
          * Function to estimate the cost to reach the goal from the current node.

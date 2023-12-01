@@ -1,7 +1,7 @@
 package org.ironlions.sovereign.pathfinding.fitting
 
-import org.ironlions.sovereign.geometry.Measurement
-import org.ironlions.sovereign.geometry.Point
+import org.ironlions.common.geometry.Measurement
+import org.ironlions.common.geometry.Point
 import org.ironlions.sovereign.pathfinding.pipeline.Pipeline
 import org.ironlions.sovereign.pathfinding.algorithms.AStar
 import org.ironlions.sovereign.pathfinding.environment.things.Pin

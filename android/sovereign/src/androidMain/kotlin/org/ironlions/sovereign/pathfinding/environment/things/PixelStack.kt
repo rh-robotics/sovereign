@@ -1,9 +1,9 @@
 package org.ironlions.sovereign.pathfinding.environment.things
 
-import org.ironlions.sovereign.geometry.Measurement
-import org.ironlions.sovereign.geometry.Point
-import org.ironlions.sovereign.geometry.Region
-import org.ironlions.sovereign.geometry.Volume
+import org.ironlions.common.geometry.Measurement
+import org.ironlions.common.geometry.Point
+import org.ironlions.common.geometry.Region
+import org.ironlions.common.geometry.Volume
 import org.ironlions.sovereign.pathfinding.environment.FieldThing
 import org.ironlions.sovereign.pathfinding.environment.ThingType
 

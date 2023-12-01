@@ -1,8 +1,8 @@
 @Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797#issuecomment-1385330558
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.dokka)
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.dokka)
 }
 
 val extJvmTarget: String by project
@@ -15,20 +15,6 @@ kotlin {
     sourceSets {
         val androidMain by getting {
             dependencies {
-                /* FTC */
-                implementation(libs.ftc.inspection)
-                implementation(libs.ftc.blocks)
-                implementation(libs.ftc.tfod)
-                implementation(libs.ftc.core)
-                implementation(libs.ftc.server)
-                implementation(libs.ftc.onBotJava)
-                implementation(libs.ftc.hardware)
-                implementation(libs.ftc.common)
-                implementation(libs.ftc.vision)
-                implementation(libs.ftc.gameAssets.centerStage)
-                implementation(libs.roadrunner.core)
-                implementation(libs.roadrunner.actions)
-
                 /* Android */
                 implementation(libs.androidx.core)
                 implementation(libs.androidx.appcompat)
@@ -56,7 +42,7 @@ kotlin {
 }
 
 android {
-    namespace = "org.ironlions.sovereign"
+    namespace = "org.ironlions.panopticon"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
@@ -86,7 +72,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
     dokkaSourceSets {
         configureEach {
-            moduleName.set("Sovereign")
+            moduleName.set("Panopticon")
             suppressObviousFunctions.set(false) // For the FTC rookies
             suppressInheritedMembers.set(false) // For the FTC rookies
             includes.from(project.files(), "overview.md")

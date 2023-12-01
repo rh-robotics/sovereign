@@ -7,6 +7,7 @@ pluginManagement {
 }
 
 rootProject.name = "unified"
+include(":android:panopticon")
 include(":android:sovereign")
 include(":common:common")
 include(":native:marsh")

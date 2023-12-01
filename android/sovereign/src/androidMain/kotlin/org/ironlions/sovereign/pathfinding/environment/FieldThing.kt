@@ -1,6 +1,6 @@
 package org.ironlions.sovereign.pathfinding.environment
 
-import org.ironlions.sovereign.geometry.Region
+import org.ironlions.common.geometry.Region
 
 /**
  * Class that represents a thing on the field

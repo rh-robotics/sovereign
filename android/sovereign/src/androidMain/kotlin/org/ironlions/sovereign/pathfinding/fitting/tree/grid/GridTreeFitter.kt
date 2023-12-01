@@ -1,8 +1,9 @@
 package org.ironlions.sovereign.pathfinding.fitting.tree.grid
 
-import org.ironlions.sovereign.geometry.Grid
-import org.ironlions.sovereign.geometry.Point
-import org.ironlions.sovereign.geometry.Region
+import org.ironlions.common.geometry.Grid
+import org.ironlions.common.geometry.Point
+import org.ironlions.common.geometry.Region
+import org.ironlions.common.seasons.PrototypicalField
 import org.ironlions.sovereign.pathfinding.environment.Environment
 import org.ironlions.sovereign.pathfinding.fitting.DataFitter
 import org.ironlions.sovereign.pathfinding.fitting.DataFitterBuilder
@@ -20,7 +21,7 @@ import org.ironlions.sovereign.pathfinding.fitting.tree.TreeFitting
 class GridTreeFitter(
     private val environment: Environment,
     private val resolution: Int = 32,
-    private val grid: Grid = Environment.Constants.grid.reExpress(resolution)
+    private val grid: Grid = PrototypicalField.grid.reExpress(resolution)
 ) : DataFitter {
     /** Builds a new [GridTreeFitter]. */
     class Builder : DataFitterBuilder {
@@ -84,8 +85,8 @@ class GridTreeFitter(
     ) {
         // Draw a bounding box from the ground to the top of the robot, for the cell.
         val cellRegion = Region(
-            v1 = Environment.Constants.grid.toReal(x, y),
-            v2 = Environment.Constants.grid.toReal(x + 1, y + 1, environment.robot.geometry.height)
+            v1 = PrototypicalField.grid.toReal(x, y),
+            v2 = PrototypicalField.grid.toReal(x + 1, y + 1, environment.robot.geometry.height)
         )
 
         // TODO: Separate out dimensional collapse once more?

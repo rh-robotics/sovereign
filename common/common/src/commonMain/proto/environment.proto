@@ -1,7 +1,7 @@
 syntax = "proto3";
 package org.ironlions.proto.panopticon.environment;
 
-import "google/protobuf/timestamp.proto";
+import "timestamp.proto";
 
 // TODO: To update some telemetry data, we have to resend the entire field object (thing). This is not efficient.
 
@@ -56,20 +56,11 @@ message Look {
 
 // A field thing.
 message Thing {
-  enum ThingType {
-    // The object is likely to move.
-    THING_TYPE_DYNAMIC = 0;
-
-    // The object is unlikely to move.
-    THING_TYPE_STATIC = 1;
-  }
-
   string uuid = 1;                // Thing persistence.
-  string humanName = 2;           // A human friendly name.
-  ThingType type = 3;             // How Sovereign sees the thing's type.
-  ThingSpeciality speciality = 4; // The speciality of the thing.
-  Look look = 5;                  // Where the object is and what to display it as.
-  DataNode data = 6;              // Arbitrary treed data that may be useful.
+  string humanName = 2;           // A human friendly name
+  ThingSpeciality speciality = 3; // The speciality of the thing.
+  Look look = 4;                  // Where the object is and what to display it as.
+  DataNode data = 5;              // Arbitrary treed data that may be useful.
 }
 
 // A node to contain some sort of data.

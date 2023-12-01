@@ -1,6 +1,6 @@
 package org.ironlions.sovereign.pathfinding.fitting
 
-import org.ironlions.sovereign.geometry.Point
+import org.ironlions.common.geometry.Point
 import org.ironlions.sovereign.pathfinding.environment.Environment
 import org.ironlions.sovereign.pathfinding.fitting.tree.TreeFitting
 

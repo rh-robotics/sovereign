@@ -1,5 +1,8 @@
 package org.ironlions.sovereign.geometry
 
+import org.ironlions.common.geometry.Measurement
+import org.ironlions.common.geometry.Point
+import org.ironlions.common.geometry.Region
 import org.junit.Test
 import org.junit.Assert
 

@@ -9,10 +9,10 @@ import com.acmerobotics.roadrunner.TurnConstraints
 import com.acmerobotics.roadrunner.Vector2d
 import com.acmerobotics.roadrunner.VelConstraint
 import org.ironlions.sovereign.actualization.ActualizationContext
-import org.ironlions.sovereign.geometry.Measurement
-import org.ironlions.sovereign.geometry.Point
-import org.ironlions.sovereign.geometry.Region
-import org.ironlions.sovereign.geometry.Volume
+import org.ironlions.common.geometry.Measurement
+import org.ironlions.common.geometry.Point
+import org.ironlions.common.geometry.Region
+import org.ironlions.common.geometry.Volume
 import org.ironlions.sovereign.pathfinding.environment.ThingType
 import org.ironlions.sovereign.pathfinding.environment.FieldThing
 
