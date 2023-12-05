@@ -1,7 +1,7 @@
 package org.ironlions.panopticon.client.util
 
 import org.ironlions.common.geometry.Point
-import org.ironlions.common.things.ThingProperty
+import org.ironlions.common.things.Thing.Property
 import org.ironlions.common.geometry.Region
 
 fun ThingProperty.Region.sensibilitize(): ThingProperty.Region = ThingProperty.Region(

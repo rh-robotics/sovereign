@@ -5,8 +5,8 @@ import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableColumnFlags
 import imgui.flag.ImGuiTableFlags
 import imgui.type.ImBoolean
-import org.ironlions.common.things.ThingProperty
-import org.ironlions.common.things.FieldThing
+import org.ironlions.common.things.Thing.Property
+import org.ironlions.common.things.Thing
 import org.ironlions.panopticon.client.data.DataTransceiver
 import org.ironlions.panopticon.client.data.RecordedDataTransceiver
 import org.ironlions.panopticon.client.render.Renderer
@@ -49,7 +49,7 @@ class Inspector : Window("Inspector") {
 
         ImGui.setNextItemOpen(true)
         if (ImGui.treeNode("Things")) {
-            dataTransceiver!!.things().filterIsInstance<FieldThing.Concrete>().forEach {
+            dataTransceiver!!.things().filterIsInstance<Thing.Concrete>().forEach {
                 if (ImGui.treeNodeEx(it.humanName)) {
                     displayThingInfo(it)
                     ImGui.treePop()
@@ -89,7 +89,7 @@ class Inspector : Window("Inspector") {
         }
     }
 
-    private fun displayThingInfo(thing: FieldThing.Concrete) {
+    private fun displayThingInfo(thing: Thing.Concrete) {
         val extra = displayableThingDisplayProperty.filter { it.value.get() }.keys.associate {
             it.human to when (it) {
                 is ThingDisplayProperty.Uuid -> thing.uuid.toString()

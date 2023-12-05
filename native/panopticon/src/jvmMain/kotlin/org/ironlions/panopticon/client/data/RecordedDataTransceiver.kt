@@ -1,7 +1,7 @@
 package org.ironlions.panopticon.client.data
 
 import kotlinx.serialization.json.Json
-import org.ironlions.common.things.FieldThing
+import org.ironlions.common.things.Thing
 import org.ironlions.common.panopticon.proto.NewThingRequest
 import org.ironlions.common.panopticon.proto.PingRequest
 import org.ironlions.common.panopticon.proto.RemoveThingRequest
@@ -16,7 +16,7 @@ import java.util.TreeMap
 class RecordedDataTransceiver(source: Path) : DataTransceiver() {
     private val commands: TreeMap<Instant, CommandWrapper>
     private var cursor: Instant
-    val thingStacks: MutableMap<String, Stack<FieldThing>> = mutableMapOf()
+    val thingStacks: MutableMap<String, Stack<Thing>> = mutableMapOf()
 
     init {
         val parsedCommandWrappers = Json.decodeFromString<List<CommandWrapper>>(source.toFile().readText())
@@ -84,7 +84,7 @@ class RecordedDataTransceiver(source: Path) : DataTransceiver() {
         } */
     }
 
-    override fun things(): List<FieldThing> =
+    override fun things(): List<Thing> =
         thingStacks.filter { it.value.isNotEmpty() }.map { it.value.peek() }
 
     override fun size(): Int = commands.size

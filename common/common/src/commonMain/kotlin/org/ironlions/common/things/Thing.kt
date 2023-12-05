@@ -11,11 +11,28 @@ import java.util.UUID
  * @param adHocProperties Other properties of this object.
  * @param uuid The UUID used by Panopticon and some internal parts of Sovereign. **Must be UNIQUE.**
  */
-abstract class FieldThing(
+abstract class Thing(
     val humanName: String,
-    val adHocProperties: MutableList<ThingProperty.AdHoc> = mutableListOf(),
+    val adHocProperties: MutableList<Property.AdHoc> = mutableListOf(),
     val uuid: UUID = UUID.randomUUID(),
 ) {
+    abstract class Property() {
+        var note: String? = null
+
+        class Region(val region: org.ironlions.common.geometry.Region) :
+            Property()
+
+        class Color(val r: Float, val g: Float, val b: Float) :
+            Property()
+
+        class Model(val model: String) : Property()
+
+        class AdHoc(val data: Pair<String, String>) :
+            Property()
+
+        fun note(note: String) = apply { this.note = note }
+    }
+
     /**
      * A field thing that exists in space.
      *
@@ -27,11 +44,11 @@ abstract class FieldThing(
      */
     open class Concrete(
         humanName: String,
-        val region: ThingProperty.Region,
-        val color: ThingProperty.Color = ThingProperty.Color(1f, 1f, 1f),
-        val model: ThingProperty.Model = ThingProperty.Model("bounding"),
-        adHocProperties: MutableList<ThingProperty.AdHoc> = mutableListOf()
-    ) : FieldThing(humanName, adHocProperties)
+        val region: Property.Region,
+        val color: Property.Color = Property.Color(1f, 1f, 1f),
+        val model: Property.Model = Property.Model("bounding"),
+        adHocProperties: MutableList<Property.AdHoc> = mutableListOf()
+    ) : Thing(humanName, adHocProperties)
 
     /**
      * A field thing that does not exist in space.
@@ -40,6 +57,6 @@ abstract class FieldThing(
      * @param adHocProperties Other properties of this object.
      */
     open class Abstract(
-        humanName: String, adHocProperties: MutableList<ThingProperty.AdHoc> = mutableListOf()
-    ) : FieldThing(humanName, adHocProperties)
+        humanName: String, adHocProperties: MutableList<Property.AdHoc> = mutableListOf()
+    ) : Thing(humanName, adHocProperties)
 }
