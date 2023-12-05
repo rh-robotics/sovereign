@@ -23,7 +23,11 @@ class ClassVisitor : KSTopDownVisitor<OutputStreamWriter, Unit>() {
     override fun visitClassDeclaration(
         classDeclaration: KSClassDeclaration, data: OutputStreamWriter
     ) {
-        // TODO: Check and make sure it has the [SovereignOpMode] supertype.
+        val isSubclassOfSovereignOpMode = classDeclaration.superTypes.any {
+            it.resolve().declaration.qualifiedName?.asString() == "org.ironlions.sovereign.opmode.SovereignOpMode"
+        }
+
+        require(isSubclassOfSovereignOpMode)
 
         val packageName = classDeclaration.packageName.asString()
         val className = classDeclaration.simpleName.asString()
