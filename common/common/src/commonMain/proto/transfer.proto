@@ -1,42 +1,86 @@
 syntax = "proto3";
 package org.ironlions.common.panopticon.proto;
 
-import "google/protobuf/timestamp.proto";
+option java_multiple_files = true;
 
-// TODO: To update some telemetry data, we have to resend the entire field object (thing). This is not efficient.
+message PingRequest {}
 
-// A collection of packets to serialize to a file.
-message Packets {
-  repeated Packet packets = 1;
+message StatusResponse {
+  enum Status {
+    PING_STATUS_OK = 0;
+    PING_STATUS_FAILED = 1;
+    PING_STATUS_WAITING = 2;
+  }
+
+  Status status = 1;
+  string info = 2; // Optional
 }
 
-// A packet containing some update information.
-message Packet {
-  google.protobuf.Timestamp timestamp = 1;
-  repeated Thing things = 4;
+service Transfer {
+  // Generic RPCs.
+  rpc ping(PingRequest) returns (StatusResponse);
+  rpc setup(SetupRequest) returns (StatusResponse);
+
+  // Thing mutation RPCs.
+  rpc newThing(NewThingRequest) returns (StatusResponse);
+  rpc removeThing(RemoveThingRequest) returns (StatusResponse);
+  rpc updateProperties(UpdatePropertiesRequest) returns (StatusResponse);
 }
 
-// The type of thing we're dealing with.
-enum ThingSpeciality {
-  // The thing is a robot.
-  THING_ROBOT = 0;
-  // The thing is a field.
-  THING_FIELD = 1;
-  // The thing is something else.
-  THING_AD_HOC = 2;
+// Setup everything initially.
+message SetupRequest {
+  Field field = 1;
+  repeated NewThingRequest things = 2;
+}
+
+// Create a new thing.
+message NewThingRequest {
+  Uuid uuid = 1;
+  string humanName = 3;
+  bool abstract = 4;
+  repeated Property properties = 5;
+}
+
+// Remove something.
+message RemoveThingRequest {
+  Uuid uuid = 1;
+}
+
+// Update a property.
+message UpdatePropertiesRequest {
+  Uuid uuid = 1;
+  repeated Property properties = 3;
+}
+
+// A property.
+message Property {
+  oneof value {
+    Region region = 1;
+    Color color = 2;
+    string model = 3;
+    bool ad_hoc = 4;
+  }
+
+  string note = 5; // Optional
+  map<string, string> associated = 6;
+}
+
+// Field information.
+message Field {
+  string name = 1;
 }
 
 // A region in space.
 message Region {
   // Point 1
-  float x1 = 1;
-  float y1 = 2;
-  float z1 = 3;
+  Measurement x1 = 1;
+  Measurement y1 = 2;
+  Measurement z1 = 3;
 
   // Point 2
-  float x2 = 4;
-  float y2 = 5;
-  float z2 = 6;
+  Measurement x2 = 4;
+  Measurement y2 = 5;
+  Measurement z2 = 6;
 }
 
 // A color.
@@ -44,28 +88,14 @@ message Color {
   float r = 1;
   float g = 2;
   float b = 3;
-  float a = 4;
 }
 
-// How something is.
-message Look {
-  string model = 1;
-  Region region = 2;
-  Color color = 3;
+// A UUID.
+message Uuid {
+  string uuid = 1;
 }
 
-// A field thing.
-message Thing {
-  string uuid = 1;                // Thing persistence.
-  string humanName = 2;           // A human friendly name
-  ThingSpeciality speciality = 3; // The speciality of the thing.
-  Look look = 4;                  // Where the object is and what to display it as.
-  DataNode data = 5;              // Arbitrary treed data that may be useful.
-}
-
-// A node to contain some sort of data.
-message DataNode {
-  string name = 1;                // The name of the data node.
-  map<string, string> data = 2;   // The data associated with the node.
-  repeated DataNode children = 3; // Any child data.
+// A measurement.
+message Measurement {
+  double millimeters = 1;
 }

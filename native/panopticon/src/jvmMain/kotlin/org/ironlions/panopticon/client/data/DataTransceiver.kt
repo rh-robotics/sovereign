@@ -5,11 +5,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.isActive
-import org.ironlions.common.panopticon.proto.Thing
+import org.ironlions.common.things.FieldThing
 import org.ironlions.panopticon.client.event.EventDispatcher
 
 /** A source of data from the robot. */
-abstract class DataSource : CoroutineScope by MainScope() {
+abstract class DataTransceiver : CoroutineScope by MainScope() {
     var eventDispatcher = EventDispatcher()
     private var job: Job? = null
 
@@ -39,7 +39,7 @@ abstract class DataSource : CoroutineScope by MainScope() {
     /**
      * Get all the things on the field at the current cursor.
      */
-    abstract fun things(): List<Thing>
+    abstract fun things(): List<FieldThing>
 
     /** The number of packets available. */
     abstract fun size(): Int

@@ -15,13 +15,13 @@ class Controls : Window("Controls", waitForDataSource = true) {
 
     override fun content(renderer: Renderer) {
         val inspector = ClientApplication.windows[Inspector::class] as Inspector
-        val numPackets = inspector.dataSource!!.size()
+        val numPackets = inspector.dataTransceiver!!.size()
 
         ImGui.text("Fine Timing")
         if (ImGui.arrowButton("Backward Tick", ImGuiDir.Left)) {
             isPlaying = false
             currentPacketIndex -= 1
-            inspector.dataSource!!.prior()
+            inspector.dataTransceiver!!.prior()
         }
 
         ImGui.sameLine()
@@ -31,7 +31,7 @@ class Controls : Window("Controls", waitForDataSource = true) {
         if (ImGui.arrowButton("Forward Tick", ImGuiDir.Right)) {
             isPlaying = false
             currentPacketIndex += 1
-            inspector.dataSource!!.next()
+            inspector.dataTransceiver!!.next()
         }
 
         currentPacketIndex = glm.clamp(currentPacketIndex, 0, numPackets - 1)

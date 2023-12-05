@@ -8,8 +8,6 @@ import org.ironlions.common.geometry.Measurement
 import org.ironlions.common.geometry.Point
 import org.ironlions.common.geometry.Region
 import org.ironlions.common.geometry.Volume
-import org.ironlions.common.environment.ThingType
-import org.ironlions.common.environment.FieldThing
 import org.ironlions.common.panopticon.proto.Thing
 import java.util.UUID
 

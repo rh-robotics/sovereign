@@ -4,7 +4,7 @@ import org.ironlions.common.geometry.Measurement
 import org.ironlions.common.geometry.Point
 import org.ironlions.sovereign.pathfinding.pipeline.Pipeline
 import org.ironlions.sovereign.pathfinding.algorithms.AStar
-import org.ironlions.common.environment.things.Pin
+import org.ironlions.common.things.builtin.Pin
 import org.ironlions.sovereign.pathfinding.environment.Robot
 import org.ironlions.sovereign.pathfinding.environment.Environment
 import org.ironlions.sovereign.pathfinding.fitting.tree.grid.GridTreeFitter

@@ -2,7 +2,9 @@
 plugins {
     id("application")
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.wire)
 }
 
 val extJvmTarget: String by project
@@ -62,6 +64,7 @@ kotlin {
                 implementation(kotlin("stdlib-jdk8"))
                 implementation(kotlin("reflect"))
                 implementation(libs.kotlinx.coroutines)
+                implementation(libs.kotlinx.serialization.json)
 
                 /* Misc */
                 implementation(libs.logging.jvm)
@@ -99,4 +102,15 @@ java {
 application {
     mainClass.set("org.ironlions.panopticon.client.ClientApplicationKt")
     applicationDefaultJvmArgs = listOf("-XstartOnFirstThread")
+}
+
+wire {
+    kotlin {
+        rpcRole = "server"
+        rpcCallStyle = "suspending"
+    }
+
+    sourcePath {
+        srcDir(project(":common:common").path + "/src/commonMain/proto")
+    }
 }

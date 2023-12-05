@@ -182,8 +182,8 @@ class Renderer {
                 if (ImGui.menuItem("Settings")) Marsh.show(Toast.Error("This is not implemented."))
                 if (ImGui.beginMenu("Data")) {
                     val inspector = ClientApplication.windows[Inspector::class]!! as Inspector
-                    if (ImGui.menuItem(if (inspector.dataSource == null) "Connect" else "Reconnect")) {
-                        inspector.dataSource = null
+                    if (ImGui.menuItem(if (inspector.dataTransceiver == null) "Connect" else "Reconnect")) {
+                        inspector.dataTransceiver = null
                         inspector.wantConnect = true
                     }
 

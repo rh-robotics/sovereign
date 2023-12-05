@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.wire)
 }
 
 val extJvmTarget: String by project
@@ -62,5 +63,16 @@ android {
     compileOptions {
         sourceCompatibility = extSourceCompatibility
         targetCompatibility = extTargetCompatibility
+    }
+}
+
+wire {
+    kotlin {
+        rpcRole = "client"
+        rpcCallStyle = "suspending"
+    }
+
+    sourcePath {
+        srcDir(project(":common:common").path + "/src/commonMain/proto")
     }
 }

@@ -1,6 +1,7 @@
 package org.ironlions.panopticon.client.ui
 
 import glm_.mat4x4.Mat4
+import org.ironlions.common.things.FieldThing
 import org.ironlions.panopticon.client.ClientApplication
 import org.ironlions.panopticon.client.ecs.Entity
 import org.ironlions.panopticon.client.ecs.Scene
@@ -48,8 +49,8 @@ class GraphicsScene : Window("Viewer"), EventReceiver {
 
         // TODO: Mesh caching.
         scene.components.clear()
-        (ClientApplication.windows[Inspector::class]!! as Inspector).dataSource?.let { data ->
-            data.things().forEach {
+        (ClientApplication.windows[Inspector::class]!! as Inspector).dataTransceiver?.let { data ->
+            data.things().filterIsInstance<FieldThing.Concrete>().forEach {
                 val entity = Entity(scene)
 
                 entity.components.clear()
@@ -58,13 +59,13 @@ class GraphicsScene : Window("Viewer"), EventReceiver {
                         entity,
                         Mat4(1),
                         program,
-                        BoundingBox.vertices(it.look!!.region!!.sensibilitize(), it.look!!.color!!),
+                        BoundingBox.vertices(it.region.sensibilitize(), it.color),
                         BoundingBox.indices,
                         type = GL_LINES,
                     )
                 )
 
-                scene[it.uuid] = entity
+                scene[it.uuid.toString()] = entity
             }
         }
 

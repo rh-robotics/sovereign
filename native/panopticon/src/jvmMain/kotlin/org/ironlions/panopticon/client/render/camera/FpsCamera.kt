@@ -82,8 +82,6 @@ class FpsCamera(
         if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_A)) position = position - (right * velocity)
         if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_SPACE)) position = position + (worldUp * velocity)
         if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_C)) position = position - (worldUp * velocity)
-
-        println("$position")
     }
 
     /** Calculate the projection matrix.

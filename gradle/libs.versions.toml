@@ -11,6 +11,7 @@ lwjgl = "3.3.3"
 slf4j = "2.0.9"
 logging = "5.1.0"
 kotlinx = "1.7.3"
+kotlinx-serialization = "1.6.2"
 dokka = "1.9.0"
 ftc = "9.0.0"
 ftc-assets = "1.0.0"
@@ -24,7 +25,6 @@ junit = "4.13.2"
 mockito = "5.6.0"
 
 [libraries]
-wire = { module = "com.squareup.wire:wire-gradle-plugin", version.ref = "wire" }
 imgui = { module = "io.github.spair:imgui-java-app", version.ref = "imgui" }
 imgui-lwjgl3 = { module = "io.github.spair:imgui-java-natives-macos-ft", version.ref = "imgui" }
 imgui-natives = { module = "io.github.spair:imgui-java-lwjgl3", version.ref = "imgui" }
@@ -32,10 +32,16 @@ glm = { module = "kotlin.graphics:glm", version.ref = "glm" }
 kool = { module = "kotlin.graphics:kool", version.ref = "kool" }
 logging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "logging" }
 reload4j = { module = "org.slf4j:slf4j-reload4j", version.ref = "slf4j" }
-kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 junit = { module = "junit:junit", version.ref = "junit" }
 mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+
+kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+
+wire = { module = "com.squareup.wire:wire-gradle-plugin", version.ref = "wire" }
+wire-client = { module = "com.squareup.wire:wire-grpc-client", version.ref = "wire" }
+wire-server = { module = "com.squareup.wire:wire-grpc-server", version.ref = "wire" }
 
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
@@ -66,6 +72,8 @@ lwjgl-stb = { module = "org.lwjgl:lwjgl-stb", version.ref = "lwjgl" }
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }
-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 wire = { id = "com.squareup.wire", version.ref = "wire" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

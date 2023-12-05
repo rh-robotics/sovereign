@@ -27,7 +27,7 @@ abstract class Window(
 
         ImGui.begin(name, options)
 
-        if (waitForDataSource && inspector.dataSource == null) {
+        if (waitForDataSource && inspector.dataTransceiver == null) {
             warningText("No data source!")
             ImGui.end()
             return

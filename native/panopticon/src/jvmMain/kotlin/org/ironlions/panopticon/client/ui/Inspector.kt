@@ -5,11 +5,11 @@ import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableColumnFlags
 import imgui.flag.ImGuiTableFlags
 import imgui.type.ImBoolean
-import org.ironlions.panopticon.client.data.DataSource
-import org.ironlions.panopticon.client.data.RecordDataSource
+import org.ironlions.common.things.ThingProperty
+import org.ironlions.common.things.FieldThing
+import org.ironlions.panopticon.client.data.DataTransceiver
+import org.ironlions.panopticon.client.data.RecordedDataTransceiver
 import org.ironlions.panopticon.client.render.Renderer
-import org.ironlions.common.panopticon.proto.Thing
-import org.ironlions.common.panopticon.proto.DataNode
 import org.ironlions.common.titlecase
 import org.ironlions.ui.marsh.Marsh
 import org.ironlions.ui.marsh.Toast
@@ -19,39 +19,39 @@ private enum class DataSourcePickingStage {
     START, BLUETOOTH, RECORD
 }
 
-private open class InherentProperty(val human: String) {
-    class Uuid : InherentProperty("UUID")
-    class Region : InherentProperty("Region")
-    class Model : InherentProperty("Model")
+private open class ThingDisplayProperty(val human: String) {
+    class Uuid : ThingDisplayProperty("UUID")
+    class Region : ThingDisplayProperty("Region")
+    class Model : ThingDisplayProperty("Model")
 }
 
 class Inspector : Window("Inspector") {
     private var dataSourcePickingStage = DataSourcePickingStage.START
-    private var displayableInherentProperty: Map<InherentProperty, ImBoolean> = mapOf(
-        InherentProperty.Uuid() to ImBoolean(false),
-        InherentProperty.Region() to ImBoolean(true),
-        InherentProperty.Model() to ImBoolean(false),
+    private var displayableThingDisplayProperty: Map<ThingDisplayProperty, ImBoolean> = mapOf(
+        ThingDisplayProperty.Uuid() to ImBoolean(false),
+        ThingDisplayProperty.Region() to ImBoolean(true),
+        ThingDisplayProperty.Model() to ImBoolean(false),
     )
     var wantConnect: Boolean = false
-    var dataSource: DataSource? = null
+    var dataTransceiver: DataTransceiver? = null
 
     override fun content(renderer: Renderer) {
         // Easier development.
-        if (dataSource == null && System.getenv("PANOPTICON_PANDAT") != null) {
-            dataSource = RecordDataSource(Path(System.getenv("PANOPTICON_PANDAT")))
+        if (dataTransceiver == null && System.getenv("PANOPTICON_PANDAT") != null) {
+            dataTransceiver = RecordedDataTransceiver(Path(System.getenv("PANOPTICON_PANDAT")))
         }
 
         if (wantConnect) pickDataSource()
-        if (dataSource == null) {
+        if (dataTransceiver == null) {
             warningText("No data source!")
             return
         } else wantConnect = false
 
         ImGui.setNextItemOpen(true)
         if (ImGui.treeNode("Things")) {
-            for (thing in dataSource!!.things()) {
-                if (ImGui.treeNodeEx(thing.humanName)) {
-                    displayThingInfo(thing)
+            dataTransceiver!!.things().filterIsInstance<FieldThing.Concrete>().forEach {
+                if (ImGui.treeNodeEx(it.humanName)) {
+                    displayThingInfo(it)
                     ImGui.treePop()
                 }
             }
@@ -71,7 +71,7 @@ class Inspector : Window("Inspector") {
                     ImGuiTableFlags.Resizable or ImGuiTableFlags.NoSavedSettings or ImGuiTableFlags.Borders
                 )
             ) {
-                for (extra in displayableInherentProperty) {
+                for (extra in displayableThingDisplayProperty) {
                     ImGui.tableNextRow()
                     ImGui.tableNextColumn()
                     ImGui.selectable(
@@ -89,26 +89,26 @@ class Inspector : Window("Inspector") {
         }
     }
 
-    private fun displayThingInfo(thing: Thing) {
-        val extra = displayableInherentProperty.filter { it.value.get() }.keys.associate {
+    private fun displayThingInfo(thing: FieldThing.Concrete) {
+        val extra = displayableThingDisplayProperty.filter { it.value.get() }.keys.associate {
             it.human to when (it) {
-                is InherentProperty.Uuid -> thing.uuid
-                is InherentProperty.Region -> "(${thing.look!!.region!!.x1}, ${thing.look!!.region!!.y1}, ${thing.look!!.region!!.z1}) - (${thing.look!!.region!!.x2}, ${thing.look!!.region!!.y2}, ${thing.look!!.region!!.z2})"
-                is InherentProperty.Model -> thing.look!!.model
+                is ThingDisplayProperty.Uuid -> thing.uuid.toString()
+                is ThingDisplayProperty.Region -> "(${thing.region.region.v1.x}, ${thing.region.region.v1.y}, ${thing.region.region.v1.z}) - (${thing.region.region.v2.x}, ${thing.region.region.v2.y}, ${thing.region.region.v2.z})"
+                is ThingDisplayProperty.Model -> thing.model.model
                 else -> throw RuntimeException("Unreachable.")
             }
         }
 
-        displayDataTable(thing.data_!!, extra)
+        displayDataTable(thing.adHocProperties, extra)
 
-        if (thing.data_!!.children.isNotEmpty() && ImGui.treeNodeEx("Children")) {
+        /* if (thing.data_!!.children.isNotEmpty() && ImGui.treeNodeEx("Children")) {
             thing.data_!!.children.forEach { displayDataTable(it) }
             ImGui.treePop()
-        }
+        } */
     }
 
     private fun displayDataTable(
-        data: DataNode, extras: Map<String, String> = mapOf()
+        data: List<ThingProperty.AdHoc>, extras: Map<String, String> = mapOf()
     ) {
         if (ImGui.beginTable("Data", 2)) {
             ImGui.tableSetupColumn("Property", ImGuiTableColumnFlags.WidthFixed)
@@ -123,12 +123,12 @@ class Inspector : Window("Inspector") {
                 ImGui.textWrapped(extra.value)
             }
 
-            for (dataEntry in data.data_) {
+            for (dataEntry in data) {
                 ImGui.tableNextRow()
                 ImGui.tableSetColumnIndex(0)
-                ImGui.textWrapped(dataEntry.key.titlecase())
+                ImGui.textWrapped(dataEntry.data.first.titlecase())
                 ImGui.tableSetColumnIndex(1)
-                ImGui.textWrapped(dataEntry.value)
+                ImGui.textWrapped(dataEntry.data.second)
             }
 
             ImGui.endTable()
@@ -157,7 +157,7 @@ class Inspector : Window("Inspector") {
                 val pick = it.values.first()
 
                 try {
-                    dataSource = RecordDataSource(Path(pick))
+                    dataTransceiver = RecordedDataTransceiver(Path(pick))
                 } catch (e: Exception) {
                     Marsh.show(Toast.Error("Recorded data file is malformed.").setException(e))
                     wantConnect = false
