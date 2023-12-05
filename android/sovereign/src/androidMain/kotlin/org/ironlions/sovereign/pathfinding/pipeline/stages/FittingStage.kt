@@ -15,5 +15,5 @@ class FittingStage(
     /** How we fit the environment into a form a pathfinder can use. */
     val fitter = fitter.build(this.environment)
 
-    override fun cycle(goal: Point): TreeFitting = fitter.fit(goal)
+    override fun cycle(input: Point): TreeFitting = fitter.fit(input)
 }
