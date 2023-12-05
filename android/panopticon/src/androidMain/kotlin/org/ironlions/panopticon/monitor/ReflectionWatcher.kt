@@ -10,7 +10,7 @@ import kotlin.RuntimeException
  * This class is not complete, usage will result in a [RuntimeException].
  *
  * TODO: Time will tell how performant this is. If it's slow enough, we may want to move this into
- *  an annotation processor.
+ *  an annotations processor.
  */
 @Deprecated("This class does not work, currently, and may be flawed in concept.", level = DeprecationLevel.ERROR)
 class ReflectionWatcher(monitored: Any) : Watcher(monitored) {

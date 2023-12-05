@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="sovereign-jvm">
+    <output-path>$PROJECT_DIR$/plugins/sovereign/build/libs</output-path>
+    <root id="archive" name="sovereign-jvm.jar">
+      <element id="module-output" name="unified.plugins.sovereign.jvmMain" />
+    </root>
+  </artifact>
+</component>

@@ -1,7 +1,8 @@
 @Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797#issuecomment-1385330558
 plugins {
-    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.dokka)
 }
 
@@ -77,4 +78,13 @@ android {
         sourceCompatibility = extSourceCompatibility
         targetCompatibility = extTargetCompatibility
     }
+}
+
+dependencies {
+    // TODO: The universal "ksp" configuration has performance issue and is deprecated on multiplatform since 1.0.1
+    implementation(project(":plugins:sovereign"))
+    ksp(project(":plugins:sovereign"))
+
+    // add("kspCommonMainMetadata", project(":plugins:sovereign"))
+    // add("kspJvm", project(":plugins:sovereign"))
 }

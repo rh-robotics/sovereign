@@ -26,7 +26,6 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.wire)
                 implementation(libs.wire.client)
                 implementation(libs.wire.server)
                 implementation(libs.kotlinx.serialization.json)

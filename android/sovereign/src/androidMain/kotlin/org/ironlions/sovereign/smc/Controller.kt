@@ -35,7 +35,7 @@ class Controller(states: Array<State>) {
                 )
             }
 
-            /* Make sure we have the annotation needed, and load them. */
+            /* Make sure we have the annotations needed, and load them. */
             val metadata: StateMeta =
                 state.javaClass.getAnnotation(StateMeta::class.java) ?: throw ConstructionException(
                     state.javaClass,
