@@ -13,6 +13,7 @@ import java.io.OutputStreamWriter
 import javax.lang.model.element.Modifier
 
 class ClassVisitor : KSTopDownVisitor<OutputStreamWriter, Unit>() {
+    private val sovereignOpMode = ClassName.get("org.ironlions.sovereign.opmode", "SovereignOpMode")
     private val opModeProvider =
         ClassName.get("org.ironlions.sovereign.opmode", "SovereignOpModeProvider")
     private val autonomousClass =
@@ -24,10 +25,12 @@ class ClassVisitor : KSTopDownVisitor<OutputStreamWriter, Unit>() {
         classDeclaration: KSClassDeclaration, data: OutputStreamWriter
     ) {
         val isSubclassOfSovereignOpMode = classDeclaration.superTypes.any {
-            it.resolve().declaration.qualifiedName?.asString() == "org.ironlions.sovereign.opmode.SovereignOpMode"
+            it.resolve().declaration.qualifiedName?.asString() == sovereignOpMode.canonicalName()
         }
 
-        require(isSubclassOfSovereignOpMode)
+        require(isSubclassOfSovereignOpMode) {
+            "Class '${classDeclaration.qualifiedName?.asString()}' must inherit from ${sovereignOpMode.canonicalName()}."
+        }
 
         val packageName = classDeclaration.packageName.asString()
         val className = classDeclaration.simpleName.asString()
