@@ -4,6 +4,7 @@ import org.ironlions.common.geometry.Grid
 import org.ironlions.common.geometry.Point
 import org.ironlions.common.geometry.Region
 import org.ironlions.common.seasons.PrototypicalField
+import org.ironlions.common.things.FieldThing
 import org.ironlions.sovereign.pathfinding.environment.Environment
 import org.ironlions.sovereign.pathfinding.fitting.DataFitter
 import org.ironlions.sovereign.pathfinding.fitting.DataFitterBuilder
@@ -92,6 +93,6 @@ class GridTreeFitter(
         // TODO: Separate out dimensional collapse once more?
 
         // Look through every object and see if it overlaps with the current cell.
-        environment.things.forEach { fitting[x][y].occupied = cellRegion.overlaps(it.region) }
+        environment.things.filterIsInstance<FieldThing.Concrete>().forEach { fitting[x][y].occupied = cellRegion.overlaps(it.region.region) }
     }
 }

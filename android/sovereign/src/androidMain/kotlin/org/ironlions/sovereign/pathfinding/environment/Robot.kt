@@ -8,7 +8,6 @@ import org.ironlions.common.geometry.Measurement
 import org.ironlions.common.geometry.Point
 import org.ironlions.common.geometry.Region
 import org.ironlions.common.geometry.Volume
-import org.ironlions.common.panopticon.proto.Thing
 import java.util.UUID
 
 /**
@@ -43,6 +42,4 @@ class Robot(
             null
         }
     }
-
-    fun serialize(): Thing = TODO("Not yet implemented")
 }
