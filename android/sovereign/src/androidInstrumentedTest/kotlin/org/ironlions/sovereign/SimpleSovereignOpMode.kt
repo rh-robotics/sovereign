@@ -1,8 +1,8 @@
 package org.ironlions.sovereign
 
+import org.ironlions.sovereign.opmode.MakeAvailable
 import org.ironlions.sovereign.opmode.OpModeType
 import org.ironlions.sovereign.opmode.SovereignOpMode
-import org.ironlions.sovereign.opmode.MakeAvailable
 import org.ironlions.sovereign.opmode.SovereignOpModeProvider
 
 @MakeAvailable(type = OpModeType.AUTON)
