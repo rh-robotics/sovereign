@@ -33,10 +33,12 @@ class Robot(
                 trajectoryActionFactory = actualizationContext.trajectoryActionFactory,
                 beginPose = Pose2d(Vector2d(0.0, 0.0), 0.0),
                 eps = actualizationContext.eps,
+                beginEndVel = actualizationContext.beginEndVel,
                 baseTurnConstraints = actualizationContext.baseTurnConstraints,
                 baseVelConstraint = actualizationContext.baseVelConstraint,
                 baseAccelConstraint = actualizationContext.baseAccelConstraint,
-                resolution = actualizationContext.resolution
+                dispResolution = actualizationContext.dispResolution,
+                angResolution = actualizationContext.angResolution
             )
         } else {
             null
