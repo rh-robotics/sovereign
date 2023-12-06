@@ -9,7 +9,7 @@
       "field": {
         "name": "PrototypicalField"
       },
-      "things": [
+      "components": [
         {
           "uuid": {
             "uuid": "745e2c3a-67d1-4b80-8a09-a991e1998bac"
@@ -61,7 +61,7 @@
     }
   },
   {
-    "type": "NewThingRequest",
+    "type": "NewComponentRequest",
     "timestamp": {
       "seconds": 1701725247,
       "nanos": 20000000
@@ -157,7 +157,7 @@
     }
   },
   {
-    "type": "RemoveThingRequest",
+    "type": "RemoveComponentRequest",
     "timestamp": {
       "seconds": 1701725247,
       "nanos": 60000000

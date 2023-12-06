@@ -4,7 +4,7 @@ import org.ironlions.common.geometry.Measurement
 import org.ironlions.common.geometry.Point
 import org.ironlions.sovereign.pathfinding.pipeline.Pipeline
 import org.ironlions.sovereign.pathfinding.algorithms.AStar
-import org.ironlions.common.things.builtin.Pin
+import org.ironlions.common.components.builtin.Pin
 import org.ironlions.sovereign.pathfinding.environment.Robot
 import org.ironlions.sovereign.pathfinding.environment.Environment
 import org.ironlions.sovereign.pathfinding.fitting.tree.grid.GridTreeFitter
@@ -66,7 +66,7 @@ class GridTreeFitterTest {
                         z = Measurement.Feet(0.0)
                     )
                 )
-            ).thing(
+            ).component(
                 Pin(
                     Point(
                         x = Measurement.Feet(6.0),
@@ -105,7 +105,7 @@ class GridTreeFitterTest {
                         z = Measurement.Feet(0.0)
                     )
                 )
-            ).thing(
+            ).component(
                 Pin(
                     Point(
                         x = Measurement.Millimeters(1.0),

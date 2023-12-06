@@ -1,4 +1,4 @@
-package org.ironlions.common.things
+package org.ironlions.common.components
 
 import java.util.UUID
 
@@ -11,13 +11,13 @@ import java.util.UUID
  * TODO: Probably a make a LocalSpaceGroup to make defining groups of bounding boxes easier.
  *
  * @param humanName The name of this thing that is human readable.
- * @param things Things that belong to this time.
+ * @param components Things that belong to this time.
  * @param adHocProperties Other properties of this object.
  * @param uuid The UUID used by Panopticon and some internal parts of Sovereign. **Must be UNIQUE.**
  */
-abstract class Thing(
+abstract class Component(
     val humanName: String,
-    val things: List<Thing> = listOf(),
+    val components: List<Component> = listOf(),
     val adHocProperties: MutableList<Property.AdHoc> = mutableListOf(),
     val uuid: UUID = UUID.randomUUID(),
 ) {
@@ -42,7 +42,7 @@ abstract class Thing(
      * @param region The region that this object occupies.
      * @param color The color of this object.
      * @param model The model of this object (display only).
-     * @param things Things that belong to this thing.
+     * @param components Things that belong to this thing.
      * @param adHocProperties Other properties of this object.
      */
     open class Concrete(
@@ -50,20 +50,20 @@ abstract class Thing(
         val region: Property.Region,
         val color: Property.Color = Property.Color(1f, 1f, 1f),
         val model: Property.Model = Property.Model("bounding"),
-        things: List<Thing> = listOf(),
+        components: List<Component> = listOf(),
         adHocProperties: MutableList<Property.AdHoc> = mutableListOf()
-    ) : Thing(humanName, things, adHocProperties)
+    ) : Component(humanName, components, adHocProperties)
 
     /**
      * A field thing that does not exist in space.
      *
      * @param humanName The human-friendly name of this object.
-     * @param things Things that belong to this thing.
+     * @param components Things that belong to this thing.
      * @param adHocProperties Other properties of this object.
      */
     open class Abstract(
         humanName: String,
-        things: List<Thing> = listOf(),
+        components: List<Component> = listOf(),
         adHocProperties: MutableList<Property.AdHoc> = mutableListOf()
-    ) : Thing(humanName, things, adHocProperties)
+    ) : Component(humanName, components, adHocProperties)
 }

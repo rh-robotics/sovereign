@@ -1,10 +1,10 @@
 package org.ironlions.panopticon.client.render.geometry
 
 import glm_.vec3.Vec3
-import org.ironlions.common.things.Thing.Property
+import org.ironlions.common.components.Component
 
 object BoundingBox {
-    fun vertices(region: ThingProperty.Region, boundingColor: ThingProperty.Color): List<Vertex> {
+    fun vertices(region: Component.Property.Region, boundingColor: Component.Property.Color): List<Vertex> {
         val color = Vec3(boundingColor.r, boundingColor.g, boundingColor.b)
         val normal = Vec3(0)
         val x1 = region.region.v1.x.millimeters

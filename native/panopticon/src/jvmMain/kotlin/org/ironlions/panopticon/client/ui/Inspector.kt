@@ -5,8 +5,7 @@ import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableColumnFlags
 import imgui.flag.ImGuiTableFlags
 import imgui.type.ImBoolean
-import org.ironlions.common.things.Thing.Property
-import org.ironlions.common.things.Thing
+import org.ironlions.common.components.Component
 import org.ironlions.panopticon.client.data.DataTransceiver
 import org.ironlions.panopticon.client.data.RecordedDataTransceiver
 import org.ironlions.panopticon.client.render.Renderer
@@ -19,18 +18,18 @@ private enum class DataSourcePickingStage {
     START, BLUETOOTH, RECORD
 }
 
-private open class ThingDisplayProperty(val human: String) {
-    class Uuid : ThingDisplayProperty("UUID")
-    class Region : ThingDisplayProperty("Region")
-    class Model : ThingDisplayProperty("Model")
+private open class ComponentDisplayProperty(val human: String) {
+    class Uuid : ComponentDisplayProperty("UUID")
+    class Region : ComponentDisplayProperty("Region")
+    class Model : ComponentDisplayProperty("Model")
 }
 
 class Inspector : Window("Inspector") {
     private var dataSourcePickingStage = DataSourcePickingStage.START
-    private var displayableThingDisplayProperty: Map<ThingDisplayProperty, ImBoolean> = mapOf(
-        ThingDisplayProperty.Uuid() to ImBoolean(false),
-        ThingDisplayProperty.Region() to ImBoolean(true),
-        ThingDisplayProperty.Model() to ImBoolean(false),
+    private var displayableComponentDisplayProperty: Map<ComponentDisplayProperty, ImBoolean> = mapOf(
+        ComponentDisplayProperty.Uuid() to ImBoolean(false),
+        ComponentDisplayProperty.Region() to ImBoolean(true),
+        ComponentDisplayProperty.Model() to ImBoolean(false),
     )
     var wantConnect: Boolean = false
     var dataTransceiver: DataTransceiver? = null
@@ -49,9 +48,9 @@ class Inspector : Window("Inspector") {
 
         ImGui.setNextItemOpen(true)
         if (ImGui.treeNode("Things")) {
-            dataTransceiver!!.things().filterIsInstance<Thing.Concrete>().forEach {
+            dataTransceiver!!.components().filterIsInstance<Component.Concrete>().forEach {
                 if (ImGui.treeNodeEx(it.humanName)) {
-                    displayThingInfo(it)
+                    displayComponentInfo(it)
                     ImGui.treePop()
                 }
             }
@@ -71,7 +70,7 @@ class Inspector : Window("Inspector") {
                     ImGuiTableFlags.Resizable or ImGuiTableFlags.NoSavedSettings or ImGuiTableFlags.Borders
                 )
             ) {
-                for (extra in displayableThingDisplayProperty) {
+                for (extra in displayableComponentDisplayProperty) {
                     ImGui.tableNextRow()
                     ImGui.tableNextColumn()
                     ImGui.selectable(
@@ -89,17 +88,17 @@ class Inspector : Window("Inspector") {
         }
     }
 
-    private fun displayThingInfo(thing: Thing.Concrete) {
-        val extra = displayableThingDisplayProperty.filter { it.value.get() }.keys.associate {
+    private fun displayComponentInfo(component: Component.Concrete) {
+        val extra = displayableComponentDisplayProperty.filter { it.value.get() }.keys.associate {
             it.human to when (it) {
-                is ThingDisplayProperty.Uuid -> thing.uuid.toString()
-                is ThingDisplayProperty.Region -> "(${thing.region.region.v1.x}, ${thing.region.region.v1.y}, ${thing.region.region.v1.z}) - (${thing.region.region.v2.x}, ${thing.region.region.v2.y}, ${thing.region.region.v2.z})"
-                is ThingDisplayProperty.Model -> thing.model.model
+                is ComponentDisplayProperty.Uuid -> component.uuid.toString()
+                is ComponentDisplayProperty.Region -> "(${component.region.region.v1.x}, ${component.region.region.v1.y}, ${component.region.region.v1.z}) - (${component.region.region.v2.x}, ${component.region.region.v2.y}, ${component.region.region.v2.z})"
+                is ComponentDisplayProperty.Model -> component.model.model
                 else -> throw RuntimeException("Unreachable.")
             }
         }
 
-        displayDataTable(thing.adHocProperties, extra)
+        displayDataTable(component.adHocProperties, extra)
 
         /* if (thing.data_!!.children.isNotEmpty() && ImGui.treeNodeEx("Children")) {
             thing.data_!!.children.forEach { displayDataTable(it) }
@@ -108,7 +107,7 @@ class Inspector : Window("Inspector") {
     }
 
     private fun displayDataTable(
-        data: List<ThingProperty.AdHoc>, extras: Map<String, String> = mapOf()
+        data: List<Component.Property.AdHoc>, extras: Map<String, String> = mapOf()
     ) {
         if (ImGui.beginTable("Data", 2)) {
             ImGui.tableSetupColumn("Property", ImGuiTableColumnFlags.WidthFixed)

@@ -21,20 +21,20 @@ service Transfer {
   rpc ping(PingRequest) returns (StatusResponse);
   rpc setup(SetupRequest) returns (StatusResponse);
 
-  // Thing mutation RPCs.
-  rpc newThing(NewThingRequest) returns (StatusResponse);
-  rpc removeThing(RemoveThingRequest) returns (StatusResponse);
+  // Component mutation RPCs.
+  rpc newComponent(NewComponentRequest) returns (StatusResponse);
+  rpc removeComponent(RemoveComponentRequest) returns (StatusResponse);
   rpc updateProperties(UpdatePropertiesRequest) returns (StatusResponse);
 }
 
 // Setup everything initially.
 message SetupRequest {
   Field field = 1;
-  repeated NewThingRequest things = 2;
+  repeated NewComponentRequest components = 2;
 }
 
-// Create a new thing.
-message NewThingRequest {
+// Create a new component.
+message NewComponentRequest {
   Uuid uuid = 1;
   string humanName = 3;
   bool abstract = 4;
@@ -42,7 +42,7 @@ message NewThingRequest {
 }
 
 // Remove something.
-message RemoveThingRequest {
+message RemoveComponentRequest {
   Uuid uuid = 1;
 }
 

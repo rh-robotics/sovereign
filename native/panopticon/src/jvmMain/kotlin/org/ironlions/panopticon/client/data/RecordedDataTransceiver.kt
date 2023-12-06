@@ -1,10 +1,10 @@
 package org.ironlions.panopticon.client.data
 
 import kotlinx.serialization.json.Json
-import org.ironlions.common.things.Thing
-import org.ironlions.common.panopticon.proto.NewThingRequest
+import org.ironlions.common.components.Component
+import org.ironlions.common.panopticon.proto.NewComponentRequest
+import org.ironlions.common.panopticon.proto.RemoveComponentRequest
 import org.ironlions.common.panopticon.proto.PingRequest
-import org.ironlions.common.panopticon.proto.RemoveThingRequest
 import org.ironlions.common.panopticon.proto.SetupRequest
 import java.nio.file.Path
 import java.time.Instant
@@ -16,7 +16,7 @@ import java.util.TreeMap
 class RecordedDataTransceiver(source: Path) : DataTransceiver() {
     private val commands: TreeMap<Instant, CommandWrapper>
     private var cursor: Instant
-    val thingStacks: MutableMap<String, Stack<Thing>> = mutableMapOf()
+    val componentStacks: MutableMap<String, Stack<Component>> = mutableMapOf()
 
     init {
         val parsedCommandWrappers = Json.decodeFromString<List<CommandWrapper>>(source.toFile().readText())
@@ -51,8 +51,8 @@ class RecordedDataTransceiver(source: Path) : DataTransceiver() {
         when (val underlying = commands[cursor]!!.command.underlying) {
             is PingRequest -> {}
             is SetupRequest -> {}
-            is NewThingRequest -> {}
-            is RemoveThingRequest -> {}
+            is NewComponentRequest -> {}
+            is RemoveComponentRequest -> {}
             is UpdatePropertiesRequest -> {}
             else -> throw RuntimeException("Unknown message type ${underlying::class.simpleName}")
         }
@@ -70,8 +70,8 @@ class RecordedDataTransceiver(source: Path) : DataTransceiver() {
         when (val underlying = commands[cursor]!!.command.underlying) {
             is PingRequest -> {}
             is SetupRequest -> {}
-            is NewThingRequest -> {}
-            is RemoveThingRequest -> {}
+            is NewComponentRequest -> {}
+            is RemoveComponentRequest -> {}
             is UpdatePropertiesRequest -> {}
             else -> throw RuntimeException("Unknown message type ${underlying::class.simpleName}")
         }
@@ -84,8 +84,8 @@ class RecordedDataTransceiver(source: Path) : DataTransceiver() {
         } */
     }
 
-    override fun things(): List<Thing> =
-        thingStacks.filter { it.value.isNotEmpty() }.map { it.value.peek() }
+    override fun components(): List<Component> =
+        componentStacks.filter { it.value.isNotEmpty() }.map { it.value.peek() }
 
     override fun size(): Int = commands.size
 
@@ -93,7 +93,7 @@ class RecordedDataTransceiver(source: Path) : DataTransceiver() {
         val builder = StringBuilder()
 
         commands.forEach { builder.appendLine("packet ${it.key}: ${it.value.hashCode()}") }
-        things().forEach { builder.appendLine("thing ${it.uuid}: ${it.hashCode()} ") }
+        components().forEach { builder.appendLine("thing ${it.uuid}: ${it.hashCode()} ") }
 
         return builder.toString()
     }

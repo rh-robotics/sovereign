@@ -1,10 +1,10 @@
 package org.ironlions.panopticon.client.util
 
+import org.ironlions.common.components.Component
 import org.ironlions.common.geometry.Point
-import org.ironlions.common.things.Thing.Property
 import org.ironlions.common.geometry.Region
 
-fun ThingProperty.Region.sensibilitize(): ThingProperty.Region = ThingProperty.Region(
+fun Component.Property.Region.sensibilitize(): Component.Property.Region = Component.Property.Region(
     region = Region(
         v1 = Point(
             x = this.region.v1.x / 100, y = this.region.v1.y / 100, z = this.region.v1.z / 100

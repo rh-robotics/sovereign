@@ -1,7 +1,7 @@
 package org.ironlions.panopticon.client.ui
 
 import glm_.mat4x4.Mat4
-import org.ironlions.common.things.Thing
+import org.ironlions.common.components.Component
 import org.ironlions.panopticon.client.ClientApplication
 import org.ironlions.panopticon.client.ecs.Entity
 import org.ironlions.panopticon.client.ecs.Scene
@@ -50,7 +50,7 @@ class GraphicsScene : Window("Viewer"), EventReceiver {
         // TODO: Mesh caching.
         scene.components.clear()
         (ClientApplication.windows[Inspector::class]!! as Inspector).dataTransceiver?.let { data ->
-            data.things().filterIsInstance<Thing.Concrete>().forEach {
+            data.components().filterIsInstance<Component.Concrete>().forEach {
                 val entity = Entity(scene)
 
                 entity.components.clear()

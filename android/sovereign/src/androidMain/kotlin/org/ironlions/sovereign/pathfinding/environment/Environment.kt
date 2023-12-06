@@ -1,17 +1,17 @@
 package org.ironlions.sovereign.pathfinding.environment
 
-import org.ironlions.common.things.Thing
+import org.ironlions.common.components.Component
 
 /**
  * A map of the entire game field, including all field objects.
  *
  * @param robot The robot we are controlling inside the environment.
- * @param things All the [Thing]s on the field.
+ * @param components All the [Component]s on the field.
  * @param season The season to determine which default values to insert. Leave `null` for no default.
  */
 class Environment(
     val robot: Robot,
-    val things: MutableList<Thing> = ArrayList(),
+    val components: MutableList<Component> = ArrayList(),
     season: Season? = null,
 ) {
     /**
@@ -23,8 +23,8 @@ class Environment(
         /** The season to determine which default values to insert. */
         private var season: Season? = null
 
-        /** The things ([Thing]) on the field. */
-        private var things: MutableList<Thing> = ArrayList()
+        /** The things ([Component]) on the field. */
+        private var components: MutableList<Component> = ArrayList()
 
         /** The season to build from.
          *
@@ -33,16 +33,16 @@ class Environment(
         fun season(season: Season) = apply { this.season = season }
 
         /**
-         * Add a [Thing] to the environment.
+         * Add a [Component] to the environment.
          *
-         * @param thing The thing.
+         * @param component The component.
          */
-        fun thing(thing: Thing) = apply { this.things.add(thing) }
+        fun component(component: Component) = apply { this.components.add(component) }
 
         /**
          * Builds a new [Environment].
          */
-        fun build() = Environment(robot, things, season)
+        fun build() = Environment(robot, components, season)
     }
 
     init {
