@@ -7,6 +7,9 @@ package org.ironlions.panopticon.monitor
 class ExplicitWatcher(monitored: Any) : Watcher(monitored) {
     private var dirty = false
 
-    override fun reset() = run { dirty = false }
+    override fun reset() {
+        dirty = false
+    }
+
     override fun isDirty(): Boolean = dirty
 }
