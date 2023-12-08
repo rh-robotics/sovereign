@@ -95,7 +95,7 @@ abstract class Component(
      * The number of seconds this op mode has been running, this is updated before every call to
      * loop.
      */
-    var time = parent.time
+    fun time() = parent.time
 
     /**
      * User defined init_loop method. This method will be called repeatedly when the INIT button is

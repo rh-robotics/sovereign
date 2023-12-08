@@ -15,7 +15,7 @@ class AnnotationProcessor(private val codeGenerator: CodeGenerator, private val 
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val visitor = ClassVisitor()
         val symbols =
-            resolver.getSymbolsWithAnnotation("org.ironlions.sovereign.opmode.MakeAvailable")
+            resolver.getSymbolsWithAnnotation("org.ironlions.sovereign.components.Component")
         val invalid: List<KSAnnotated> = symbols.filter {
             !generateProviderForOpMode(it, visitor)
         }.toList()

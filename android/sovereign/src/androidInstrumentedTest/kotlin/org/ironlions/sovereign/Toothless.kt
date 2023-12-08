@@ -7,6 +7,18 @@ import org.ironlions.sovereign.opmode.OpModeProvider
 
 @MakeAvailable(type = OpModeType.AUTON)
 class Toothless(parent: OpModeProvider) : Component(parent, "Toothless") {
-    override fun init() = TODO("Not yet implemented")
-    override fun loop() = TODO("Not yet implemented")
+    private var lastTime: Double = 0.0
+    private var deltaTime: Double = 0.0
+
+    override fun init() {
+        lastTime = time()
+        telemetry.addLine("Toothless component initialized.")
+    }
+
+    override fun loop() {
+        deltaTime = time() - lastTime
+
+        telemetry.addData("deltaTime", deltaTime)
+        lastTime = time()
+    }
 }

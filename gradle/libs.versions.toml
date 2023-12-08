@@ -1,7 +1,7 @@
 [versions]
 agp = "8.1.2"
 kotlin = "1.9.10"
-android-minSdk = "29"
+android-minSdk = "25"
 android-compileSdk = "34"
 glm = "0.9.9.1-11"
 kool = "0.9.79"
