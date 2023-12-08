@@ -2,18 +2,27 @@ package org.ironlions.sovereign.pathfinding.fitting
 
 import org.ironlions.common.geometry.Measurement
 import org.ironlions.common.geometry.Point
+import org.ironlions.sovereign.TestOpModeProvider
 import org.ironlions.sovereign.pathfinding.pipeline.Pipeline
 import org.ironlions.sovereign.pathfinding.algorithms.AStar
-import org.ironlions.common.components.builtin.Pin
+import org.ironlions.sovereign.components.builtin.Pin
 import org.ironlions.sovereign.pathfinding.environment.Robot
 import org.ironlions.sovereign.pathfinding.environment.Environment
 import org.ironlions.sovereign.pathfinding.fitting.tree.grid.GridTreeFitter
 import org.ironlions.sovereign.pathfinding.fitting.tree.grid.GridTreeFitting
 import org.junit.Test
+import org.junit.Before
 import org.junit.Assert
 
 @Suppress("DEPRECATION")
 class GridTreeFitterTest {
+    lateinit var testOpModeProvider: TestOpModeProvider
+
+    @Before
+    fun before() {
+        testOpModeProvider = TestOpModeProvider()
+    }
+
     @Test
     fun emptyEnvironmentTest() {
         val expected = arrayOf(
@@ -27,9 +36,7 @@ class GridTreeFitterTest {
             pathfinder = AStar.Builder(),
             environment = Environment.Builder(
                 Robot(
-                    "Testing Robot",
-                    actualizationContext = null,
-                    Point(
+                    "Testing Robot", actualizationContext = null, Point(
                         x = Measurement.Feet(3.0),
                         y = Measurement.Feet(2.0),
                         z = Measurement.Feet(0.0)
@@ -58,9 +65,7 @@ class GridTreeFitterTest {
             pathfinder = AStar.Builder(),
             environment = Environment.Builder(
                 Robot(
-                    "Testing Robot",
-                    actualizationContext = null,
-                    Point(
+                    "Testing Robot", actualizationContext = null, Point(
                         x = Measurement.Feet(3.0),
                         y = Measurement.Feet(2.0),
                         z = Measurement.Feet(0.0)
@@ -68,7 +73,7 @@ class GridTreeFitterTest {
                 )
             ).component(
                 Pin(
-                    Point(
+                    testOpModeProvider, Point(
                         x = Measurement.Feet(6.0),
                         y = Measurement.Feet(6.0),
                         z = Measurement.Feet(0.0),
@@ -97,9 +102,7 @@ class GridTreeFitterTest {
             pathfinder = AStar.Builder(),
             environment = Environment.Builder(
                 Robot(
-                    "Testing Robot",
-                    actualizationContext = null,
-                    Point(
+                    "Testing Robot", actualizationContext = null, Point(
                         x = Measurement.Feet(3.0),
                         y = Measurement.Feet(2.0),
                         z = Measurement.Feet(0.0)
@@ -107,7 +110,7 @@ class GridTreeFitterTest {
                 )
             ).component(
                 Pin(
-                    Point(
+                    testOpModeProvider, Point(
                         x = Measurement.Millimeters(1.0),
                         y = Measurement.Millimeters(1.0),
                         z = Measurement.Millimeters(0.0),

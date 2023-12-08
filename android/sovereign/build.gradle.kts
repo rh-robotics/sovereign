@@ -68,8 +68,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -82,9 +81,9 @@ android {
 
 dependencies {
     // TODO: The universal "ksp" configuration has performance issue and is deprecated on multiplatform since 1.0.1
-    implementation(project(":plugins:sovereign"))
-    ksp(project(":plugins:sovereign"))
+    implementation(project(":symproc:sovereign"))
+    ksp(project(":symproc:sovereign"))
 
-    // add("kspCommonMainMetadata", project(":plugins:sovereign"))
-    // add("kspJvm", project(":plugins:sovereign"))
+    //add("kspCommonMainMetadata", project(":symproc:sovereign"))
+    //add("kspJvm", project(":symproc:sovereign"))
 }

@@ -4,7 +4,7 @@ import org.ironlions.common.geometry.Grid
 import org.ironlions.common.geometry.Point
 import org.ironlions.common.geometry.Region
 import org.ironlions.common.seasons.PrototypicalField
-import org.ironlions.common.components.Component
+import org.ironlions.sovereign.components.Component
 import org.ironlions.sovereign.pathfinding.environment.Environment
 import org.ironlions.sovereign.pathfinding.fitting.DataFitter
 import org.ironlions.sovereign.pathfinding.fitting.DataFitterBuilder

@@ -1,7 +1,7 @@
 package org.ironlions.panopticon.client.ui
 
 import glm_.mat4x4.Mat4
-import org.ironlions.common.components.Component
+import org.ironlions.panopticon.client.data.Component
 import org.ironlions.panopticon.client.ClientApplication
 import org.ironlions.panopticon.client.ecs.Entity
 import org.ironlions.panopticon.client.ecs.Scene
@@ -50,8 +50,11 @@ class GraphicsScene : Window("Viewer"), EventReceiver {
         // TODO: Mesh caching.
         scene.components.clear()
         (ClientApplication.windows[Inspector::class]!! as Inspector).dataTransceiver?.let { data ->
-            data.components().filterIsInstance<Component.Concrete>().forEach {
+            data.components().filter { !it.abstract }.forEach {
                 val entity = Entity(scene)
+                val region = it.properties.filterIsInstance<Component.Property.Region>().first()
+                    .sensibilitize()
+                val color = it.properties.filterIsInstance<Component.Property.Color>().first()
 
                 entity.components.clear()
                 entity.attachComponent(
@@ -59,7 +62,7 @@ class GraphicsScene : Window("Viewer"), EventReceiver {
                         entity,
                         Mat4(1),
                         program,
-                        BoundingBox.vertices(it.region.sensibilitize(), it.color),
+                        BoundingBox.vertices(region, color),
                         BoundingBox.indices,
                         type = GL_LINES,
                     )

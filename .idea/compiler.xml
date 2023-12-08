@@ -5,6 +5,7 @@
       <module name="unified.plugins.panopticon" target="17" />
       <module name="unified.plugins.panopticon.main" target="17" />
       <module name="unified.plugins.panopticon.test" target="17" />
+      <module name="unified.plugins.sovereign" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -1,6 +1,6 @@
 package org.ironlions.sovereign.pathfinding.environment
 
-import org.ironlions.common.components.Component
+import org.ironlions.sovereign.components.Component
 
 /**
  * A map of the entire game field, including all field objects.

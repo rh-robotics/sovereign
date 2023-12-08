@@ -5,11 +5,12 @@ import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableColumnFlags
 import imgui.flag.ImGuiTableFlags
 import imgui.type.ImBoolean
-import org.ironlions.common.components.Component
+import org.ironlions.panopticon.client.data.Component
 import org.ironlions.panopticon.client.data.DataTransceiver
 import org.ironlions.panopticon.client.data.RecordedDataTransceiver
 import org.ironlions.panopticon.client.render.Renderer
 import org.ironlions.common.titlecase
+import org.ironlions.panopticon.client.util.sensibilitize
 import org.ironlions.ui.marsh.Marsh
 import org.ironlions.ui.marsh.Toast
 import kotlin.io.path.Path
@@ -26,11 +27,12 @@ private open class ComponentDisplayProperty(val human: String) {
 
 class Inspector : Window("Inspector") {
     private var dataSourcePickingStage = DataSourcePickingStage.START
-    private var displayableComponentDisplayProperty: Map<ComponentDisplayProperty, ImBoolean> = mapOf(
-        ComponentDisplayProperty.Uuid() to ImBoolean(false),
-        ComponentDisplayProperty.Region() to ImBoolean(true),
-        ComponentDisplayProperty.Model() to ImBoolean(false),
-    )
+    private var displayableComponentDisplayProperty: Map<ComponentDisplayProperty, ImBoolean> =
+        mapOf(
+            ComponentDisplayProperty.Uuid() to ImBoolean(false),
+            ComponentDisplayProperty.Region() to ImBoolean(true),
+            ComponentDisplayProperty.Model() to ImBoolean(false),
+        )
     var wantConnect: Boolean = false
     var dataTransceiver: DataTransceiver? = null
 
@@ -48,7 +50,7 @@ class Inspector : Window("Inspector") {
 
         ImGui.setNextItemOpen(true)
         if (ImGui.treeNode("Things")) {
-            dataTransceiver!!.components().filterIsInstance<Component.Concrete>().forEach {
+            dataTransceiver!!.components().filter { !it.abstract }.forEach {
                 if (ImGui.treeNodeEx(it.humanName)) {
                     displayComponentInfo(it)
                     ImGui.treePop()
@@ -88,17 +90,20 @@ class Inspector : Window("Inspector") {
         }
     }
 
-    private fun displayComponentInfo(component: Component.Concrete) {
+    private fun displayComponentInfo(component: Component) {
         val extra = displayableComponentDisplayProperty.filter { it.value.get() }.keys.associate {
+            val region = component.properties.filterIsInstance<Component.Property.Region>().first()
+            val model = component.properties.filterIsInstance<Component.Property.Model>().first()
+
             it.human to when (it) {
                 is ComponentDisplayProperty.Uuid -> component.uuid.toString()
-                is ComponentDisplayProperty.Region -> "(${component.region.region.v1.x}, ${component.region.region.v1.y}, ${component.region.region.v1.z}) - (${component.region.region.v2.x}, ${component.region.region.v2.y}, ${component.region.region.v2.z})"
-                is ComponentDisplayProperty.Model -> component.model.model
+                is ComponentDisplayProperty.Region -> "(${region.region.v1.x}, ${region.region.v1.y}, ${region.region.v1.z}) - (${region.region.v2.x}, ${region.region.v2.y}, ${region.region.v2.z})"
+                is ComponentDisplayProperty.Model -> model.model
                 else -> throw RuntimeException("Unreachable.")
             }
         }
 
-        displayDataTable(component.adHocProperties, extra)
+        displayDataTable(component.properties.filterIsInstance<Component.Property.AdHoc>(), extra)
 
         /* if (thing.data_!!.children.isNotEmpty() && ImGui.treeNodeEx("Children")) {
             thing.data_!!.children.forEach { displayDataTable(it) }
@@ -125,9 +130,9 @@ class Inspector : Window("Inspector") {
             for (dataEntry in data) {
                 ImGui.tableNextRow()
                 ImGui.tableSetColumnIndex(0)
-                ImGui.textWrapped(dataEntry.data.first.titlecase())
+                ImGui.textWrapped(dataEntry.property.first.titlecase())
                 ImGui.tableSetColumnIndex(1)
-                ImGui.textWrapped(dataEntry.data.second)
+                ImGui.textWrapped(dataEntry.property.second)
             }
 
             ImGui.endTable()

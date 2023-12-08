@@ -1,7 +1,6 @@
 package org.ironlions.panopticon.client.data
 
 import kotlinx.serialization.json.Json
-import org.ironlions.common.components.Component
 import org.ironlions.common.panopticon.proto.NewComponentRequest
 import org.ironlions.common.panopticon.proto.RemoveComponentRequest
 import org.ironlions.common.panopticon.proto.PingRequest

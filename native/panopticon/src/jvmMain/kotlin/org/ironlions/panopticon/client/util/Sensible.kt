@@ -1,6 +1,6 @@
 package org.ironlions.panopticon.client.util
 
-import org.ironlions.common.components.Component
+import org.ironlions.panopticon.client.data.Component
 import org.ironlions.common.geometry.Point
 import org.ironlions.common.geometry.Region
 
