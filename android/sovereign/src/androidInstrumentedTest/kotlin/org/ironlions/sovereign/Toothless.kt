@@ -12,7 +12,7 @@ class Toothless(parent: OpModeProvider) : Component(parent, "Toothless") {
 
     override fun init() {
         lastTime = time()
-        telemetry.addLine("Toothless component initialized.")
+        dumpSovereignInformation()
     }
 
     override fun loop() {

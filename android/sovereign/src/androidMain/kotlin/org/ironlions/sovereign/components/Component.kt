@@ -65,9 +65,7 @@ abstract class Component(
      * @param components Other properties of this object.
      */
     abstract class Abstract(
-        parent: OpModeProvider,
-        humanName: String,
-        components: List<Component> = listOf()
+        parent: OpModeProvider, humanName: String, components: List<Component> = listOf()
     ) : Component(parent, humanName, components)
 
     /** Gamepad 1 */
@@ -167,4 +165,11 @@ abstract class Component(
      * @param telemetry the telemetry data to transmit
      */
     fun updateTelemetry(telemetry: Telemetry) = parent.updateTelemetry(telemetry)
+
+    /** Get some information about Sovereign, possible for filing a bug report. */
+    fun sovereignInformation(): String =
+        "Sovereign  Copyright (C) 2023  Milo Banks\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to\nredistribute it under certain conditions."
+
+    /** Dump Soveriegn information to telemetry. */
+    fun dumpSovereignInformation() = telemetry.addLine(sovereignInformation())
 }
