@@ -1,3 +1,5 @@
+import java.net.URL
+
 @Suppress("DSL_SCOPE_VIOLATION") // https://github.com/gradle/gradle/issues/22797#issuecomment-1385330558
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -80,6 +82,9 @@ android {
 }
 
 dependencies {
+    // TODO: Replace with custom build from OpenRC-Turbo.
+    annotationProcessor(files("libs/OpModeAnnotationProcessor.jar"))
+
     // TODO: The universal "ksp" configuration has performance issue and is deprecated on multiplatform since 1.0.1
     implementation(project(":symproc:sovereign"))
     ksp(project(":symproc:sovereign"))
