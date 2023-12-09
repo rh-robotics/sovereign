@@ -1,0 +1,85 @@
+[versions]
+agp = "8.1.2"
+kotlin = "1.9.10"
+android-minSdk = "25"
+android-compileSdk = "34"
+glm = "0.9.9.1-11"
+kool = "0.9.79"
+wire = "4.9.3"
+imgui = "1.86.11-10-g0dbf36c"
+lwjgl = "3.3.3"
+slf4j = "2.0.9"
+logging = "5.1.0"
+kotlinx = "1.7.3"
+kotlinx-serialization = "1.6.2"
+dokka = "1.9.0"
+ftc = "9.0.1"
+ftc-assets = "1.0.0"
+roadrunner = "1.0.0-beta3"
+androidx-core = "1.12.0"
+androidx-appcompat = "1.6.1"
+androidx-test-junit = "1.1.5"
+androidx-test-expresso = "3.5.1"
+material = "1.10.0"
+junit = "4.13.2"
+mockito = "5.6.0"
+javapoet = "1.13.0"
+#noinspection GradleDependency
+ksp = "1.9.10-1.0.13"
+
+[libraries]
+imgui = { module = "io.github.spair:imgui-java-app", version.ref = "imgui" }
+imgui-lwjgl3 = { module = "io.github.spair:imgui-java-natives-macos-ft", version.ref = "imgui" }
+imgui-natives = { module = "io.github.spair:imgui-java-lwjgl3", version.ref = "imgui" }
+glm = { module = "kotlin.graphics:glm", version.ref = "glm" }
+kool = { module = "kotlin.graphics:kool", version.ref = "kool" }
+logging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "logging" }
+reload4j = { module = "org.slf4j:slf4j-reload4j", version.ref = "slf4j" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+junit = { module = "junit:junit", version.ref = "junit" }
+mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+ksp-symbolProcessingApi = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
+javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
+
+kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+
+wire = { module = "com.squareup.wire:wire-gradle-plugin", version.ref = "wire" }
+wire-client = { module = "com.squareup.wire:wire-grpc-client", version.ref = "wire" }
+wire-server = { module = "com.squareup.wire:wire-grpc-server", version.ref = "wire" }
+
+androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-junit" }
+androidx-test-expresso = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-expresso" }
+
+ftc-inspection = { module = "org.firstinspires.ftc:Inspection", version.ref = "ftc" }
+ftc-blocks = { module = "org.firstinspires.ftc:Blocks", version.ref = "ftc" }
+ftc-tfod = { module = "org.firstinspires.ftc:Tfod", version.ref = "ftc" }
+ftc-core = { module = "org.firstinspires.ftc:RobotCore", version.ref = "ftc" }
+ftc-server = { module = "org.firstinspires.ftc:RobotServer", version.ref = "ftc" }
+ftc-onBotJava = { module = "org.firstinspires.ftc:OnBotJava", version.ref = "ftc" }
+ftc-hardware = { module = "org.firstinspires.ftc:Hardware", version.ref = "ftc" }
+ftc-common = { module = "org.firstinspires.ftc:FtcCommon", version.ref = "ftc" }
+ftc-vision = { module = "org.firstinspires.ftc:Vision", version.ref = "ftc" }
+ftc-gameAssets-centerStage = { module = "org.firstinspires.ftc:gameAssets-CenterStage", version.ref = "ftc-assets" }
+
+roadrunner-core = { module = "com.acmerobotics.roadrunner:core", version.ref = "roadrunner" }
+roadrunner-actions = { module = "com.acmerobotics.roadrunner:actions", version.ref = "roadrunner" }
+
+lwjgl = { module = "org.lwjgl:lwjgl", version.ref = "lwjgl" }
+lwjgl-bom = { module = "org.lwjgl:lwjgl-bom", version.ref = "lwjgl" }
+lwjgl-remotery = { module = "org.lwjgl:lwjgl-remotery", version.ref = "lwjgl" }
+lwjgl-opengl = { module = "org.lwjgl:lwjgl-opengl", version.ref = "lwjgl" }
+lwjgl-glfw = { module = "org.lwjgl:lwjgl-glfw", version.ref = "lwjgl" }
+lwjgl-jemalloc = { module = "org.lwjgl:lwjgl-jemalloc", version.ref = "lwjgl" }
+lwjgl-stb = { module = "org.lwjgl:lwjgl-stb", version.ref = "lwjgl" }
+
+[plugins]
+android-library = { id = "com.android.library", version.ref = "agp" }
+wire = { id = "com.squareup.wire", version.ref = "wire" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

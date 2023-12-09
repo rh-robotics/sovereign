@@ -5,14 +5,11 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-        maven { url = java.net.URI("https://maven.brott.dev/") }
-    }
-}
 
-rootProject.name = "sovereign"
-include(":sovereign")
+rootProject.name = "unified"
+include(":android:panopticon")
+include(":android:sovereign")
+include(":common:common")
+include(":native:marsh")
+include(":native:panopticon")
+include(":symproc:sovereign")

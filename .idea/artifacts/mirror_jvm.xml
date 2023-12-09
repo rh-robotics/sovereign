@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="mirror-jvm">
+    <output-path>$PROJECT_DIR$/common/mirror/build/libs</output-path>
+    <root id="archive" name="mirror-jvm.jar" />
+  </artifact>
+</component>

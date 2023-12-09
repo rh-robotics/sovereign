@@ -1,0 +1,101 @@
+syntax = "proto3";
+package org.ironlions.common.panopticon.proto;
+
+option java_multiple_files = true;
+
+message PingRequest {}
+
+message StatusResponse {
+  enum Status {
+    PING_STATUS_OK = 0;
+    PING_STATUS_FAILED = 1;
+    PING_STATUS_WAITING = 2;
+  }
+
+  Status status = 1;
+  string info = 2; // Optional
+}
+
+service Transfer {
+  // Generic RPCs.
+  rpc ping(PingRequest) returns (StatusResponse);
+  rpc setup(SetupRequest) returns (StatusResponse);
+
+  // Component mutation RPCs.
+  rpc newComponent(NewComponentRequest) returns (StatusResponse);
+  rpc removeComponent(RemoveComponentRequest) returns (StatusResponse);
+  rpc updateProperties(UpdatePropertiesRequest) returns (StatusResponse);
+}
+
+// Setup everything initially.
+message SetupRequest {
+  Field field = 1;
+  repeated NewComponentRequest components = 2;
+}
+
+// Create a new component.
+message NewComponentRequest {
+  Uuid uuid = 1;
+  string humanName = 3;
+  bool abstract = 4;
+  repeated Property properties = 5;
+}
+
+// Remove something.
+message RemoveComponentRequest {
+  Uuid uuid = 1;
+}
+
+// Update a property.
+message UpdatePropertiesRequest {
+  Uuid uuid = 1;
+  repeated Property properties = 3;
+}
+
+// A property.
+message Property {
+  oneof value {
+    Region region = 1;
+    Color color = 2;
+    string model = 3;
+    bool ad_hoc = 4;
+  }
+
+  string note = 5; // Optional
+  map<string, string> associated = 6;
+}
+
+// Field information.
+message Field {
+  string name = 1;
+}
+
+// A region in space.
+message Region {
+  // Point 1
+  Measurement x1 = 1;
+  Measurement y1 = 2;
+  Measurement z1 = 3;
+
+  // Point 2
+  Measurement x2 = 4;
+  Measurement y2 = 5;
+  Measurement z2 = 6;
+}
+
+// A color.
+message Color {
+  float r = 1;
+  float g = 2;
+  float b = 3;
+}
+
+// A UUID.
+message Uuid {
+  string uuid = 1;
+}
+
+// A measurement.
+message Measurement {
+  double millimeters = 1;
+}

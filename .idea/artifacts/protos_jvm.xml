@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="protos-jvm">
+    <output-path>$PROJECT_DIR$/common/protos/build/libs</output-path>
+    <root id="archive" name="protos-jvm.jar">
+      <element id="module-output" name="unified.common.protos.jvmMain" />
+    </root>
+  </artifact>
+</component>

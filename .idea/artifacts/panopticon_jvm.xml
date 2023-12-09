@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="panopticon-jvm">
+    <output-path>$PROJECT_DIR$/native/panopticon/build/libs</output-path>
+    <root id="archive" name="panopticon-jvm.jar">
+      <element id="module-output" name="unified.native.panopticon.jvmMain" />
+    </root>
+  </artifact>
+</component>

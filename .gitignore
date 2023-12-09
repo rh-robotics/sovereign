@@ -1,4 +1,6 @@
 *.iml
+*.log
+*.pandat
 .gradle
 /local.properties
 /.idea/caches
@@ -14,3 +16,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+/common/common/src/commonMain/python/Transfer_pb2.py
+/common/common/src/commonMain/python/Transfer_pb2_grpc.py

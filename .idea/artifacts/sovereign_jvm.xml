@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="sovereign-jvm">
+    <output-path>$PROJECT_DIR$/symproc/sovereign/build/libs</output-path>
+    <root id="archive" name="sovereign-jvm.jar">
+      <element id="module-output" name="unified.symproc.sovereign.jvmMain" />
+    </root>
+  </artifact>
+</component>

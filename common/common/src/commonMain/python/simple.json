@@ -1,0 +1,171 @@
+[
+  {
+    "type": "SetupRequest",
+    "timestamp": {
+      "seconds": 1701725247,
+      "nanos": 0
+    },
+    "message": {
+      "field": {
+        "name": "PrototypicalField"
+      },
+      "components": [
+        {
+          "uuid": {
+            "uuid": "745e2c3a-67d1-4b80-8a09-a991e1998bac"
+          },
+          "humanName": "Bronto",
+          "abstract": false,
+          "properties": [
+            {
+              "model": "bounding"
+            },
+            {
+              "region": {
+                "x1": {
+                  "millimeters": -152
+                },
+                "y1": {
+                  "millimeters": 0
+                },
+                "z1": {
+                  "millimeters": -152
+                },
+                "x2": {
+                  "millimeters": 152
+                },
+                "y2": {
+                  "millimeters": 304
+                },
+                "z2": {
+                  "millimeters": 152
+                }
+              }
+            },
+            {
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 1
+              }
+            },
+            {
+              "ad_hoc": true,
+              "associated": {
+                "henry": "alive"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "type": "NewComponentRequest",
+    "timestamp": {
+      "seconds": 1701725247,
+      "nanos": 20000000
+    },
+    "message": {
+      "uuid": {
+        "uuid": "3d5beac8-e1ac-4be4-b571-a0b79bd515bb"
+      },
+      "humanName": "Generic Field Object",
+      "abstract": false,
+      "properties": [
+        {
+          "model": "bounding"
+        },
+        {
+          "region": {
+            "x1": {
+              "millimeters": 200
+            },
+            "y1": {
+              "millimeters": 0
+            },
+            "z1": {
+              "millimeters": -100
+            },
+            "x2": {
+              "millimeters": 504
+            },
+            "y2": {
+              "millimeters": 60
+            },
+            "z2": {
+              "millimeters": 223
+            }
+          }
+        },
+        {
+          "color": {
+            "r": 0,
+            "g": 1,
+            "b": 0
+          }
+        },
+        {
+          "ad_hoc": true,
+          "associated": {
+            "general": "teapot"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "type": "UpdatePropertiesRequest",
+    "timestamp": {
+      "seconds": 1701725247,
+      "nanos": 40000000
+    },
+    "message": {
+      "uuid": {
+        "uuid": "3d5beac8-e1ac-4be4-b571-a0b79bd515bb"
+      },
+      "properties": [
+        {
+          "region": {
+            "x1": {
+              "millimeters": 200
+            },
+            "y1": {
+              "millimeters": 0
+            },
+            "z1": {
+              "millimeters": -200
+            },
+            "x2": {
+              "millimeters": 504
+            },
+            "y2": {
+              "millimeters": 60
+            },
+            "z2": {
+              "millimeters": 123
+            }
+          }
+        },
+        {
+          "ad_hoc": true,
+          "associated": {
+            "general": "kettle"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "type": "RemoveComponentRequest",
+    "timestamp": {
+      "seconds": 1701725247,
+      "nanos": 60000000
+    },
+    "message": {
+      "uuid": {
+        "uuid": "3d5beac8-e1ac-4be4-b571-a0b79bd515bb"
+      }
+    }
+  }
+]
