@@ -3,7 +3,7 @@ package org.ironlions.sovereign.pathfinding.environment
 import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder
 import com.acmerobotics.roadrunner.Vector2d
-import org.ironlions.sovereign.actualization.ActualizationContext
+import org.ironlions.sovereign.pathfinding.actualization.ActualizationContext
 import org.ironlions.common.geometry.Measurement
 import org.ironlions.common.geometry.Point
 import org.ironlions.common.geometry.Region

@@ -1,4 +1,4 @@
-package org.ironlions.sovereign.actualization
+package org.ironlions.sovereign.pathfinding.actualization
 
 import com.acmerobotics.roadrunner.AccelConstraint
 import com.acmerobotics.roadrunner.TrajectoryActionFactory

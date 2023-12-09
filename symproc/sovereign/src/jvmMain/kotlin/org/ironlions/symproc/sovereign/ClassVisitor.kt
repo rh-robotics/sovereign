@@ -1,5 +1,6 @@
 package org.ironlions.symproc.sovereign
 
+import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSNode
 import com.google.devtools.ksp.visitor.KSTopDownVisitor
@@ -12,12 +13,9 @@ import com.squareup.javapoet.TypeSpec
 import java.io.OutputStreamWriter
 import javax.lang.model.element.Modifier
 
-class ClassVisitor : KSTopDownVisitor<OutputStreamWriter, Unit>() {
+class ClassVisitor(private val logger: KSPLogger) : KSTopDownVisitor<OutputStreamWriter, Unit>() {
     private val componentClass = ClassName.get("org.ironlions.sovereign.components", "Component")
-    private val opModeProvider =
-        ClassName.get("org.ironlions.sovereign.opmode", "OpModeProvider")
-    private val autonomousClass =
-        ClassName.get("com.qualcomm.robotcore.eventloop.opmode", "Autonomous")
+    private val opModeProvider = ClassName.get("org.ironlions.sovereign.opmode", "OpModeProvider")
 
     override fun defaultHandler(node: KSNode, data: OutputStreamWriter) {}
 
@@ -32,12 +30,30 @@ class ClassVisitor : KSTopDownVisitor<OutputStreamWriter, Unit>() {
             "Class '${classDeclaration.qualifiedName?.asString()}' must inherit from ${componentClass.canonicalName()}."
         }
 
+        val makeAvailableAnnotation =
+            classDeclaration.annotations.first { it.toString() == "@MakeAvailable" }
+        val opModeType = when (val opModeTypeParameter =
+            makeAvailableAnnotation.arguments.first { argument -> argument.name!!.asString() == "type" }.value.toString()) {
+            "org.ironlions.sovereign.opmode.OpModeType.TELEOP" -> ClassName.get(
+                "com.qualcomm.robotcore.eventloop.opmode", "TeleOp"
+            )
+
+            "org.ironlions.sovereign.opmode.OpModeType.AUTON" -> ClassName.get(
+                "com.qualcomm.robotcore.eventloop.opmode", "Autonomous"
+            )
+
+            else -> {
+                logger.error("Unknown OpMode type '${opModeTypeParameter}' on @MakeAvailable annotation (${makeAvailableAnnotation.location}).")
+                return
+            }
+        }
+
         val packageName = classDeclaration.packageName.asString()
         val className = classDeclaration.simpleName.asString()
         val originalQualifiedClassName = ClassName.get(packageName, className)
         val providerClassName = "${className}Provider"
 
-        val annotationSpecBuilder = AnnotationSpec.builder(autonomousClass)
+        val annotationSpecBuilder = AnnotationSpec.builder(opModeType)
         annotationSpecBuilder.addMember("group", "\$S", classDeclaration.packageName.getQualifier())
         annotationSpecBuilder.addMember("name", "\$S", className)
         annotationSpecBuilder.build()

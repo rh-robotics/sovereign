@@ -13,7 +13,7 @@ import java.io.OutputStreamWriter
 class AnnotationProcessor(private val codeGenerator: CodeGenerator, private val logger: KSPLogger) :
     SymbolProcessor {
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        val visitor = ClassVisitor()
+        val visitor = ClassVisitor(logger)
         val symbols =
             resolver.getSymbolsWithAnnotation("org.ironlions.sovereign.opmode.MakeAvailable")
         val invalid: List<KSAnnotated> = symbols.filter {
