@@ -1,5 +1,5 @@
-# Unified
-![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/rh-robotics/unified)
+# Sovereign
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/rh-robotics/sovereign)
 
 This monorepo contains code open to the public produced by The Iron Lions (Team 19922). Here, you'll
 find a collection of open-source code that we've developed and use in our projects. Our aim is to
@@ -13,7 +13,7 @@ a moment to file an issue report, and we will do our very best to address it. We
 ensuring a smooth and reliable experience with our codebase, and your input helps us achieve that
 goal.
 
-Unified is lead by:
+Sovereign is lead by:
 * [Milo Banks](https://github.com/IsaccBarker)
 * [Teo Welton](https://github.com/DragonDev07)
 
@@ -28,6 +28,6 @@ state in real time. Complete with graphs, a property inspector, a 3D view of the
 it's a great way to troubleshoot your code.
 
 ## Documentation
-[![Documentation](https://github.com/rh-robotics/unified/actions/workflows/deploy_doc.yml/badge.svg)](https://github.com/rh-robotics/unified/actions/workflows/deploy_doc.yml)
+[![Documentation](https://github.com/rh-robotics/sovereign/actions/workflows/deploy_doc.yml/badge.svg)](https://github.com/rh-robotics/unified/actions/workflows/deploy_doc.yml)
 
-You can see our API documentation [here](https://rh-robotics.github.io/unified/).
+You can see our API documentation [here](https://rh-robotics.github.io/sovereign/).
