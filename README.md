@@ -28,6 +28,6 @@ state in real time. Complete with graphs, a property inspector, a 3D view of the
 it's a great way to troubleshoot your code.
 
 ## Documentation
-[![Documentation](https://github.com/rh-robotics/sovereign/actions/workflows/deploy_doc.yml/badge.svg)](https://github.com/rh-robotics/unified/actions/workflows/deploy_doc.yml)
+[![Documentation](https://github.com/rh-robotics/sovereign/actions/workflows/deploy_doc.yml/badge.svg)](https://github.com/rh-robotics/sovereign/actions/workflows/deploy_doc.yml)
 
 You can see our API documentation [here](https://rh-robotics.github.io/sovereign/).
