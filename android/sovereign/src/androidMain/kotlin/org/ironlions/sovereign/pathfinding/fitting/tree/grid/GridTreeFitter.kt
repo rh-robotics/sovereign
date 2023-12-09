@@ -4,7 +4,7 @@ import org.ironlions.common.geometry.Grid
 import org.ironlions.common.geometry.Point
 import org.ironlions.common.geometry.Region
 import org.ironlions.common.seasons.PrototypicalField
-import org.ironlions.sovereign.components.Component
+import org.ironlions.sovereign.components.BasicComponent
 import org.ironlions.sovereign.pathfinding.environment.Environment
 import org.ironlions.sovereign.pathfinding.fitting.DataFitter
 import org.ironlions.sovereign.pathfinding.fitting.DataFitterBuilder
@@ -17,8 +17,9 @@ import org.ironlions.sovereign.pathfinding.fitting.tree.TreeFitting
  * @param resolution The coarseness of the resulting grid.
  * @param grid The grid to use.
  */
-@Deprecated("Use of this fitter will result in inaccurate destinations. " +
-        "It should be used for testing only.")
+@Deprecated(
+    "Use of this fitter will result in inaccurate destinations. " + "It should be used for testing only."
+)
 class GridTreeFitter(
     private val environment: Environment,
     private val resolution: Int = 32,
@@ -93,6 +94,7 @@ class GridTreeFitter(
         // TODO: Separate out dimensional collapse once more?
 
         // Look through every object and see if it overlaps with the current cell.
-        environment.components.filterIsInstance<Component.Concrete>().forEach { fitting[x][y].occupied = cellRegion.overlaps(it.region.region) }
+        environment.components.filterIsInstance<BasicComponent.Concrete>()
+            .forEach { fitting[x][y].occupied = cellRegion.overlaps(it.region) }
     }
 }

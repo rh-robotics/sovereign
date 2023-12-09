@@ -16,6 +16,10 @@ import javax.lang.model.element.Modifier
 class ClassVisitor(private val logger: KSPLogger) : KSTopDownVisitor<OutputStreamWriter, Unit>() {
     private val componentClass = ClassName.get("org.ironlions.sovereign.components", "Component")
     private val opModeProvider = ClassName.get("org.ironlions.sovereign.opmode", "OpModeProvider")
+    private val teleOpAnnotation =
+        ClassName.get("com.qualcomm.robotcore.eventloop.opmode", "TeleOp")
+    private val autonomousAnnotation =
+        ClassName.get("com.qualcomm.robotcore.eventloop.opmode", "Autonomous")
 
     override fun defaultHandler(node: KSNode, data: OutputStreamWriter) {}
 
@@ -23,25 +27,21 @@ class ClassVisitor(private val logger: KSPLogger) : KSTopDownVisitor<OutputStrea
         classDeclaration: KSClassDeclaration, data: OutputStreamWriter
     ) {
         val isSubclassOfSovereignOpMode = classDeclaration.superTypes.any {
-            it.resolve().declaration.qualifiedName?.asString() == componentClass.canonicalName()
+            (it.resolve().declaration as KSClassDeclaration).superTypes.any { ti ->
+                ti.resolve().declaration.qualifiedName?.asString() == componentClass.canonicalName()
+            }
         }
 
         require(isSubclassOfSovereignOpMode) {
-            "Class '${classDeclaration.qualifiedName?.asString()}' must inherit from ${componentClass.canonicalName()}."
+            "Class '${classDeclaration.qualifiedName?.asString()}' must inherit from (a child of) ${componentClass.canonicalName()}."
         }
 
         val makeAvailableAnnotation =
             classDeclaration.annotations.first { it.toString() == "@MakeAvailable" }
         val opModeType = when (val opModeTypeParameter =
             makeAvailableAnnotation.arguments.first { argument -> argument.name!!.asString() == "type" }.value.toString()) {
-            "org.ironlions.sovereign.opmode.OpModeType.TELEOP" -> ClassName.get(
-                "com.qualcomm.robotcore.eventloop.opmode", "TeleOp"
-            )
-
-            "org.ironlions.sovereign.opmode.OpModeType.AUTON" -> ClassName.get(
-                "com.qualcomm.robotcore.eventloop.opmode", "Autonomous"
-            )
-
+            "org.ironlions.sovereign.opmode.OpModeType.TELEOP" -> teleOpAnnotation
+            "org.ironlions.sovereign.opmode.OpModeType.AUTON" -> autonomousAnnotation
             else -> {
                 logger.error("Unknown OpMode type '${opModeTypeParameter}' on @MakeAvailable annotation (${makeAvailableAnnotation.location}).")
                 return
@@ -74,14 +74,19 @@ class ClassVisitor(private val logger: KSPLogger) : KSTopDownVisitor<OutputStrea
             ).build()
         )
 
-        arrayOf("init_loop", "start", "stop", "loop").forEach {
-            providerClassBuilder.addMethod(generatePassthroughMethod(it))
+        mapOf(
+            ("init_loop" to "initLoopWrapper"),
+            ("start" to "startWrapper"),
+            ("stop" to "stopWrapper"),
+            ("loop" to "loopWrapper")
+        ).forEach { methodName, wrapperName ->
+            providerClassBuilder.addMethod(generatePassthroughMethod(methodName, wrapperName))
         }
 
         providerClassBuilder.addMethod(
             MethodSpec.methodBuilder("init").addAnnotation(Override::class.java)
                 .addModifiers(Modifier.PUBLIC).returns(Void.TYPE).addCode(
-                    "\$L.init();\ntelemetry.addLine(\$S);\n",
+                    "\$L.initWrapper();\ntelemetry.addLine(\$S);\n",
                     childField.name,
                     "This OpMode is Sovereign enabled."
                 ).build()
@@ -94,8 +99,8 @@ class ClassVisitor(private val logger: KSPLogger) : KSTopDownVisitor<OutputStrea
         data.write(javaFile.toString())
     }
 
-    private fun generatePassthroughMethod(methodName: String): MethodSpec =
+    private fun generatePassthroughMethod(methodName: String, wrapperName: String): MethodSpec =
         MethodSpec.methodBuilder(methodName).addAnnotation(Override::class.java)
-            .addModifiers(Modifier.PUBLIC).returns(Void.TYPE).addCode("child.\$L();\n", methodName)
+            .addModifiers(Modifier.PUBLIC).returns(Void.TYPE).addCode("child.\$L();\n", wrapperName)
             .build()
 }

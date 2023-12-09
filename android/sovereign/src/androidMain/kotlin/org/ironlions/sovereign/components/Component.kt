@@ -12,61 +12,17 @@ import java.util.UUID
  * for this. This code will be bundled with hundreds of other changes so he won't catch this comment
  * during review, I can be almost confident of that. Can you hear me Teo? No? Ha!
  *
- * You can think of this like a nestable OpMode: it essentially mirror an [FTC OpMode](https://github.com/OpenFTC/OpenRC-Turbo/blob/63035e7b37b2b27e9516538a7f35649fb6105f34/RobotCore/src/main/java/com/qualcomm/robotcore/eventloop/opmode/OpMode.java).
- *
  * @param humanName The name of this thing that is human readable.
  * @param components Things that belong to this time.
- * @param adHocProperties Other properties of this object.
- * @param uuid The UUID used by Panopticon and some internal parts of Sovereign. **Must be UNIQUE.**
+ * @param properties Other properties of this object.
  */
 abstract class Component(
     protected val parent: OpModeProvider,
-    val humanName: String,
-    val components: List<Component> = listOf(),
-    val adHocProperties: MutableList<Pair<String, String>> = mutableListOf(),
-    val uuid: UUID = UUID.randomUUID(),
+    protected val humanName: String,
+    protected val components: List<BasicComponent> = listOf(),
+    protected val properties: MutableList<Pair<String, String>> = mutableListOf()
 ) {
-    abstract class Property {
-        class Region(val region: org.ironlions.common.geometry.Region) : Property()
-
-        class Color(val r: Float, val g: Float, val b: Float) : Property()
-
-        class Model(val model: String) : Property()
-
-        var note: String? = null
-
-        fun note(note: String) = apply { this.note = note }
-    }
-
-    /**
-     * A field thing that exists in space.
-     *
-     * @param humanName The human-friendly name of this object.
-     * @param region The region that this object occupies.
-     * @param color The color of this object.
-     * @param model The model of this object (display only).
-     * @param components Things that belong to this thing.
-     * @param components Other properties of this object.
-     */
-    abstract class Concrete(
-        parent: OpModeProvider,
-        humanName: String,
-        val region: Property.Region,
-        val color: Property.Color = Property.Color(1f, 1f, 1f),
-        val model: Property.Model = Property.Model("bounding"),
-        components: List<Component> = listOf()
-    ) : Component(parent, humanName, components)
-
-    /**
-     * A field thing that does not exist in space.
-     *
-     * @param humanName The human-friendly name of this object.
-     * @param components Things that belong to this thing.
-     * @param components Other properties of this object.
-     */
-    abstract class Abstract(
-        parent: OpModeProvider, humanName: String, components: List<Component> = listOf()
-    ) : Component(parent, humanName, components)
+    protected val uuid: UUID = UUID.randomUUID()
 
     /** Gamepad 1 */
     val gamepad1: Gamepad? = parent.gamepad1
@@ -90,45 +46,27 @@ abstract class Component(
     val hardwareMap: HardwareMap? = parent.hardwareMap
 
     /**
-     * The number of seconds this op mode has been running, this is updated before every call to
-     * loop.
+     * The number of seconds this OpMode has been running. This is updated before every call to loop.
      */
-    fun time() = parent.time
+    val time: Double
+        get() {
+            return parent.time;
+        }
 
-    /**
-     * User defined init_loop method. This method will be called repeatedly when the INIT button is
-     * pressed. This method is optional. By default this method takes no action.
-     */
-    open fun init_loop() = parent.init_loop()
+    /** Sovereign internal for [com.qualcomm.robotcore.eventloop.opmode.OpMode.init_loop]. */
+    abstract fun initLoopWrapper()
 
-    /**
-     * User defined start method. This method will be called once when the PLAY button is first
-     * pressed. This method is optional. By default this method takes not action.
-     */
-    open fun start() = parent.start()
+    /** Sovereign internal for [com.qualcomm.robotcore.eventloop.opmode.OpMode.start]. */
+    abstract fun startWrapper()
 
-    /**
-     * User defined stop method
-     *
-     * This method will be called when this op mode is first disabled
-     *
-     * The stop method is optional. By default this method takes no action.
-     */
-    open fun stop() = parent.stop()
+    /** Sovereign internal for [com.qualcomm.robotcore.eventloop.opmode.OpMode.stop]. */
+    abstract fun stopWrapper()
 
-    /**
-     * User defined init method
-     *
-     * This method will be called once when the INIT button is pressed.
-     */
-    abstract fun init()
+    /** Sovereign internal for [com.qualcomm.robotcore.eventloop.opmode.OpMode.init]. */
+    abstract fun initWrapper()
 
-    /**
-     * User defined loop method
-     *
-     * This method will be called repeatedly in a loop while this op mode is running
-     */
-    abstract fun loop()
+    /** Sovereign internal for [com.qualcomm.robotcore.eventloop.opmode.OpMode.loop]. */
+    abstract fun loopWrapper()
 
     /**
      * Requests that this OpMode be shut down if it the currently active opMode, much as if the stop
@@ -170,6 +108,6 @@ abstract class Component(
     fun sovereignInformation(): String =
         "Sovereign  Copyright (C) 2023  Milo Banks\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to\nredistribute it under certain conditions."
 
-    /** Dump Soveriegn information to telemetry. */
+    /** Dump Sovereign information to telemetry. */
     fun dumpSovereignInformation() = telemetry.addLine(sovereignInformation())
 }
