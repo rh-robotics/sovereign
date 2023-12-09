@@ -13,9 +13,9 @@ import java.io.OutputStreamWriter
 import javax.lang.model.element.Modifier
 
 class ClassVisitor : KSTopDownVisitor<OutputStreamWriter, Unit>() {
-    private val sovereignOpMode = ClassName.get("org.ironlions.sovereign.opmode", "SovereignOpMode")
+    private val componentClass = ClassName.get("org.ironlions.sovereign.components", "Component")
     private val opModeProvider =
-        ClassName.get("org.ironlions.sovereign.opmode", "SovereignOpModeProvider")
+        ClassName.get("org.ironlions.sovereign.opmode", "OpModeProvider")
     private val autonomousClass =
         ClassName.get("com.qualcomm.robotcore.eventloop.opmode", "Autonomous")
 
@@ -25,11 +25,11 @@ class ClassVisitor : KSTopDownVisitor<OutputStreamWriter, Unit>() {
         classDeclaration: KSClassDeclaration, data: OutputStreamWriter
     ) {
         val isSubclassOfSovereignOpMode = classDeclaration.superTypes.any {
-            it.resolve().declaration.qualifiedName?.asString() == sovereignOpMode.canonicalName()
+            it.resolve().declaration.qualifiedName?.asString() == componentClass.canonicalName()
         }
 
         require(isSubclassOfSovereignOpMode) {
-            "Class '${classDeclaration.qualifiedName?.asString()}' must inherit from ${sovereignOpMode.canonicalName()}."
+            "Class '${classDeclaration.qualifiedName?.asString()}' must inherit from ${componentClass.canonicalName()}."
         }
 
         val packageName = classDeclaration.packageName.asString()
