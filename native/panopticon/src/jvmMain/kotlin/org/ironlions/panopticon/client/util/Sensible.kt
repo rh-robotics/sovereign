@@ -1,8 +1,8 @@
 package org.ironlions.panopticon.client.util
 
-import org.ironlions.panopticon.client.data.Component
 import org.ironlions.common.geometry.Point
 import org.ironlions.common.geometry.Region
+import org.ironlions.panopticon.client.ecs.Component
 
 fun Component.Property.Region.sensibilitize(): Component.Property.Region = Component.Property.Region(
     region = Region(

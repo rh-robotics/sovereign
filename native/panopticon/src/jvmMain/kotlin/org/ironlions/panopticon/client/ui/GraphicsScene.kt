@@ -1,9 +1,8 @@
 package org.ironlions.panopticon.client.ui
 
 import glm_.mat4x4.Mat4
-import org.ironlions.panopticon.client.data.Component
 import org.ironlions.panopticon.client.ClientApplication
-import org.ironlions.panopticon.client.ecs.Entity
+import org.ironlions.panopticon.client.ecs.Component
 import org.ironlions.panopticon.client.ecs.Scene
 import org.ironlions.panopticon.client.ecs.components.Mesh
 import org.ironlions.panopticon.client.render.Renderer
@@ -47,29 +46,10 @@ class GraphicsScene : Window("Viewer"), EventReceiver {
         )
         eventDispatcher.broadcastToSubscribers(Event.Frame(renderer.window, renderer.deltaTime))
 
-        // TODO: Mesh caching.
+        // TODO: Caching.
         scene.components.clear()
         (ClientApplication.windows[Inspector::class]!! as Inspector).dataTransceiver?.let { data ->
-            data.components().filter { !it.abstract }.forEach {
-                val entity = Entity(scene)
-                val region = it.properties.filterIsInstance<Component.Property.Region>().first()
-                    .sensibilitize()
-                val color = it.properties.filterIsInstance<Component.Property.Color>().first()
-
-                entity.components.clear()
-                entity.attachComponent(
-                    Mesh::class, Mesh(
-                        entity,
-                        Mat4(1),
-                        program,
-                        BoundingBox.vertices(region, color),
-                        BoundingBox.indices,
-                        type = GL_LINES,
-                    )
-                )
-
-                scene[it.uuid.toString()] = entity
-            }
+            data.components().filter { !it.abstract }.forEach { scene[it.uuid.toString()] = it }
         }
 
         scene.draw(renderer)

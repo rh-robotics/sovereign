@@ -5,6 +5,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.isActive
+import org.ironlions.panopticon.client.ecs.Component
 import org.ironlions.panopticon.client.event.EventDispatcher
 
 /** A source of data from the robot. */

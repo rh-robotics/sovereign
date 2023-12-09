@@ -5,12 +5,11 @@ import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableColumnFlags
 import imgui.flag.ImGuiTableFlags
 import imgui.type.ImBoolean
-import org.ironlions.panopticon.client.data.Component
 import org.ironlions.panopticon.client.data.DataTransceiver
 import org.ironlions.panopticon.client.data.RecordedDataTransceiver
 import org.ironlions.panopticon.client.render.Renderer
 import org.ironlions.common.titlecase
-import org.ironlions.panopticon.client.util.sensibilitize
+import org.ironlions.panopticon.client.ecs.Component
 import org.ironlions.ui.marsh.Marsh
 import org.ironlions.ui.marsh.Toast
 import kotlin.io.path.Path

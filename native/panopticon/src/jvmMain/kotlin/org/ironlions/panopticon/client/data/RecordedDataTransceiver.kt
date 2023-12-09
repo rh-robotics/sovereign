@@ -8,6 +8,7 @@ import org.ironlions.common.panopticon.proto.SetupRequest
 import java.nio.file.Path
 import java.time.Instant
 import org.ironlions.common.panopticon.proto.UpdatePropertiesRequest
+import org.ironlions.panopticon.client.ecs.Component
 import java.lang.StringBuilder
 import java.util.Stack
 import java.util.TreeMap
@@ -15,10 +16,35 @@ import java.util.TreeMap
 class RecordedDataTransceiver(source: Path) : DataTransceiver() {
     private val commands: TreeMap<Instant, CommandWrapper>
     private var cursor: Instant
-    val componentStacks: MutableMap<String, Stack<Component>> = mutableMapOf()
+    private val componentStacks: MutableMap<String, Stack<Component>> = mutableMapOf()
+
+    /* Transplanted code that may be useful.
+     *
+     * ```kotlin
+     * val component = Component(scene)
+     * val region = it.properties.filterIsInstance<Component.Property.Region>().first().sensibilitize()
+     * val color = it.properties.filterIsInstance<Component.Property.Color>().first()
+     *
+     * component.ecsComponents.clear()
+     * component.attachEcsComponent(
+     *     Mesh::class, Mesh(
+     *          component,
+     *          Mat4(1),
+     *          program,
+     *          BoundingBox.vertices(region, color),
+     *          BoundingBox.indices,
+     *          type = GL_LINES,
+     *     )
+     * )
+     *
+     * scene[it.uuid.toString()] = component
+     *
+     * ```
+     */
 
     init {
-        val parsedCommandWrappers = Json.decodeFromString<List<CommandWrapper>>(source.toFile().readText())
+        val parsedCommandWrappers =
+            Json.decodeFromString<List<CommandWrapper>>(source.toFile().readText())
         val sorted = parsedCommandWrappers.sortedWith(
             compareBy({ it.timestamp.epochSecond }, { it.timestamp.nano })
         )

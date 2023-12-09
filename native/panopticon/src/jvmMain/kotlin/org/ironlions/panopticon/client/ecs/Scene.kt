@@ -1,6 +1,6 @@
 package org.ironlions.panopticon.client.ecs
 
-import org.ironlions.panopticon.client.ecs.components.Component
+import org.ironlions.panopticon.client.ecs.components.EcsComponent
 import org.ironlions.panopticon.client.ecs.components.Mesh
 import org.ironlions.panopticon.client.render.Renderer
 import org.lwjgl.opengl.GL41.GL_COLOR_BUFFER_BIT
@@ -16,16 +16,16 @@ import kotlin.reflect.KClass
 class Scene(
     val name: String
 ) {
-    private val entities: MutableMap<String, Entity> = mutableMapOf()
-    val components: MutableMap<KClass<out Component>, MutableList<Component>> = mutableMapOf()
+    private val entities: MutableMap<String, org.ironlions.panopticon.client.ecs.Component> = mutableMapOf()
+    val components: MutableMap<KClass<out EcsComponent>, MutableList<EcsComponent>> = mutableMapOf()
 
     /** An an entity to the scene. */
     @Suppress("UNCHECKED_CAST")
-    operator fun set(uuid: String, entity: Entity) = apply {
-        entities[uuid] = entity
+    operator fun set(uuid: String, component: org.ironlions.panopticon.client.ecs.Component) = apply {
+        entities[uuid] = component
 
-        entity.components.forEach {
-            components.getOrPut(it.key as KClass<out Component>) { mutableListOf() }.add(it.value)
+        component.ecsComponents.forEach {
+            components.getOrPut(it.key as KClass<out EcsComponent>) { mutableListOf() }.add(it.value)
         }
     }
 
@@ -37,7 +37,7 @@ class Scene(
         renderer.activeCamera.framebuffer.bind()
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
-        components.getOrDefault(Mesh::class as KClass<out Component>, listOf())
+        components.getOrDefault(Mesh::class as KClass<out EcsComponent>, listOf())
             .forEach { (it as? Mesh)!!.draw(renderer) }
 
         renderer.activeCamera.framebuffer.unbind()

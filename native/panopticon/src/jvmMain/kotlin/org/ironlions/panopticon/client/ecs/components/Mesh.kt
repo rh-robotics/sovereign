@@ -1,7 +1,7 @@
 package org.ironlions.panopticon.client.ecs.components
 
 import glm_.mat4x4.Mat4
-import org.ironlions.panopticon.client.ecs.Entity
+import org.ironlions.panopticon.client.ecs.Component
 import org.ironlions.panopticon.client.render.Renderer
 import org.ironlions.panopticon.client.render.globjects.ElementGL
 import org.ironlions.panopticon.client.render.globjects.VertexAttributeGL
@@ -24,13 +24,13 @@ import org.lwjgl.opengl.GL41.glUniform1f
  * @param indices The triangle indices into the vertices list to draw with.
  */
 class Mesh(
-    override val parent: Entity,
+    override val parent: Component,
     private val modelMatrix: Mat4,
     private val program: Program,
     private val vertices: List<Vertex>,
     private val indices: List<Int>?,
     private val type: Int = GL_TRIANGLES
-) : Component(parent) {
+) : EcsComponent(parent) {
     private val attributes = VertexAttributeGL()
     private val buffer: VertexGL
     private val elements: ElementGL?
